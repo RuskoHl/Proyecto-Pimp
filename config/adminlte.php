@@ -14,9 +14,9 @@ return [
     |
     */
 
-    'title' => 'Grupo ZZZ',
-    'title_prefix' => 'Grupo ZZZ | ',
-    'title_postfix' => '',
+    'title' => 'PIMP |',
+    'title_prefix' => '',
+    'title_postfix' => 'login',
 
     /*
     |--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Grupo</b> ZZZ',
+    'logo' => '',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -167,12 +167,12 @@ return [
     |
     */
 
-    'classes_auth_card' => 'bg-gradient-dark card-outline card-warning',
-    'classes_auth_header' => 'd-none',
-    'classes_auth_body' => 'bg-gradient-dark',
-    'classes_auth_footer' => 'bg-gradient-dark',
-    'classes_auth_icon' => 'text-light',
-    'classes_auth_btn' => 'btn-flat btn-primary',
+    'classes_auth_card' => '',
+    'classes_auth_header' => 'bg-dark',
+    'classes_auth_body' => '',
+    'classes_auth_footer' => 'text-center',
+    'classes_auth_icon' => 'fa-lg text-danger',
+    'classes_auth_btn' => 'btn-flat btn-danger',
 
     /*
     |--------------------------------------------------------------------------
@@ -293,7 +293,7 @@ return [
 
         [
             'text' => 'Lista de usuarios',
-            'url' => '#',
+            'url' => '',
             'icon' => 'fas fa-users',
             'can' => 'lista_usuarios',
         ],
@@ -327,7 +327,7 @@ return [
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'X',
         ],
         [
             'text' => 'blog',
@@ -353,7 +353,7 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
-            'text'    => 'multilevel',
+            'text'    => 'Cruds',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
                 [
