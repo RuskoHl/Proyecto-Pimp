@@ -17,9 +17,6 @@ Route::get('/', function () {
     return view('casa');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
 
 
 

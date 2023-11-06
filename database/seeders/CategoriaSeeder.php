@@ -14,10 +14,13 @@ class CategoriaSeeder extends Seeder
     public function run(): void
     {
         Categoria::create([
-            'nombre' => 'Zapatilla'
+            'nombre' => 'Ropa'
         ]);
         Categoria::create([
-            'nombre' => 'Remera'
+            'nombre' => 'Vehiculo'
+        ]);
+        Categoria::create([
+            'nombre' => 'Accesorio'
         ]);
     }
 }

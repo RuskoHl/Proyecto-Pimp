@@ -291,23 +291,18 @@ return [
 
     'menu' => [
 
-        [
-            'text' => 'Lista de usuarios',
-            'url' => '',
-            'icon' => 'fas fa-users',
-            'can' => 'lista_usuarios',
-        ],
+
 
         [
             'text' => 'Lista de Productos',
-            'url' => '#',
+            'url' => 'panel/productos',
             'icon' => 'fas fa-store',
             'can' => 'lista_productos',
         ],
 
         [
             'text' => 'Lista de Compras',
-            'url' => '#',
+            'url' => 'panel/proveedors',
             'icon' => 'fas fa-shopping-cart',
             'can' => 'lista_compras',
         ],

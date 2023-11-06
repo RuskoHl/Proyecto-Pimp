@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombre_prov');
             $table->string('domicilio_prov');
             $table->string('mail_prov');
+            $table->string('telefono_prov');
             $table->timestamps();
         });
     }
