@@ -40,10 +40,10 @@ class ProductoController extends Controller
         $producto->precio= $request->get('precio');
         $producto->categoria_id= $request->get('categoria_id');
         $producto->vendedor_id= auth()->user()->id;
-
+        
         if($request->hasFile('imagen')){
             $image_url = $request->file('imagen')->store('public/producto');
-            $producto->imagen = asset(str-replace('public', 'storage', $image_url));
+            $producto->imagen = asset(str_replace('public', 'storage', $image_url));
         } else {
             $producto->imagen ='';
         }
