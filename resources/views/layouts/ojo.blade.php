@@ -13,6 +13,20 @@
           margin: 0;
           padding: 0;
       }
+
+      .limit-text {
+        max-width: 200px; /* Establece el ancho máximo para el párrafo */
+        white-space: nowrap; /* Evita el salto de línea */
+        overflow: hidden; /* Oculta el contenido que se desborda */
+        text-overflow: ellipsis; /* Agrega puntos suspensivos (...) cuando se corta el texto */
+      }
+
+      .limit-text-titulo {
+        max-width: 500px; /* Establece el ancho máximo para el párrafo */
+        white-space: nowrap; /* Evita el salto de línea */
+        overflow: hidden; /* Oculta el contenido que se desborda */
+        text-overflow: ellipsis; /* Agrega puntos suspensivos (...) cuando se corta el texto */
+      }
   </style>
 
   </head>

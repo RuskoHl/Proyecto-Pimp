@@ -42,8 +42,7 @@
             </ul>
             </li>
             <li><hr class=""><br></li>
-            <li><a class="text-danger"  href="{{ route('casa') }}">Ver galería</a></li>
-        </ul>
+            <li class="d-flex justify-content-center"><a class="btn btn-secondary w-75" href="{{ route('casa') }}">Home</a></li>        </ul>
     </div>
 
 
