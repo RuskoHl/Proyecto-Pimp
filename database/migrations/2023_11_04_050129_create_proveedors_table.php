@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('proveedors', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre_prov');
-            $table->string('domicilio_prov');
-            $table->string('mail_prov');
-            $table->string('telefono_prov');
+            $table->string('nombre');
+            $table->string('email');
+            $table->string('telefono');
+            $table->string('direccion');
+            $table->string('cuit');
+            $table->string('comentario');
             $table->timestamps();
         });
     }

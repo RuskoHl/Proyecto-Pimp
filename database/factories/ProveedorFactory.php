@@ -2,9 +2,10 @@
 
 namespace Database\Factories;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Proveedor;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
+
 
 
 /**
@@ -14,13 +15,16 @@ class ProveedorFactory extends Factory
 {
     public function definition(): array
     {
-        $vendedor = User::role(['admin'])->inRandomOrder()->first();
+        $vendedor = User::role(['vendedor'])->inRandomOrder()->first();
+
 
         return [
-            'nombre_prov' => $this->faker->sentence(),
-            'domicilio_prov' => $this->faker->sentence(),
-            'mail_prov' => $this->faker->email(),
-            'telefono_prov' => $this->faker->phoneNumber(),
+            'nombre' => $this->faker->sentence(),
+            'email' => $this->faker->email(),
+            'telefono' => $this->faker->phoneNumber(),
+            'direccion' => $this->faker->sentence(),
+            'cuit' => $this->faker->randomNumber(),
+            'comentario' => $this->faker->sentence(),
         ];
     }
 }

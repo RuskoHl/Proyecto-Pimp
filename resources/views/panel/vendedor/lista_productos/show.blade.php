@@ -36,6 +36,9 @@
                     <div class="mb-3">
                         <p>Creado por {{ $producto->vendedor->name }}.</p>
                     </div>
+                    <div class="mb-3">
+                        <p>Cantidad disponible: {{ $producto->cantidad }}.</p>
+                    </div>
                 </div>
             </div>
         </div>

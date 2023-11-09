@@ -14,15 +14,21 @@ class ProveedorSeeder extends Seeder
     public function run(): void
     {
         Proveedor::create([
-            'nombre_prov'=>'GorllaClub',
-            'domicilio_prov'=>'LaLuna',
-            'mail_prov'=>'gc@gmail.com'
+            'nombre'=>'GorllaClub',
+            'mail'=>'gc@gmail.com',
+            'telefono'=>'3875696010',
+            'direccion'=>'LaLuna',
+            'cuit'=>'546168464',
+            'comentario'=>'LaLuna',
         ]);
 
         Proveedor::create([
-            'nombre_prov'=>'Thrasher',
-            'domicilio_prov'=>'China',
-            'mail_prov'=>'trasher@gmail.com'
+            'nombre'=>'Adidas',
+            'mail'=>'Adidas@gmail.com',
+            'telefono'=>'3875696011',
+            'direccion'=>'LaLuna2',
+            'cuit'=>'5461684644',
+            'comentario'=>'LaLuna2',
         ]);
     }
 }

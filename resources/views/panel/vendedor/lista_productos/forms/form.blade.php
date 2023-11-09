@@ -68,7 +68,17 @@
                     @enderror --}}
                 </div>
             </div>
-        
+            
+            <div class="mb-3 row">
+                <label for="cantidad" class="col-sm-4 col-form-label"> * Cantidad </label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{ old('cantidad', optional($producto)->cantidad) }}">
+                    @error('cantidad')
+                        <div class="invalid-feedback"> {{ $message }} </div>
+                    @enderror
+                </div>
+            </div>
+
         </div>
 
         <div class="card-footer">

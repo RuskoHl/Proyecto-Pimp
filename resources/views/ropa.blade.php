@@ -47,103 +47,45 @@
     </div>
 
 
-    <div class="col-9">
-      <!-- Contenido del col-9 sin bordes -->
-
+    <div class="col-9 ">
       <h2 style="font-family: 'Old English Text MT', sans-serif;">Ropa</h2>
-
+      <div class="scrollable-div border-white">
+      <!-- Contenido del col-9 sin bordes -->
 <!-- Contenido del PRODUCTO (CARD) -->
-
-<div class="row m-1">
-        <div class="col-12">
-        <div class="card border-white" style="min-height: 168px; max-height: 168px;">
-            <div class="row no-gutters">
-            <div class="bg-image " style="background-image: url('gorilla/4.jpg'); min-width: 115px; max-width: 200px; background-size: cover; background-position: center; background-repeat: no-repeat; margin-left: 12px;">
-              </div>
-             <div class="col-8">
-                <div class="card-body">
-                <h5 class="card-title text-danger limit-text-titulo">Remera Negra GC - Oversize.</h5>
-                <h6 class="card-subtitle mb-2 text-secondary limit-text">$7.500,00</h6>
-                <p class="card-text limit-text">Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.</p>
-                <a href="#" class="btn btn-danger ">Ver Detalles</a>
+@foreach($productos as $producto)
+<div class="container">
+  <div class="row">
+    <div class="card m-1">
+      <div class="row no-gutters pt-3">
+        <div class="col-3">
+          <!-- Aquí puedes cargar la imagen del producto -->
+          <img src="{{ $producto->imagen }}" class="card-img" alt="Producto" style="max-width:90%; min-width:200px; height: auto;">
+        </div>
+        <div class="col-9">
+          <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                  <h4 class="card-title limit-text-titulo text-danger">{{ $producto->nombre }}</h4>
+                  <p class="card-text limit-text-titulo text-secondary">{{ $producto->descripcion }}</p>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>    
-  </div>
-  <!-- Fin Card del PRODUCTO -->
-
-<!-- Contenido del PRODUCTO (CARD) -->
-
-<div class="row m-1">
-        <div class="col-12">
-        <div class="card border-white" style="min-height: 168px; max-height: 168px;">
-            <div class="row no-gutters">
-            <div class="bg-image " style="background-image: url('gorilla/7.jpg'); min-width: 115px; max-width: 200px; background-size: cover; background-position: center; background-repeat: no-repeat; margin-left: 12px;">
+            <div class="row">
+              <div class="col-10 mt-4">
+                <h4 class="card-text limit-text text-danger">${{ $producto->precio }}</h4>
               </div>
-             <div class="col-8">
-                <div class="card-body">
-                <h5 class="card-title text-danger limit-text-titulo">Remera Morada GC - Oversize asdasdasdasdasdasdasdas.</h5>
-                <h6 class="card-subtitle mb-2 text-secondary limit-text">$7.500,00</h6>
-                <p class="card-text limit-text">Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.</p>
-                <a href="#" class="btn btn-danger ">Ver Detalles</a>
-                </div>
+              <div class="col-2">
+                <a href="#" class="btn btn-danger mb-4">Comprar</a>
               </div>
-            </div>
+            </div>   
           </div>
-        </div>    
-  </div>
-  <!-- Fin Card del PRODUCTO -->
-
-  <!-- Contenido del PRODUCTO (CARD) -->
-
-<div class="row m-1">
-        <div class="col-12">
-        <div class="card border-white" style="min-height: 168px; max-height: 168px;">
-            <div class="row no-gutters">
-            <div class=" col-4" style="min-width: 150px; max-width: 250px;">
-
-    <div id="carouselExample" class="carousel slide" >
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="gorilla/6.jpg" class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="gorilla/5.jpg" class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="gorilla/1.jpg" class="d-block w-100" alt="...">
+        </div>
+      </div>
     </div>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-  </div>
-  
-          </div>
-             <div class="col-8">
-                <div class="card-body">
-                <h5 class="card-title text-danger limit-text-titulo">Remera Verde GC - Oversize.</h5>
-                <h6 class="card-subtitle mb-2 text-secondary limit-text">$7.500,00</h6>
-                <p class="card-text limit-text">Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.Edicion limitada.</p>
-                <a href="#" class="btn btn-danger ">Ver Detalles</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>    
-  </div>
-  <!-- Fin Card del PRODUCTO -->
+</div>
+@endforeach
 
-
-
-
+      </div>
 </div>
 </div>
 

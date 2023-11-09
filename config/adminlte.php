@@ -62,10 +62,10 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
     |
     */
-
+    
     'logo' => '',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo3.png',
+    'logo_img_class' => 'brand-image',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',
@@ -192,7 +192,7 @@ return [
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar' => 'sidebar-dark-danger elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-white navbar-light',
     'classes_topnav_nav' => 'navbar-expand',
@@ -293,113 +293,100 @@ return [
 
 
 
-        [
-            'text' => 'Lista de Productos',
-            'url' => 'panel/productos',
-            'icon' => 'fas fa-store',
-            'can' => 'lista_productos',
-        ],
 
-        [
-            'text' => 'Lista de Compras',
-            'url' => 'panel/proveedors',
-            'icon' => 'fas fa-shopping-cart',
-            'can' => 'lista_compras',
-        ],
+
+
 
 
         // Navbar items:
-        [
-            'type'         => 'navbar-search',
-            'text'         => 'search',
-            'topnav_right' => true,
-        ],
+
         [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
 
         // Sidebar items:
+        ['header' => 'OPERACIONES'],
+
         [
-            'type' => 'sidebar-menu-search',
-            'text' => 'X',
+            'text'    => 'Productos',
+            'icon'    => 'fas fa-gem',
+            'submenu' => [
+                [
+                    'text' => 'Stock',
+                    'url'  => 'panel/productos',
+                ],
+                
+                [
+                    'text' => 'Crear Productos',
+                    'url'  => 'panel/productos/create',
+                ],
+                [
+                    'text' => 'Alertas Stock Bajo',
+                    'url'  => 'panel/productos/create',
+                    'label'       => 4,
+                ],
+            ],
+        ],
+        [
+            'text' => 'Proveedor',
+            
+            'icon' => 'fas fa-fw fa-user-secret',
+            
+            'submenu' => [
+                [
+                    'text' => 'Lista Proveedores',
+                    'url'  => 'panel/proveedors',
+                    
+                ],
+                [
+                'text' => 'Ingresar nuevo Proveedor',
+                'url'  => 'panel/proveedors/create',
+                ],
+                [
+                    'text' => 'Realizar orden de Compra',
+                    'url'  => '',
+                    ],
+            ],
+        ],
+        [
+            'text' => 'Cliente',
+            'url'  => 'admin/settings',
+            'icon' => 'fas fa-fw fa-user',
+            'submenu' => [
+                [
+                    'text' => 'Lista de clientes',
+                    'url'  => '',
+                ],
+                [
+                'text' => 'Subir Nuevo Prospecto',
+                'url'  => '',
+                ],
+            ],
         ],
         [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
+        ['header' => 'VISTAS USUARIOS'],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text'    => 'Cruds',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-            ],
-        ],
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
+            'text'       => 'Ropa',
             'icon_color' => 'red',
-            'url'        => '#',
+            'icon'       => 'fas fa-fw fa-eye',
+            'url'        => 'ropa',
         ],
         [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
+            'text'       => 'Vehiculos',
+            'icon_color' => 'red',
+            'icon'       => 'fas fa-fw fa-eye',
+            'url'        => 'vehiculos',
         ],
         [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
+            'text'       => 'Accesorios',
+            'icon_color' => 'red',
+            'icon'       => 'fas fa-fw fa-eye',
+            'url'        => 'accesorios',
         ],
     ],
 

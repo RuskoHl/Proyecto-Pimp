@@ -25,6 +25,7 @@ class ProductoFactory extends Factory
             'imagen' => $this->faker->imageUrl(640,480),
             'categoria_id' => $categoria->id,
             'vendedor_id' => $vendedor->id,
+            'cantidad' => $this->faker->randomFloat(),
         ];
     }
 }

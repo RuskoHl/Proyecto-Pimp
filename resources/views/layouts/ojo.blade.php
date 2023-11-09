@@ -27,6 +27,11 @@
         overflow: hidden; /* Oculta el contenido que se desborda */
         text-overflow: ellipsis; /* Agrega puntos suspensivos (...) cuando se corta el texto */
       }
+      .scrollable-div {
+            height: 700px; /* Establece la altura máxima para el div desplazable */
+            overflow-y: scroll; /* Agrega una barra de desplazamiento vertical */
+            border: 1px solid #ccc; /* Agrega un borde para el div */
+        }
   </style>
 
   </head>

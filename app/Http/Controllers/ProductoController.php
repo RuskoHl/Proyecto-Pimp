@@ -70,6 +70,7 @@ class ProductoController extends Controller
         $producto->descripcion = $request->get('descripcion');
         $producto->precio = $request->get('precio');
         $producto->categoria_id = $request->get('categoria_id');
+        $producto->cantidad = $request->get('cantidad');
 
         if ($request->hasFile('imagen')){
             $image_url = $request->file('imagen')->store('public/producto');
@@ -89,4 +90,11 @@ class ProductoController extends Controller
             ->route('producto.index')
             ->with('alert', 'Producto eliminado existosamente.');
     }
+
+    //public function mostrarProducto()
+//{
+   // $productos = Producto::all(); // Recupera todos los productos de la base de datos
+   // return view('ropa', ['productos' => $productos]);
+//}
+
 }

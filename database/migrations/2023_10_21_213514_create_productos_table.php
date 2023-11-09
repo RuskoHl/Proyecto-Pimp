@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('vendedor_id');
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->foreign('vendedor_id')->references('id')->on('users');
+            $table->unsignedInteger('cantidad');
             
             $table->timestamps();
             

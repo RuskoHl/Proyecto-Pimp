@@ -10,13 +10,13 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mb-3">
-            <h1>Edición del Producto "{{ $producto->nombre }}"</h1>
+            <h1>Edición del Proveedor "{{ $proveedor->nombre }}"</h1>
             <a href="{{ route('producto.index') }}" class="btn btn-sm btn-secondary text-uppercase">
                 Volver al Listado
             </a>
         </div>
         <div class="col-12">
-            @include('panel.vendedor.lista_productos.forms.form')
+            @include('panel.compras.lista_proveedores.forms.form')
         </div>
     </div>
 </div>

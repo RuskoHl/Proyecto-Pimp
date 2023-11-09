@@ -1,32 +1,17 @@
 <div class="card mb-5">
-    <form action="{{ $producto->id ? route('producto.update', $producto) : route('producto.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ $proveedor->id ? route('proveedor.update', $proveedor) : route('proveedor.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @if ($producto->id)
+        @if ($proveedor->id)
             @method('PUT')
         @endif
 
         <div class="card-body">
 
-            {{-- @if ($post->id) --}}
-            <div class="mb-3 row">
-                <img src="{{ $producto->imagen ?? 'https://via.placeholder.com/1024'}}" alt="{{ $producto->nombre }}" id="image_preview" class="img-fluid" style="object-fit: cover; object-position: center; height: 420px; width: 100%;">
-            </div>
-            {{-- @endif --}}
-
-            <div class="mb-3 row">
-                <label for="imagen" class="col-sm-4 col-form-label"> * Imagen </label>
-                <div class="col-sm-8">
-                    <input class="form-control @error('imagen') is-invalid @enderror" type="file" id="imagen" name="imagen" accept="image/*">
-                    @error('imagen')
-                        <div class="invalid-feedback"> {{ $message }} </div>
-                    @enderror
-                </div>
-            </div>
             
             <div class="mb-3 row">
                 <label for="nombre" class="col-sm-4 col-form-label"> * Nombre </label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" value="{{ old('nombre', optional($producto)->nombre) }}">
+                    <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" value="{{ old('nombre', optional($proveedor)->nombre) }}">
                     @error('nombre')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror
@@ -34,38 +19,52 @@
             </div>
 
             <div class="mb-3 row">
-                <label for="descripcion" class="col-sm-4 col-form-label"> * Descripción </label>
+                <label for="email" class="col-sm-4 col-form-label">* Mail </label>
                 <div class="col-sm-8">
-                    <textarea class="form-control @error('body') is-invalid @enderror" id="descripcion" name="descripcion" rows="10">{{ old('descripcion', optional($producto)->descripcion) }}</textarea>
-                    @error('body')
+                    <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" rows="10">{{ old('email', optional($proveedor)->email) }}</input>
+                    @error('email')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror
                 </div>
             </div>
 
             <div class="mb-3 row">
-                <label for="precio" class="col-sm-4 col-form-label"> * Precio </label>
+                <label for="telefono" class="col-sm-4 col-form-label"> * Telefono </label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{ old('precio', optional($producto)->precio) }}">
-                    @error('precio')
+                    <input type="number" class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono" value="{{ old('telefono', optional($proveedor)->telefono) }}">
+                    @error('telefono')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror
                 </div>
             </div>
 
             <div class="mb-3 row">
-                <label for="categoria" class="col-sm-4 col-form-label"> * Categoria </label>
+                <label for="direccion" class="col-sm-4 col-form-label"> * Direccion </label>
                 <div class="col-sm-8">
-                    <select id="categoria_id" name="categoria_id" class="form-control">
-                        @foreach ($categorias as $categoria)
-                            <option {{ $producto->categoria_id && $producto->categoria_id == $categoria->id ? 'selected': ''}} value="{{ $categoria->id }}"> 
-                                {{ $categoria->nombre }}
-                            </option>
-                        @endforeach
-                    </select>                
-{{--                     @error('categoria')
+                    <input type="text" class="form-control @error('direccion') is-invalid @enderror" id="direccion" name="direccion" value="{{ old('direccion', optional($proveedor)->direccion) }}">
+                    @error('direccion')
                         <div class="invalid-feedback"> {{ $message }} </div>
-                    @enderror --}}
+                    @enderror
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="cuit" class="col-sm-4 col-form-label"> * CUIT </label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control @error('cuit') is-invalid @enderror" id="cuit" name="cuit" value="{{ old('cuit', optional($proveedor)->cuit) }}">
+                    @error('cuit')
+                        <div class="invalid-feedback"> {{ $message }} </div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="comentario" class="col-sm-4 col-form-label"> * Comentario </label>
+                <div class="col-sm-8">
+                    <textarea class="form-control @error('comentario') is-invalid @enderror" id="comentario" name="comentario" value="{{ old('comentario', optional($proveedor)->comentario) }}"></textarea>
+                    @error('comentario')
+                        <div class="invalid-feedback"> {{ $message }} </div>
+                    @enderror
                 </div>
             </div>
         
@@ -73,7 +72,7 @@
 
         <div class="card-footer">
             <button type="submit" class="btn btn-success text-uppercase">
-                {{ $producto->id ? 'Actualizar' : 'Crear' }}
+                {{ $proveedor->id ? 'Actualizar' : 'Crear' }}
             </button>
         </div>
     </form>

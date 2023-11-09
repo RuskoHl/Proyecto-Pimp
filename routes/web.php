@@ -27,4 +27,5 @@ Route::get('/casa', [App\Http\Controllers\CasaController::class, 'mostrarCasa'])
 Route::get('/ropa', [App\Http\Controllers\RopaController::class, 'mostrarRopa'])->name('ropa');
 Route::get('/vehiculos', [App\Http\Controllers\VehiculosController::class, 'mostrarVehiculos'])->name('vehiculos');
 Route::get('/accesorios', [App\Http\Controllers\AccesoriosController::class, 'mostrarAccesorios'])->name('accesorios');
+//Route::get('/productos', [App\Http\Controllers\ProductoController::class, 'mostrarProducto']);
 
