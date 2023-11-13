@@ -19,6 +19,7 @@
                     <input class="form-control @error('imagen') is-invalid @enderror" type="file" id="imagen" name="imagen" accept="image/*">
                     @error('imagen')
                         <div class="invalid-feedback"> {{ $message }} </div>
+                        
                     @enderror
                 </div>
             </div>
@@ -29,6 +30,7 @@
                     <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" value="{{ old('nombre', optional($producto)->nombre) }}">
                     @error('nombre')
                         <div class="invalid-feedback"> {{ $message }} </div>
+                        
                     @enderror
                 </div>
             </div>
@@ -39,6 +41,7 @@
                     <textarea class="form-control @error('body') is-invalid @enderror" id="descripcion" name="descripcion" rows="10">{{ old('descripcion', optional($producto)->descripcion) }}</textarea>
                     @error('body')
                         <div class="invalid-feedback"> {{ $message }} </div>
+                        
                     @enderror
                 </div>
             </div>
@@ -49,6 +52,7 @@
                     <input type="number" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{ old('precio', optional($producto)->precio) }}">
                     @error('precio')
                         <div class="invalid-feedback"> {{ $message }} </div>
+                        
                     @enderror
                 </div>
             </div>
@@ -75,6 +79,7 @@
                     <input type="number" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{ old('cantidad', optional($producto)->cantidad) }}">
                     @error('cantidad')
                         <div class="invalid-feedback"> {{ $message }} </div>
+                        
                     @enderror
                 </div>
             </div>

@@ -10,13 +10,13 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mb-3">
-            <h1>Edición del Proveedor "{{ $proveedor->nombre }}"</h1>
-            <a href="{{ route('proveedor.index') }}" class="btn btn-sm btn-secondary text-uppercase">
+            <h1>Edición del caja de la fecha "<a class="text-danger" href="{{ route('caja.show', $caja) }}">{{ $caja->fecha_apertura }}</a>"</h1>
+            <a href="{{ route('caja.index') }}" class="btn btn-sm btn-secondary text-uppercase">
                 Volver al Listado
             </a>
         </div>
         <div class="col-12">
-            @include('panel.compras.lista_proveedores.forms.form')
+            @include('panel.caja.forms.form')
         </div>
     </div>
 </div>

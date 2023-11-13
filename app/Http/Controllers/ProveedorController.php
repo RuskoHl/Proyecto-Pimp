@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
+use App\Http\Requests\crearProveedorRequest;
 
 use Illuminate\Http\Request;
 
@@ -28,7 +29,7 @@ class ProveedorController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store(crearProveedorRequest $request)
     {
         $proveedor = new Proveedor();
 
@@ -57,7 +58,7 @@ class ProveedorController extends Controller
         return view('panel.compras.lista_proveedores.edit', compact('proveedor'));
 
     }
-    public function update(Request $request, Proveedor $proveedor)
+    public function update(crearProveedorRequest $request, Proveedor $proveedor)
     {
         $proveedor->nombre= $request->get('nombre');
         $proveedor->email= $request->get('email');       
@@ -65,6 +66,7 @@ class ProveedorController extends Controller
         $proveedor->direccion= $request->get('direccion');
         $proveedor->cuit= $request->get('cuit');
         $proveedor->comentario= $request->get('comentario');
+
 
 
         $proveedor->update();

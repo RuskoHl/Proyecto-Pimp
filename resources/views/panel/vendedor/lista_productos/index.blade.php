@@ -57,7 +57,7 @@
                                 <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}" class="img-fluid" style="width: 150px;">
                             </td>
                             <td>
-                                <div class="d-flex">
+                                <div class="d-flex flex-column">
                                     <a href="{{ route('producto.show', $producto) }}" class="btn btn-sm btn-info text-white text-uppercase me-1">
                                         Ver
                                     </a>

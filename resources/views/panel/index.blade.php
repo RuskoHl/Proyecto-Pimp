@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title','Inicio')
+@section('title','PimpAdmin')
 
 @section('content_header')
 <h1 style="font-family: 'Old English Text MT', sans-serif; font-size: 60px;">Pimp</h1>
@@ -8,6 +8,7 @@
 @stop
 
 @section('content')
+@inject('productos', 'App\Models\Producto')
 <div>
     <div>
         <div>
@@ -28,21 +29,56 @@
         </div>
 
 <br>
-
-<h3 style="font-family: 'Old English Text MT', sans-serif;">Vista cliente:</h3>
+<!-- COMIENZO VISTAS ADMINS -->
+<h3 style="font-family: 'Old English Text MT', sans-serif;">Atajos Administrativos:</h3>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12">
-            <a href="{{ route('casa') }}"> <!-- Agregar la URL a la que deseas redirigir -->
-                <div class="card bg-danger">
+        <div class="col-3">
+            <a href="{{ route('producto.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
+                <div class="card bg-black">
                    
                     <div class="card-body">
-                        <h5 class="card-title">Vista del cliente</h5>
-                        <p class="card-text">Acceso rapido a Pantalla Principal (casa).</p>
+                        <h5 class="card-title"><strong class="text-danger">Cantidad Productos</strong></h5>
+                        <p class="card-text"> Hay <strong>{{ App\Models\Producto::count() }}</strong> productos en la base de datos.</p>
                     </div>
                 </div>
             </a>
         </div>
+        <div class="col-3">
+            <a href="{{ route('caja.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
+                <div class="card bg-black">
+                   
+                    <div class="card-body">
+                        <h5 class="card-title"><strong class="text-danger">Cantidad Cajas Activas</strong></h5>
+                        <p class="card-text"> Hay <strong>{{ App\Models\Caja::where('status', 1)->count() }}</strong> cajas acivas. <br>.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-3">
+            <a href="{{ route('casa') }}"> <!-- Agregar la URL a la que deseas redirigir -->
+                <div class="card bg-white">
+                   
+                    <div class="card-body">
+                        <h5 class="card-title"><strong class="text-danger">Monto inicial</strong></h5>
+                        <p class="card-text"> El monto inicial del dia es de <strong>{{ App\Models\Caja::whereDate('created_at', now()->toDateString())->sum('monto_inicial') }}</strong>.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-3">
+            <a href="{{ route('casa') }}"> <!-- Agregar la URL a la que deseas redirigir -->
+                <div class="card bg-white">
+                   
+                    <div class="card-body">
+                        <h5 class="card-title"><strong class="text-danger">Cantidad Productos</strong></h5>
+                        <p class="card-text"> Hay <strong>{{ App\Models\Producto::count() }}</strong> productos en la base de datos.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+<!-- FIN VISTAS ADMINS -->
 
         <!-- Repite el mismo patrón para otras tarjetas -->
     </div>
@@ -52,8 +88,35 @@
     <div class="row">
 
         <div class="col-6">
+            <a href="{{ route('caja.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
+                <div class="card bg-secondary ">
+                   
+                    <div class="card-body">
+                        <h5 class="card-title">Listado de Cajas</h5>
+                        <p class="card-text">Acceso rapido a Pantalla de Cajas.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-6">
+            <a href="{{ route('caja.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
+                <div class="card bg-secondary">
+                   
+                    <div class="card-body">
+                        <h5 class="card-title">Abrir una nueva caja</h5>
+                        <p class="card-text">Acceso rapido a create caja .</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Repite el mismo patrón para otras tarjetas -->
+    </div>
+    <div class="row">
+
+        <div class="col-6">
             <a href="{{ route('producto.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
-                <div class="card bg-dark ">
+                <div class="card bg-dark">
                    
                     <div class="card-body">
                         <h5 class="card-title">Listado de Productos</h5>
@@ -76,11 +139,12 @@
         </div>
         <!-- Repite el mismo patrón para otras tarjetas -->
     </div>
+
     <div class="row">
 
         <div class="col-6">
             <a href="{{ route('proveedor.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
-                <div class="card bg-secondary ">
+                <div class="card bg-black ">
                    
                     <div class="card-body">
                         <h5 class="card-title">Listado de Proveedor</h5>
@@ -92,7 +156,7 @@
 
         <div class="col-6">
             <a href="{{ route('proveedor.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
-                <div class="card bg-secondary">
+                <div class="card bg-black">
                    
                     <div class="card-body">
                         <h5 class="card-title">Añadir un nuevo proveedor</h5>

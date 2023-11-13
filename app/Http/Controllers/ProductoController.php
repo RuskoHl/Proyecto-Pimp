@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\crearRequest;
+use App\Http\Requests\editarRequest;
 use App\Models\Producto;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
@@ -31,7 +33,11 @@ class ProductoController extends Controller
 
     }
 
-    public function store(Request $request)
+
+
+
+
+    public function store(crearRequest $request)
     {
         $producto = new Producto();
 
@@ -40,13 +46,17 @@ class ProductoController extends Controller
         $producto->precio= $request->get('precio');
         $producto->categoria_id= $request->get('categoria_id');
         $producto->vendedor_id= auth()->user()->id;
-        
+        $producto->cantidad= $request->get('cantidad');
+
         if($request->hasFile('imagen')){
             $image_url = $request->file('imagen')->store('public/producto');
             $producto->imagen = asset(str_replace('public', 'storage', $image_url));
         } else {
             $producto->imagen ='';
         }
+        
+
+    
         $producto->save();
 
         return redirect()
@@ -64,7 +74,7 @@ class ProductoController extends Controller
         return view('panel.vendedor.lista_productos.edit', compact('producto', 'categorias'));
 
     }
-    public function update(Request $request, Producto $producto)
+    public function update(editarRequest $request, Producto $producto)
     {
         $producto->nombre = $request->get('nombre');
         $producto->descripcion = $request->get('descripcion');
@@ -76,6 +86,11 @@ class ProductoController extends Controller
             $image_url = $request->file('imagen')->store('public/producto');
             $producto->imagen= asset(str_replace('public', 'storage', $image_url));
         }
+
+        $validated = $request->validated();
+
+    
+
         $producto->update();
 
         return redirect()

@@ -10,8 +10,8 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mb-3">
-            <h1>Datos del Proveedor "{{ $proveedor->nombre }}"</h1>
-            <a href="{{ route('proveedor.index') }}" class="btn btn-sm btn-secondary text-uppercase">
+            <h1>Datos de la caja del "{{ $caja->fecha_apertura }}"</h1>
+            <a href="{{ route('caja.index') }}" class="btn btn-sm btn-secondary text-uppercase">
                 Volver al Listado
             </a>
         </div>
@@ -19,22 +19,26 @@
             <div class="card">
                 <div class="card-body mt-2">
                     <div class="mb-3">    
-                        <h2>Nombre: {{ $proveedor->nombre }}</h2>
+                        <h2>Fecha Apertura: {{ $caja->fecha_apertura }}</h2>
                     </div>
                     <div class="mb-3">
-                        <p> Mail: {{ $proveedor->email }}</p>
+                        <p> Monto Inicial: {{ $caja->monto_inicial }}</p>
                     </div>
                     <div class="mb-3">
-                        <p>Telefono: {{ $proveedor->telefono }}</p>
+                        <p>Fecha Cierre: {{ $caja->fecha_cierre }}</p>
                     </div>
                     <div class="mb-3">    
-                        <p>Direccion: {{ $proveedor->direccion }}</p>
+                        <p>Monto Final: {{ $caja->monto_final }}</p>
                     </div>
                     <div class="mb-3">
-                        <p> CUIT: {{ $proveedor->cuit }}</p>
+                        <p>Cantidad de Ventas mientras la caja esta abierta: {{ $caja->cantidad_ventas }}</p>
                     </div>
                     <div class="mb-3">
-                        <p>Comentario: {{ $proveedor->comentario }}</p>
+                        <p>Status:  @if ($caja->status === 1)
+                            <span class="badge bg-primary">Abierto</span>
+                        @else
+                            <span class="badge bg-danger">Cerrado</span>
+                        @endif</p>
                     </div>
 
                 </div>

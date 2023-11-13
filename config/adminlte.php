@@ -307,6 +307,27 @@ return [
 
         // Sidebar items:
         ['header' => 'OPERACIONES'],
+        [
+            'text' => 'Caja',
+            
+            'icon' => 'fas fa-fw fa-cash-register',
+            
+            'submenu' => [
+                [
+                    'text' => 'Registro de Cajas',
+                    'url'  => 'panel/cajas',
+                    
+                ],
+                [
+                'text' => 'Extraccion de dinero',
+                'url'  => 'panel/proveedors/create',
+                ],
+                [
+                    'text' => 'Cierre de caja',
+                    'url'  => '',
+                    ],
+            ],
+        ],
 
         [
             'text'    => 'Productos',
@@ -325,6 +346,7 @@ return [
                     'text' => 'Alertas Stock Bajo',
                     'url'  => 'panel/productos/create',
                     'label'       => 4,
+                    
                 ],
             ],
         ],
