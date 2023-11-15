@@ -8,6 +8,12 @@ use App\Models\Caja;
 
 class CajaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:lista_productos']);
+        
+    }
+    
     public function index()
     {
         $cajas = Caja::latest()->get();

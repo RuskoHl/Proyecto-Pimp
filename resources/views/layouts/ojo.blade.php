@@ -64,8 +64,13 @@
           </ul>
           <!--Boton Login Admin-->
           <form class="d-flex" role="search">
-            <a href="{{ route('home') }}" class="btn btn-danger">Login</a>
+            <a id="btn-login" href="{{ route('home') }}" class="btn btn-danger">Login</a>
           </form>
+          
+          @can('lista_productos')
+          <a id="btn-panel" href="{{ route('panel') }}" class="btn btn-danger">Panel</a>
+      
+          @endcan
         </div>
       </div>
     </nav>

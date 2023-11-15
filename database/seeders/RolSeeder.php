@@ -12,14 +12,24 @@ class RolSeeder extends Seeder
 
     public function run()
     {
-        //Roles
+        //Crear Roles
         $rol_admin= Role::create(['name' => 'admin']);
         $rol_vendedor= Role::create(['name' => 'vendedor']);
         $rol_cliente= Role::create(['name' => 'cliente']);
-
-        Permission::create(['name' => 'lista_usuarios']) -> assignRole($rol_admin);
-        Permission::create(['name' => 'lista_productos']) -> assignRole($rol_vendedor);
-        Permission::create(['name' => 'lista_proveedores']) -> assignRole($rol_vendedor);
-        //Permission::create(['name' => 'lista_pagos']) -> syncRoles[($rol_vendedor,$rol_cliente)];
+        
+        //Crear permisos
+        Permission::create(['name' => 'lista_usuarios']);
+        Permission::create(['name' => 'carrito']);
+        Permission::create(['name' => 'lista_productos']);
+        Permission::create(['name' => 'lista_proveedores']);
+        //Asignar permisos a roles
+        $rol_cliente->givePermissionTo('carrito');
+        $rol_admin->givePermissionTo('lista_productos');
+        $rol_admin->givePermissionTo('carrito');
+        $rol_admin->givePermissionTo('lista_proveedores');
+        $rol_admin->givePermissionTo('lista_usuarios');
+       
+        $rol_vendedor->givePermissionTo('lista_productos');
+        $rol_vendedor->givePermissionTo('lista_proveedores');
     }
 }

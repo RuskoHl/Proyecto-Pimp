@@ -336,17 +336,19 @@ return [
                 [
                     'text' => 'Stock',
                     'url'  => 'panel/productos',
+                    'can' => 'lista_productos',
                 ],
                 
                 [
                     'text' => 'Crear Productos',
                     'url'  => 'panel/productos/create',
+                    'can' => 'lista_productos',
                 ],
                 [
                     'text' => 'Alertas Stock Bajo',
                     'url'  => 'panel/productos/create',
                     'label'       => 4,
-                    
+                    'can' => 'lista_productos',
                 ],
             ],
         ],

@@ -35,7 +35,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <table id="tabla-proveedors" class="table table-striped table-hover w-100">
+                <table id="tabla-proveedors" class="table table-striped nowrap responsive hover display compact" style="width:100%">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -69,13 +69,15 @@
                                     <a href="{{ route('proveedor.edit', $proveedor) }}" class="btn btn-sm btn-warning text-white text-uppercase me-1">
                                         Editar
                                     </a>
-                                    <form action="{{ route('proveedor.destroy', $proveedor) }}" method="POST">
+
+                                    <form id="deleteForm2" action="{{ route('proveedor.destroy', $proveedor) }}" method="POST">
                                         @csrf 
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger text-uppercase">
-                                            Eliminar
-                                        </button>
                                     </form>
+                                    
+                                    <button id="deleteButton2" class="btn btn-sm btn-danger text-uppercase">
+                                        Eliminar
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -90,12 +92,53 @@
 
 {{-- Importacion de Archivos CSS --}}
 @section('css')
-    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
 @stop
 
 
 {{-- Importacion de Archivos JS --}}
 @section('js')
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Cuando se hace clic en el botón de eliminar
+        document.getElementById('deleteButton2').addEventListener('click', function () {
+            // Mostrar SweetAlert de confirmación
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "¡No podrás revertir esto!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminarlo"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si se confirma, enviar el formulario de eliminación
+                    document.getElementById('deleteForm2').submit();
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        new DataTable('#tabla-proveedors', {
+            responsive: true
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 
     {{-- La funcion asset() es una funcion de Laravel PHP que nos dirige a la carpeta "public" --}}
     <script src="{{ asset('js/proveedors.js') }}"></script>

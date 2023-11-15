@@ -14,14 +14,13 @@ class ProductoController extends Controller
 
     public function __construct()
     {
-        $this->middleware("can:lista_productos");
+        $this->middleware(['can:lista_productos']);
+        
     }
     
     public function index()
     {
-        $productos = Producto::where('vendedor_id', auth()->user()->id)
-                            ->latest()
-                            ->get();
+        $productos = Producto::latest()->get();
         return view('panel.vendedor.lista_productos.index', compact('productos'));
     }
 
@@ -45,7 +44,7 @@ class ProductoController extends Controller
         $producto->descripcion= $request->get('descripcion');
         $producto->precio= $request->get('precio');
         $producto->categoria_id= $request->get('categoria_id');
-        $producto->vendedor_id= auth()->user()->id;
+     
         $producto->cantidad= $request->get('cantidad');
 
         if($request->hasFile('imagen')){

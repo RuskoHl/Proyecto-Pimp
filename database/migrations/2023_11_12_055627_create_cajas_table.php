@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->DateTime('fecha_apertura');
             $table->Decimal('monto_inicial');
-            $table->DateTime('fecha_cierre');
-            $table->Decimal('monto_final');
-            $table->Decimal('cantidad_ventas');
+            $table->DateTime('fecha_cierre')->nullable();
+            $table->Decimal('monto_final')->nullable();
+            $table->Decimal('cantidad_ventas')->nullable();
             $table->Boolean('status');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
