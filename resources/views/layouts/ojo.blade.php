@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>    <!-- BOOSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <style>
       /* Estilos para la imagen de fondo */
       .full-width-image {
@@ -47,7 +46,7 @@
         <div class="collapse navbar-collapse" id="navbarScroll">
           <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{ route('casa') }}">Home</a>
+              <a class="nav-link active" aria-current="page" href="{{ route('carrito.mostrar') }}">Carrito</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -58,7 +57,7 @@
                 <li><a class="dropdown-item" href="{{ route('vehiculos') }}">Vehiculos</a></li>
                 <li><a class="dropdown-item" href="{{ route('accesorios') }}">Accesorios</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{ route('casa') }}">Ver galería</a></li>
+                <li><a class="dropdown-item" href="{{ route('casa') }}">Ver casa</a></li>
               </ul>
             </li>
           </ul>
@@ -67,10 +66,24 @@
             <a id="btn-login" href="{{ route('home') }}" class="btn btn-danger">Login</a>
           </form>
           
-          @can('lista_productos')
-          <a id="btn-panel" href="{{ route('panel') }}" class="btn btn-danger">Panel</a>
-      
-          @endcan
+<!--OFFVANVAS DE CARRITO
+
+
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    ...
+  </div>
+</div>
+
+
+FIN OFFCANVAS-->
+
         </div>
       </div>
     </nav>
@@ -111,8 +124,25 @@
         </div>
     </div>
 </footer>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script></body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+       const offcanvasElementList = document.querySelectorAll('.offcanvas');
+       const offcanvasList = [...offcanvasElementList].map(offcanvasEl => new bootstrap.Offcanvas(offcanvasEl));
+      });
+    </script>
+<script>
+  document.getElementById('cartButton').addEventListener('click', function(event) {
+      event.preventDefault(); // Prevenir el envío del formulario
+
+      // Ocultar el primer botón después de hacer clic
+      document.getElementById('cartForm').style.display = 'none';
+
+      // Mostrar el segundo botón
+      document.getElementById('secondButton').style.display = 'block';
+  });
+</script>
 </html>
 

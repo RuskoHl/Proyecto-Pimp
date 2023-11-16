@@ -64,14 +64,7 @@
                                     <a href="{{ route('producto.edit', $producto) }}" class="btn btn-sm btn-warning text-white text-uppercase me-1">
                                         Editar
                                     </a>
-                                    <form id="deleteForm" action="{{ route('producto.destroy', $producto) }}" method="POST">
-                                        @csrf 
-                                        @method('DELETE')
-                                    </form>
-                                    
-                                    <button id="deleteButton" class="btn btn-sm btn-danger text-uppercase">
-                                        Eliminar
-                                    </button>
+
                                 </div>
                             </td>
                         </tr>
@@ -97,6 +90,20 @@
 
 {{-- Importacion de Archivos JS --}}
 @section('js')
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        new DataTable('#tabla-productos', {
+            responsive: true
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 <script>
@@ -121,19 +128,6 @@
         });
     });
 </script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        new DataTable('#tabla-productos', {
-            responsive: true
-        });
-    });
-</script>
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 
     {{-- La funcion asset() es una funcion de Laravel PHP que nos dirige a la carpeta "public" --}}
     <script src="{{ asset('js/productos.js') }}"></script>

@@ -33,7 +33,7 @@
 <h3 style="font-family: 'Old English Text MT', sans-serif;">Atajos Administrativos:</h3>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-3">
+        <div class="col-6">
             <a href="{{ route('producto.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-black">
                    
@@ -44,35 +44,13 @@
                 </div>
             </a>
         </div>
-        <div class="col-3">
+        <div class="col-6">
             <a href="{{ route('caja.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-black">
                    
                     <div class="card-body">
                         <h5 class="card-title"><strong class="text-danger">Cantidad Cajas Activas</strong></h5>
-                        <p class="card-text"> Hay <strong>{{ App\Models\Caja::where('status', 1)->count() }}</strong> cajas acivas. <br>.</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-3">
-            <a href="{{ route('casa') }}"> <!-- Agregar la URL a la que deseas redirigir -->
-                <div class="card bg-white">
-                   
-                    <div class="card-body">
-                        <h5 class="card-title"><strong class="text-danger">Monto inicial</strong></h5>
-                        <p class="card-text"> El monto inicial del dia es de <strong>{{ App\Models\Caja::whereDate('created_at', now()->toDateString())->sum('monto_inicial') }}</strong>.</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-3">
-            <a href="{{ route('casa') }}"> <!-- Agregar la URL a la que deseas redirigir -->
-                <div class="card bg-white">
-                   
-                    <div class="card-body">
-                        <h5 class="card-title"><strong class="text-danger">Cantidad Productos</strong></h5>
-                        <p class="card-text"> Hay <strong>{{ App\Models\Producto::count() }}</strong> productos en la base de datos.</p>
+                        <p class="card-text"> Hay <strong>{{ App\Models\Caja::where('status', 1)->count() }}</strong> cajas acivas.</p>
                     </div>
                 </div>
             </a>

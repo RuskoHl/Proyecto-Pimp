@@ -70,14 +70,7 @@
                                         Editar
                                     </a>
 
-                                    <form id="deleteForm2" action="{{ route('proveedor.destroy', $proveedor) }}" method="POST">
-                                        @csrf 
-                                        @method('DELETE')
-                                    </form>
-                                    
-                                    <button id="deleteButton2" class="btn btn-sm btn-danger text-uppercase">
-                                        Eliminar
-                                    </button>
+
                                 </div>
                             </td>
                         </tr>

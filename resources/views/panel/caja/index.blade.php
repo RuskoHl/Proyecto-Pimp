@@ -73,13 +73,7 @@
                                     <a href="{{ route('caja.edit', $caja) }}" class="btn btn-sm btn-warning text-white text-uppercase me-1">
                                         Editar
                                     </a>
-                                    <form action="{{ route('caja.destroy', $caja) }}" method="POST">
-                                        @csrf 
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger text-uppercase">
-                                            Eliminar
-                                        </button>
-                                    </form>
+
                                 </div>
                             </td>
 
