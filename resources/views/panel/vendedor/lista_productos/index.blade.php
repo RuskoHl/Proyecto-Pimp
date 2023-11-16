@@ -22,7 +22,9 @@
                 Nuevo Producto
             </a>
         </div>
-        
+        <a href="{{ route('graficos-productos')}}" class="btn btn-danger" title="ChartJs">
+            <i class="fas fa-chart-pie"></i>
+           </a
         @if (session('alert'))
             <div class="col-12">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

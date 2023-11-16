@@ -4,20 +4,20 @@
 
 @section('content')
     <!--BodyPagprincipal-->
-    <div class="container-fluid">
+    <div class="container-fluid ">
       <div class="row">
-        <div class="col-12">
+        <div class="col-12 ">
           
         </div>
       </div>
     </div>
-    <img src="PimpPortada.jpeg" alt="1" class="full-width-image">
+    <img src="Try.png" alt="1" class="full-width-image">
     <!--Galeria de productos-->
 
-    <div class="conteiner-fluid m-2 mb-5">
+    <div class="conteiner-fluid m-2 mb-5 ">
     <div class="row">
         <!-- Columna para la imagen -->
-        <div class="col-md-2">
+        <div class="col-md-2 ">
             <img src="aaa.png" alt="Tu imagen" class="img-fluid">
         </div>
         <!-- Columna para el texto -->
@@ -44,38 +44,38 @@
     <div class="container mt-2 mb-2 ">
       <div class="row">
         
-        <div class="col-4 justify-content-center">
+        <div class="col-4 justify-content-center ">
           
-          <div class="card " style="width: 22rem;">
-            <img src="Ropa1.jpg" class="card-img-top" alt="...">
+          <div class="card bg-black " style="width: 22rem;">
+            <img src="Ropa1.jpg" class="card-img-top text-danger" alt="...">
             <div class="card-body">
-              <h5 class="card-title" style="font-family: 'Old English Text MT', sans-serif;">Ropa</h5>
-              <p></p>
-              <a href="{{ route('ropa') }}" class="btn btn-danger">Go somewhere</a>
+              <h5 class="card-title text-white" style="font-family: 'Old English Text MT', sans-serif;">Ropa</h5>
+              <p class="text-secondary">Descubrí moda única.</p>
+              <a href="{{ route('ropa') }}" class="btn btn-danger">Ver Ropa</a>
             </div>
           </div>
 
         </div>
         <div class="col-4 justify-content-center">
          
-          <div class="card" style="width: 22rem;">
+          <div class="card bg-black" style="width: 22rem;">
             <img src="vehiculos.jpg" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title" style="font-family: 'Old English Text MT', sans-serif;">Vehiculos</h5>
-              <p></p>
-              <a href="{{ route('vehiculos') }}" class="btn btn-danger">Go somewhere</a>
+              <h5 class="card-title text-white" style="font-family: 'Old English Text MT', sans-serif;">Vehiculos</h5>
+              <p class="text-secondary">Rodá con onda.</p>
+              <a href="{{ route('vehiculos') }}" class="btn btn-danger">Ver vehiculos</a>
             </div>
           </div>
 
         </div>
         <div class="col-4 justify-content-center">
 
-          <div class="card" style="width: 22rem;">
+          <div class="card bg-black" style="width: 22rem;">
             <img src="accesorios.jpg" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title" style="font-family: 'Old English Text MT', sans-serif;">Accesorios</h5>
-              <p></p>
-              <a href="{{ route('accesorios') }}" class="btn btn-danger">Go somewhere</a>
+              <h5 class="card-title text-white" style="font-family: 'Old English Text MT', sans-serif;">Accesorios</h5>
+              <p class="text-secondary">Detalles que destacan.</p>
+              <a href="{{ route('accesorios') }}" class="btn btn-danger">Ver accesorios</a>
             </div>
           </div>
 

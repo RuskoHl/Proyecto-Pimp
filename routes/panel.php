@@ -19,3 +19,4 @@ Route::post('/productos/{producto}', [ProductoController::class, 'destroy'])->na
 Route::resource('/proveedors', ProveedorController::class)->names('proveedor');
 Route::resource('/cajas', CajaController::class)->names('caja');
 
+Route::get('graficos-productos',[ProductoController::class,'graficosProductosxCategoria'])->name('graficos-productos');

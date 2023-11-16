@@ -105,7 +105,24 @@ class ProductoController extends Controller
             ->route('producto.index')
             ->with('alert', 'Producto eliminado existosamente.');
     }
-
+    public function graficosProductosxCategoria() {
+        // Si se hace una peticion AJAX
+        if(request()->ajax()) {
+        $labels = [];
+        $counts = [];
+        $categorias = Categoria::get();
+        foreach($categorias as $categoria) {
+        $labels[] = $categoria->nombre;
+        $counts[] = Producto::where('categoria_id', $categoria->id)->count();
+        }
+        $response = [
+        'success' => true,
+        'data' => [$labels, $counts]
+        ];
+        return json_encode($response);
+        }
+        return view('panel.vendedor.lista_productos.graficos_productos');
+        }
     //public function mostrarProducto()
 //{
    // $productos = Producto::all(); // Recupera todos los productos de la base de datos

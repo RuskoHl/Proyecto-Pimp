@@ -14,13 +14,13 @@ class CarritoController extends Controller
     {
         return view('carrito');
     }
-    public function agregarAlCarrito($id)
+    public function agregarAlCarrito(Request $request, $id)
     {
         $producto = Producto::find($id);
         Cart::add([
             'id' => $producto->id,
             'name' => $producto->nombre,
-            'qty' => 1, $producto->cantidad,
+            'qty' => $request->cantidad,
             'price' => $producto->precio,
             'options' => ['size' => 'large']
         ]);
