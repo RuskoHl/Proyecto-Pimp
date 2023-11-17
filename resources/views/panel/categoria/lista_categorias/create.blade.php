@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar')
+@section('title', 'Crear Categoria')
 
 @section('content_header')
     
@@ -10,14 +10,16 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mb-3">
-            <h1>Cierre de la caja de la fecha "<a class="text-danger" href="{{ route('caja.show', $caja) }}">{{ $caja->fecha_apertura }}</a>"</h1>
-            <a href="{{ route('caja.index') }}" class="btn btn-sm btn-secondary text-uppercase">
+            <h1>Creación de una Nueva Categoria/h1>
+            <a href="{{ route('categoria.index') }}" class="btn btn-sm btn-secondary text-uppercase">
                 Volver al Listado
             </a>
         </div>
+
         <div class="col-12">
-            @include('panel.caja.forms.form')
+            @include('panel.categoria.lista_categorias.forms.form')
         </div>
+
     </div>
 </div>
 @stop

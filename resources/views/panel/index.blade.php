@@ -35,7 +35,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-6">
-            <a href="{{ route('producto.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
+            <a href="{{ route('graficos-productos') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-black">
                    
                     <div class="card-body">
@@ -44,9 +44,7 @@
                     </div>
                 </div>
             </a>
-        </div>
-        <div class="col-6">
-            <a href="{{ route('caja.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
+            <a href="{{ route('caja2.create') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-black">
                    
                     <div class="card-body">
@@ -55,6 +53,9 @@
                     </div>
                 </div>
             </a>
+        </div>
+        <div class="col-6">
+            <a href="{{ route('casa') }}"><img src="logo2.png" class="img-fluid" alt="Logo"></a>
         </div>
 
 <!-- FIN VISTAS ADMINS -->
@@ -79,7 +80,7 @@
         </div>
 
         <div class="col-6">
-            <a href="{{ route('caja.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
+            <a href="{{ route('caja2.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-secondary">
                    
                     <div class="card-body">

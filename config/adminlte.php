@@ -319,13 +319,10 @@ return [
                     
                 ],
                 [
-                'text' => 'Extraccion de dinero',
-                'url'  => 'panel/proveedors/create',
+                'text' => 'Apertura de Caja',
+                'url'  => 'panel/cajas2/create',
                 ],
-                [
-                    'text' => 'Cierre de caja',
-                    'url'  => '',
-                    ],
+
             ],
         ],
 
@@ -350,6 +347,7 @@ return [
                     'label'       => 4,
                     'can' => 'lista_productos',
                 ],
+                    
             ],
         ],
         [
@@ -371,6 +369,19 @@ return [
                     'text' => 'Realizar orden de Compra',
                     'url'  => '',
                     ],
+            ],
+        ],
+        [
+            'text'    => 'Categorias',
+            'icon'    => 'fa fa-table',
+            'submenu' => [
+                [
+                    'text' => 'Crear Categoria',
+                    'url'  => 'panel/categorias',
+                    'can' => 'lista_productos',
+                ],
+
+
             ],
         ],
         [

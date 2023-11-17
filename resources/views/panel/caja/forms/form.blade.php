@@ -8,7 +8,7 @@
         <div class="card-body">
 
             
-            <div class="mb-3 row">
+            <div class="mb-3 row d-none">
                 <label for="fecha_apertura" class="col-sm-4 col-form-label"> * Fecha Apertura </label>
                 <div class="col-sm-8">
                     <input type="datetime-local" class="form-control @error('fecha_apertura') is-invalid @enderror" id="fecha_apertura" name="fecha_apertura" value="{{ old('fecha_apertura', optional($caja)->fecha_apertura) }}">
@@ -18,10 +18,10 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
+            <div class="mb-3 row d-none">
                 <label for="monto_inicial" class="col-sm-4 col-form-label">* Monto Inicial </label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control @error('monto_inicial') is-invalid @enderror" id="monto_inicial" name="monto_inicial" rows="10">{{ old('monto_inicial', optional($caja)->monto_inicial) }}</input>
+                    <input type="number" class="form-control @error('monto_inicial') is-invalid @enderror" id="monto_inicial" name="monto_inicial" rows="10" value="{{ old('monto_inicial', optional($caja)->monto_inicial) }}">
                     @error('monto_inicial')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror
@@ -62,12 +62,12 @@
                 <label for="status" class="col-sm-4 col-form-label"> * Status </label>
                 <div class="col-sm-8">
                     <label>
-                        <input type="radio" name="status" value="1" {{ old('status', optional($caja)->status) === 'Abierto' ? 'checked' : '' }}>
-                        Abierto
+                        <input type="radio" name="status" value="0" {{ old('status', optional($caja)->status) === 'Abierto' ? 'checked' : '' }}>
+                        Cerrar
                     </label>
                     <label>
-                        <input type="radio" name="status" value="0" {{ old('status', optional($caja)->status) === 'Cerrado' ? 'checked' : '' }}>
-                        Cerrado
+                        <input class="d-none" type="radio" name="status" value="0" {{ old('status', optional($caja)->status) === 'Cerrado' ? 'checked' : '' }}>
+                        
                     </label>
                     @error('status')
                         <div class="invalid-feedback"> {{ $message }} </div>
@@ -78,31 +78,35 @@
         
         </div>
 
-        <div class="card-footer">
-            <button type="submit" class="btn btn-success text-uppercase">
-                {{ $caja->id ? 'Actualizar' : 'Crear' }}
-            </button>
-        </div>
+        <button id="xd" type="submit" class="btn btn-warning text-uppercase">
+            {{ $caja->id ? 'Cerrar' : 'Crear' }}
+        </button>
     </form>
 
 </div>
 
 @push('js')
-    <script>
-        document.addEventListener("DOMContentLoaded", function(event) {
-            const image = document.getElementById('imagen');
-        
-            image.addEventListener('change', (e) => {
-
-                const input = e.target;
-                const imagePreview = document.querySelector('#image_preview');
-                
-                if(!input.files.length) return
-
-                file = input.files[0];
-                objectURL = URL.createObjectURL(file);
-                imagePreview.src = objectURL;
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Cuando se hace clic en el botón de eliminar
+        document.getElementById('xd').addEventListener('click', function () {
+            // Mostrar SweetAlert de confirmación
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "¡No podrás revertir esto!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminarlo"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si se confirma, enviar el formulario de eliminación
+                    document.getElementById('deleteForm2').submit();
+                }
             });
         });
-    </script>
+    });
+</script>
+    
 @endpush

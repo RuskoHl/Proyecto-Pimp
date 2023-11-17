@@ -47,9 +47,9 @@
     </div>
 
 
-    <div class="col-9 ">
+    <div class="col-9 " >
       <h2 style="font-family: 'Old English Text MT', sans-serif;">Ropa</h2>
-      <div class="scrollable-div border-white">
+      <div class="scrollable-div border-white" style="overflow-x: hidden;">
       <!-- Contenido del col-9 sin bordes -->
 <!-- Contenido del PRODUCTO (CARD) -->
 @foreach($productos as $producto)

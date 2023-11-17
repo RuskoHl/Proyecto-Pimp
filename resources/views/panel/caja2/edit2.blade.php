@@ -10,13 +10,13 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mb-3">
-            <h1>Cierre de la caja de la fecha "<a class="text-danger" href="{{ route('caja.show', $caja) }}">{{ $caja->fecha_apertura }}</a>"</h1>
+            <h1>Edición del caja de la fecha "<a class="text-danger" href="{{ route('caja.show', $caja) }}">{{ $caja->fecha_apertura }}</a>"</h1>
             <a href="{{ route('caja.index') }}" class="btn btn-sm btn-secondary text-uppercase">
                 Volver al Listado
             </a>
         </div>
         <div class="col-12">
-            @include('panel.caja.forms.form')
+            @include('panel.caja2.form')
         </div>
     </div>
 </div>

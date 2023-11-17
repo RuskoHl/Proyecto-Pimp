@@ -32,10 +32,29 @@
             border: 1px solid #ccc; /* Agrega un borde para el div */
         }
   </style>
+  <style>
+    body {
+      margin: 0;
+      overflow-y: scroll; /* Muestra solo la barra de desplazamiento vertical */
+    }
 
+    /* Estilos personalizados para la barra de desplazamiento */
+    ::-webkit-scrollbar {
+      width: 4px; /* Ancho de la barra de desplazamiento */
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #fe4a4a; /* Color de fondo del pulgar (la parte desplazable) */
+      border-radius: 6px; /* Borde redondeado del pulgar */
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: #00000000; /* Color de fondo de la pista (la parte no desplazable) */
+    }
+  </style>
   </head>
 
-<body>
+<body class="fluid" style="margin: 0;overflow-x: hidden;">
 <nav class="navbar navbar-expand-lg bg-body-tertiary bg-primary">
       <div class="container-fluid">
         <!--Titulo-->

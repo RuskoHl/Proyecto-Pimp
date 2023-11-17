@@ -5,11 +5,11 @@
 @section('plugins.Datatables', true)
 
 {{-- Titulo en las tabulaciones del Navegador --}}
-@section('title', 'Cajas')
+@section('title', 'categoria')
 
 {{-- Titulo en el contenido de la Pagina --}}
 @section('content_header')
-    <h1>Apertura y Cierre de Cajas</h1>
+    <h1>Lista de categorias</h1>
 @stop
 
 {{-- Contenido de la Pagina --}}
@@ -18,8 +18,8 @@
     <div class="row">
         <div class="col-12 mb-3">
             
-            <a href="{{ route('caja2.create') }}" class="btn btn-success text-uppercase">
-                Nueva caja
+            <a href="{{ route('categoria.create') }}" class="btn btn-success text-uppercase">
+                Nueva categoria
             </a>
         </div>
         
@@ -35,47 +35,34 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <table id="tabla-cajas" class="table table-striped nowrap responsive hover display compact" style="width:100%">
+                <table id="tabla-categorias" class="table table-striped nowrap responsive hover display compact" style="width:100%">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col" class="text-uppercase">fecha_apertura</th>
-                            <th scope="col" class="text-uppercase">monto_inicial</th>
-                            <th scope="col" class="text-uppercase">fecha_cierre</th>
-                            <th scope="col" class="text-uppercase">monto_final</th>
-                            <th scope="col" class="text-uppercase">cantidad_ventas</th>
-                            <th scope="col" class="text-uppercase">Status</th>
-                            <th scope="col" class="text-uppercase">Opciones</th>
+                            <th scope="col" class="text-uppercase">Nombre</th>
+                            
+                
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($cajas as $caja)
+                        @foreach ($categorias as $categoria)
                         <tr>
-                            <td>{{ $caja->id }}</td>
-                            <td>{{ $caja->fecha_apertura }}</td>
-                            <td>{{ $caja->monto_inicial }}</td>
-                            <td>{{ $caja->fecha_cierre }}</td>
-                            <td>{{ $caja->monto_final }}</td>
-                            <td>{{ $caja->cantidad_ventas }}</td>
+                            <td>{{ $categoria->id }}</td>
+                            <td>{{ $categoria->nombre }}</td>
+                         
                             
                             <td>
-                                @if ($caja->status === 1)
-                                    <span class="badge bg-primary">Abierto</span>
-                                @else
-                                    <span class="badge bg-danger">Cerrado</span>
-                                @endif
-                            </td>
-                            <td>
                                 <div class="d-flex flex-column">
-                                    <a href="{{ route('caja.show', $caja) }}" class="btn btn-sm btn-info text-white text-uppercase me-1 ">
+                                    <a href="{{ route('categoria.show', $categoria) }}" class="btn btn-sm btn-info text-white text-uppercase me-1 ">
                                         Ver
                                     </a>
+                                    <a href="{{ route('categoria.edit', $categoria) }}" class="btn btn-sm btn-warning text-white text-uppercase me-1">
+                                        Editar
+                                    </a>
 
-
+                                   
                                 </div>
                             </td>
-
-
                         </tr>
                         @endforeach
                     </tbody>
@@ -92,23 +79,29 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
 @stop
 
 
 {{-- Importacion de Archivos JS --}}
 @section('js')
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        new DataTable('#tabla-proveedors', {
-            responsive: true
-        });
-    });
+    new DataTable('#tabla-categorias', {
+    responsive: true,
+    columns: [
+        null, ]
+});
 </script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
     {{-- La funcion asset() es una funcion de Laravel PHP que nos dirige a la carpeta "public" --}}
-    <script src="{{ asset('js/cajas.js') }}"></script>
+    <script src="{{ asset('js/categorias.js') }}"></script>
 @stop

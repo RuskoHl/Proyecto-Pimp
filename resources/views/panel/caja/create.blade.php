@@ -17,7 +17,7 @@
         </div>
 
         <div class="col-12">
-            @include('panel.caja.forms.form')
+            @include('panel.caja2.forms.form')
         </div>
 
     </div>
