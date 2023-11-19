@@ -10,16 +10,15 @@ class Subcategoria extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     protected $table = 'Subcategorias';
 
     protected $fillable =[
         'nombre','categoria_id'
     ];
 
-    public function Categoria(){
-        return $this->BelongsTo(Categoria::class, 'categoria_id');
+    public function categoria(){
+        return $this->belongsTo(Categoria::class, 'categoria_id');
     }
 
 }
-

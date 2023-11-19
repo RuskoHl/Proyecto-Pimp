@@ -98,7 +98,7 @@ class ProductoController extends Controller
     }
     public function destroy(Producto $producto)
     {
-        dd('aaa');
+
         $producto->delete();
 
         return redirect()

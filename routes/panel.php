@@ -5,6 +5,8 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\CajaController;
 use App\Http\Controllers\Caja2Controller;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\VentaController;
+use App\Http\Controllers\SubcategoriaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function() {
@@ -26,3 +28,5 @@ Route::get('graficos-productos',[ProductoController::class,'graficosProductosxCa
 Route::get('/panel/cajas2/edit2', 'Caja2Controller@editarCajaConStatus1')->name('panel.caja2.edit2');
 
 Route::resource('/categorias', CategoriaController::class)->names('categoria');
+Route::resource('/ventas', VentaController::class)->names('venta');
+Route::resource('/subcategorias', SubcategoriaController::class)->names('subcategoria');

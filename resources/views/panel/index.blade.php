@@ -67,7 +67,7 @@
 <div class="container-fluid">
     <div class="row">
 
-        <div class="col-6">
+        <div class="col-9">
             <a href="{{ route('caja.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-secondary ">
                    
@@ -79,7 +79,7 @@
             </a>
         </div>
 
-        <div class="col-6">
+        <div class="col-3">
             <a href="{{ route('caja2.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-secondary">
                    
@@ -122,19 +122,19 @@
 
     <div class="row">
 
-        <div class="col-6">
+        <div class="col-3">
             <a href="{{ route('proveedor.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-black ">
                    
                     <div class="card-body">
                         <h5 class="card-title">Listado de Proveedor</h5>
-                        <p class="card-text">Acceso rapido a Pantalla de Proveedor.</p>
+                        <p class="card-text">Acceso rapido Proveedores.</p>
                     </div>
                 </div>
             </a>
         </div>
 
-        <div class="col-6">
+        <div class="col-9">
             <a href="{{ route('proveedor.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-black">
                    

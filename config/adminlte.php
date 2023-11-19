@@ -325,7 +325,17 @@ return [
 
             ],
         ],
-
+        [
+            'text' => 'Ventas',
+            'url'  => 'admin/settings',
+            'icon' => 'fas fa-fw fa-money-bill',
+            'submenu' => [
+                [
+                    'text' => 'Lista de ventas',
+                    'url'  => 'panel/venta',
+                ],
+            ],
+        ],
         [
             'text'    => 'Productos',
             'icon'    => 'fas fa-gem',
@@ -376,8 +386,21 @@ return [
             'icon'    => 'fa fa-table',
             'submenu' => [
                 [
-                    'text' => 'Crear Categoria',
+                    'text' => 'Registro Categoria',
                     'url'  => 'panel/categorias',
+                    'can' => 'lista_productos',
+                ],
+
+
+            ],
+        ],
+        [
+            'text'    => 'Subcategorias',
+            'icon'    => 'fas fa-sitemap',
+            'submenu' => [
+                [
+                    'text' => 'Crear Subcategoria',
+                    'url'  => 'panel/subcategorias',
                     'can' => 'lista_productos',
                 ],
 
