@@ -9,15 +9,15 @@ class VentaController extends Controller
 {
     public function index()
     {   
-        $ventass = Venta::latest()->get();
-        $ventas = Venta::with('productos')->get();
-        return view('ventas.index', compact('ventas'));
+        $ventas = Venta::latest()->get();
+       
+        return view('panel.ventas.index', compact('ventas'));
     }
 
     public function create()
     {
         // You can add any logic you need for the create view here
-        return view('ventas.create');
+        return view('panel.ventas.create');
     }
 
     public function store(Request $request)
@@ -43,13 +43,13 @@ class VentaController extends Controller
 
     public function show(Venta $venta)
     {
-        return view('ventas.show', compact('venta'));
+        return view('panel.ventas.show', compact('venta'));
     }
 
     public function edit(Venta $venta)
     {
         // You can add any logic you need for the edit view here
-        return view('ventas.edit', compact('venta'));
+        return view('panel.ventas.edit', compact('venta'));
     }
 
     public function update(Request $request, Venta $venta)
@@ -70,13 +70,13 @@ class VentaController extends Controller
         // Sync products to the venta
         $venta->products()->sync($request->input('product_ids'));
 
-        return redirect()->route('ventas.index')->with('success', 'Venta updated successfully.');
+        return redirect()->route('panel.ventas.index')->with('success', 'Venta updated successfully.');
     }
 
     public function destroy(Venta $venta)
     {
         $venta->delete();
 
-        return redirect()->route('ventas.index')->with('success', 'Venta deleted successfully.');
+        return redirect()->route('panel.ventas.index')->with('success', 'Venta deleted successfully.');
     }
 }

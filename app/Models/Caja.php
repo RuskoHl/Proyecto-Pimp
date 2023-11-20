@@ -20,4 +20,6 @@ class Caja extends Model
         'cantidad_ventas',
         'status'
     ];
+
 }
+

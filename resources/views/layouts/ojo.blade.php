@@ -55,6 +55,9 @@
   </head>
 
 <body class="fluid" style="margin: 0;overflow-x: hidden;">
+
+{{-- barra navegacion --}}
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary bg-primary">
       <div class="container-fluid">
         <!--Titulo-->
@@ -65,11 +68,13 @@
         <div class="collapse navbar-collapse" id="navbarScroll">
           <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{ route('carrito.mostrar') }}">Carrito</a>
+              <a class="nav-link active" aria-current="page" href="{{ route('carrito.mostrar') }}"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg></a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Categorías
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-menu-button-wide-fill" viewBox="0 0 16 16">
+                  <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v2A1.5 1.5 0 0 0 1.5 5h13A1.5 1.5 0 0 0 16 3.5v-2A1.5 1.5 0 0 0 14.5 0h-13zm1 2h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1zm9.927.427A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0l-.396-.396zM0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2H1zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2h14zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                </svg>
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{{ route('ropa') }}">Ropa</a></li>
@@ -82,35 +87,27 @@
           </ul>
           <!--Boton Login Admin-->
           <form class="d-flex" role="search">
-            <a id="btn-login" href="{{ route('home') }}" class="btn btn-danger">Login</a>
+            <a id="btn-login" href="{{ route('login') }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="black" class="bi bi-person-fill" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+              </svg>
+          </a>
           </form>
-          
-<!--OFFVANVAS DE CARRITO
-
-
-<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
-
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    ...
-  </div>
-</div>
-
-
-FIN OFFCANVAS-->
-
         </div>
       </div>
     </nav>
 
+    {{-- fin barra nav --}}
+
+
+    {{-- liñita --}}
+
     <div class="container-fluid bg-danger" style="height: 5px;"> <!-- Ajusta la altura como desees -->
     <div class="row justify-content-center align-items-center" style="height: 100%;">
-      </div>
     </div>
+    </div>
+
+    {{-- Fin liñita --}}
 
     <main>
         @yield('content')
@@ -122,7 +119,7 @@ FIN OFFCANVAS-->
     <div class="row justify-content-center align-items-center" style="height: 100%;">
       </div>
     </div>
-      <footer class="bg-dark text-light text-center py-3 ">
+      <footer class="bg-black text-light text-center py-3 ">
     <div class="container">
         <div class="row">
             <div class="col-md-12">

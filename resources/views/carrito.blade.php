@@ -45,12 +45,13 @@
             <h2 class="mt-4">Total del Carrito: <span class="text-danger">${{ Cart::total() }}</span></h2>
 
             <!-- Botón "Realizar Compra" -->
-            <form action="" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-success m-3">Realizar Compra</button>
-            </form>
+           <!-- Botón "Guardar Carrito" -->
+<form action="{{ route('carrito.store') }}" method="POST">
+    @csrf
+    <button type="submit" class="btn btn-primary">Guardar Carrito</button>
+</form>
         @else
-            <p class="mt-4">El carrito está vacío.</p>
+            <p class="mt-4">El carrito está vacío. <br><br><br><br><br><br></p>
         @endif
     </div>
 @endsection

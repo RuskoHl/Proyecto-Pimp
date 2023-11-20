@@ -64,7 +64,7 @@ return [
     */
     
     'logo' => '',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo3.png',
+    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo5.png',
     'logo_img_class' => 'brand-image',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -107,9 +107,9 @@ return [
     */
 
     'preloader' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/AdminLTELogo2.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -306,6 +306,12 @@ return [
         ],
 
         // Sidebar items:
+        [
+            'text' => 'Panel',
+            'url'   => 'login',
+            'icon' => 'fas fa-fw fa-torii-gate',
+            'icon_color' => 'red',
+        ],
         ['header' => 'OPERACIONES'],
         [
             'text' => 'Caja',
@@ -332,7 +338,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Lista de ventas',
-                    'url'  => 'panel/venta',
+                    'url'  => 'panel/ventas',
                 ],
             ],
         ],
@@ -399,7 +405,7 @@ return [
             'icon'    => 'fas fa-sitemap',
             'submenu' => [
                 [
-                    'text' => 'Crear Subcategoria',
+                    'text' => 'Registro Subcategoria',
                     'url'  => 'panel/subcategorias',
                     'can' => 'lista_productos',
                 ],
@@ -445,6 +451,12 @@ return [
             'icon_color' => 'red',
             'icon'       => 'fas fa-fw fa-eye',
             'url'        => 'accesorios',
+        ],
+        [
+            'text'       => 'Casa',
+            'icon_color' => 'red',
+            'icon'       => 'fas fa-fw fa-home',
+            'url'        => 'casa',
         ],
     ],
 

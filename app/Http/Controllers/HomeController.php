@@ -25,7 +25,7 @@ class HomeController extends Controller
     {
         
         //auth()->user();
-        return redirect('/login');
+        return redirect('/casa');
         //return view('home');
             
     }

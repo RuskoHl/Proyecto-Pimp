@@ -32,11 +32,12 @@ Route::get('/detalles', [App\Http\Controllers\DetallesController::class, 'mostra
 Route::get('/producto/{id}', [App\Http\Controllers\DetallesController::class, 'mostrarProducto'])->name('mostrarProducto');
 
 Route::get('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarCarrito'])->name('carrito');
+Route::get('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarCarrito'])->name('carrito');
+Route::post('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarCarrito'])->name('carrito');
 Route::get('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarCarrito'])->name('carrito.mostrar');
 Route::post('/carrito/agregar/{id}', [App\Http\Controllers\CarritoController::class, 'agregarAlCarrito'])->name('carrito.agregar');
 Route::post('/carrito/actualizar/{rowId}', [App\Http\Controllers\CarritoController::class, 'actualizarItem'])->name('carrito.actualizar');
 Route::delete('/carrito/remover/{rowId}', [App\Http\Controllers\CarritoController::class, 'removerItem'])->name('carrito.remover');
-Route::post('/carrito/store/{identifier}', 'CarritoController@storeCarritoEnBaseDeDatos')->name('carrito.store');
-Route::post('/carrito/restore/{identifier}', 'CarritoController@restoreCarritoDesdeBaseDeDatos')->name('carrito.restore');
-//Route::get('/productos', [App\Http\Controllers\ProductoController::class, 'mostrarProducto']);
+Route::post('/carrito/store', [App\Http\Controllers\CarritoController::class, 'storeCarritoEnBaseDeDatos'])->name('carrito.store');
+
 

@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('proveedors', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('email');
-            $table->string('telefono');
-            $table->string('direccion');
-            $table->string('cuit');
-            $table->text('comentario');
+            $table->string('email')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('cuit')->nullable();
+            $table->text('comentario')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
