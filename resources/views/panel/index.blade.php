@@ -34,7 +34,7 @@
 <h3 style="font-family: 'Old English Text MT', sans-serif;">Atajos Administrativos:</h3>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-6">
+        <div class="col">
             <a href="{{ route('graficos-productos') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-black">
                    
@@ -54,7 +54,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-6">
+        <div class="col-6 d-none d-md-block">
             <a href="{{ route('casa') }}"><img src="logo2.png" class="img-fluid" alt="Logo"></a>
         </div>
 
@@ -67,7 +67,7 @@
 <div class="container-fluid">
     <div class="row">
 
-        <div class="col-9">
+        <div class="col">
             <a href="{{ route('caja.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-secondary ">
                    
@@ -79,13 +79,13 @@
             </a>
         </div>
 
-        <div class="col-3">
+        <div class="col-3 d-none d-md-block">
             <a href="{{ route('caja2.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-secondary">
                    
                     <div class="card-body">
                         <h5 class="card-title">Abrir una nueva caja</h5>
-                        <p class="card-text">Acceso rapido a create caja .</p>
+                        <p class="card-text">Nueva caja .</p>
                     </div>
                 </div>
             </a>
@@ -94,7 +94,7 @@
     </div>
     <div class="row">
 
-        <div class="col-6">
+        <div class="col">
             <a href="{{ route('producto.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-dark">
                    
@@ -106,13 +106,13 @@
             </a>
         </div>
 
-        <div class="col-6">
+        <div class="col-3 d-none d-md-block">
             <a href="{{ route('producto.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-dark">
                    
                     <div class="card-body">
                         <h5 class="card-title">Añadir un nuevo producto</h5>
-                        <p class="card-text">Acceso rapido a create producto .</p>
+                        <p class="card-text">Nuevo Producto .</p>
                     </div>
                 </div>
             </a>
@@ -122,7 +122,7 @@
 
     <div class="row">
 
-        <div class="col-3">
+        <div class="col">
             <a href="{{ route('proveedor.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-black ">
                    
@@ -134,21 +134,52 @@
             </a>
         </div>
 
-        <div class="col-9">
+        <div class="col-3 d-none d-md-block">
             <a href="{{ route('proveedor.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
                 <div class="card bg-black">
                    
                     <div class="card-body">
                         <h5 class="card-title">Añadir un nuevo proveedor</h5>
-                        <p class="card-text">Acceso rapido a create proveedor .</p>
+                        <p class="card-text">Nuevo Proveedor .</p>
                     </div>
                 </div>
             </a>
         </div>
         <!-- Repite el mismo patrón para otras tarjetas -->
     </div>
-</div>
 
+@can('lista_usuarios')
+    
+
+<div class="row">
+
+    <div class="col">
+        <a href="{{ route('empleado.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
+            <div class="card bg-danger ">
+               
+                <div class="card-body">
+                    <h5 class="card-title">Listado de Empleados</h5>
+                    <p class="card-text">Acceso rapido Empleados.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-3 d-none d-md-block">
+        <a href="{{ route('empleado.create')}}"> <!-- Agregar la URL a la que deseas redirigir -->
+            <div class="card bg-danger">
+               
+                <div class="card-body">
+                    <h5 class="card-title">Añadir un nuevo Empleado</h5>
+                    <p class="card-text">Nuevo Empleado .</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <!-- Repite el mismo patrón para otras tarjetas -->
+</div>
+</div>
+@endcan
 <div class="container-fluid">
     <div class="row">
 

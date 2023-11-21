@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/AdminLTELogo2.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -313,6 +313,24 @@ return [
             'icon_color' => 'red',
         ],
         ['header' => 'OPERACIONES'],
+        [
+            'text' => 'Empleados',
+            'icon' => 'fas fa-fw fa-user',
+            'can' => 'lista_usuarios',
+            'icon_color' => 'red',
+            'submenu' => [
+                [
+                    'text' => 'Registro de Empleado',
+                    'url'  => 'panel/empleados',
+                    
+                ],
+                [
+                'text' => 'Ingreso Empleado',
+                'url'  => 'panel/empleados/create',
+                ],
+
+            ],
+        ],
         [
             'text' => 'Caja',
             
