@@ -6,6 +6,7 @@ use App\Http\Requests\crearRequest;
 use App\Http\Requests\editarRequest;
 use App\Models\Producto;
 use App\Models\Categoria;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 
@@ -122,6 +123,13 @@ class ProductoController extends Controller
         return json_encode($response);
         }
         return view('panel.vendedor.lista_productos.graficos_productos');
+        }
+
+        public function exportarProductosPDF() {
+            $productos= Producto::all();
+            $pdf= Pdf::loadView('panel.vendedor.lista_productos.pdf_productos', compact('productos'));
+            $pdf->render();
+            return $pdf->stream('productos-pdf');
         }
         //public function mostrarProducto()
             //{

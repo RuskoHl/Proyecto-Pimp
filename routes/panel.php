@@ -9,6 +9,7 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\SubcategoriaController;
 use App\Http\Controllers\EmpleadoController;
 use App\Models\Producto;
+use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function() {
@@ -35,8 +36,6 @@ Route::group(['middleware' => ['permission:lista_productos']], function () {
 
 });
 
-// Ruta para eliminar productos
-Route::post('/productos/{producto}', [ProductoController::class, 'destroy'])->name('producto.destroy');
 
 Route::resource('/proveedors', ProveedorController::class)->names('proveedor');
 Route::resource('/cajas', CajaController::class)->names('caja');
@@ -50,3 +49,8 @@ Route::resource('/ventas', VentaController::class)->names('ventas');
 Route::resource('/subcategorias', SubcategoriaController::class)->names('subcategoria');
 
 Route::resource('/empleados', EmpleadoController::class)->names('empleado');
+
+Route::get('/mails/form',[MailController::class,'index'])->name('mails.form');
+Route::post('/mails/send-mail', [MailController::class, 'sendMail'])->name('mails.send-mail');
+
+Route::get('/exportar-productos-pdf', [ProductoController::class,'exportarProductosPDF'])->name('exportar-productos-pdf');

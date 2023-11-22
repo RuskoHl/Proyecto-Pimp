@@ -17,14 +17,17 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 mb-3">
-            
             <a href="{{ route('producto.create') }}" class="btn btn-success text-uppercase">
                 Nuevo Producto
             </a>
+            <a href="{{ route('exportar-productos-pdf') }}" class="btn btn-warning m-1" title="PDF" target="_blank">
+                <i class="fas fa-file-pdf"></i> PDF
+            </a>
+            <a href="{{ route('graficos-productos')}}" class="btn btn-danger m-1" title="ChartJs">
+                <i class="fas fa-chart-pie"></i> Graficos
+            </a>
         </div>
-        <a href="{{ route('graficos-productos')}}" class="btn btn-danger" title="ChartJs">
-            <i class="fas fa-chart-pie"></i>
-           </a
+        
         @if (session('alert'))
             <div class="col-12">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

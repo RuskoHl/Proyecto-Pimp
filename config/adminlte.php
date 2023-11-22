@@ -360,6 +360,7 @@ return [
                 ],
             ],
         ],
+
         [
             'text'    => 'Productos',
             'icon'    => 'fas fa-gem',
@@ -445,6 +446,11 @@ return [
                 'url'  => '',
                 ],
             ],
+        ],
+        [
+            'text' => 'Mails',
+            'route' => 'mails.form',
+            'icon' => 'fas fa-envelope'
         ],
         [
             'text' => 'blog',
