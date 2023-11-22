@@ -32,10 +32,6 @@ class ProductoController extends Controller
 
     }
 
-
-
-
-
     public function store(crearRequest $request)
     {
         $producto = new Producto();
@@ -54,8 +50,6 @@ class ProductoController extends Controller
             $producto->imagen ='';
         }
         
-
-    
         $producto->save();
 
         return redirect()
@@ -67,6 +61,14 @@ class ProductoController extends Controller
         return view('panel.vendedor.lista_productos.show', compact('producto'));
 
     }
+    
+    public function alerta()
+    {
+        $producto = Producto::where('cantidad', '<', 20)->get();
+
+        return view('panel.alertas', compact('producto'));
+    }
+
     public function edit(Producto $producto)
     {
         $categorias = Categoria::all();
@@ -87,8 +89,6 @@ class ProductoController extends Controller
         }
 
         $validated = $request->validated();
-
-    
 
         $producto->update();
 
@@ -123,10 +123,10 @@ class ProductoController extends Controller
         }
         return view('panel.vendedor.lista_productos.graficos_productos');
         }
-    //public function mostrarProducto()
-//{
-   // $productos = Producto::all(); // Recupera todos los productos de la base de datos
-   // return view('ropa', ['productos' => $productos]);
-//}
+        //public function mostrarProducto()
+            //{
+            // $productos = Producto::all(); // Recupera todos los productos de la base de datos
+            // return view('ropa', ['productos' => $productos]);
+        //}
 
 }

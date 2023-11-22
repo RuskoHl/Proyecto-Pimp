@@ -8,14 +8,31 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\SubcategoriaController;
 use App\Http\Controllers\EmpleadoController;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function() {
     return view('panel.index');
 });
 
+
+// alerta productos
+Route::get('/alertas', function() {
+    return view('panel.alertas');
+});
+
+Route::get('/alertas',[App\Http\Controllers\ProductoController::class, 'alerta'])->name('alerta');
+
+// fin alerta producots
+
+
 Route::group(['middleware' => ['permission:lista_productos']], function () {
     Route::resource('/productos', ProductoController::class)->names('producto');
+
+    Route::get('/', function() {
+        return view('panel.index');
+    });
+
 });
 
 // Ruta para eliminar productos

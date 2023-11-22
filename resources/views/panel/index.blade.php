@@ -57,12 +57,19 @@
         <div class="col-6 d-none d-md-block">
             <a href="{{ route('casa') }}"><img src="logo2.png" class="img-fluid" alt="Logo"></a>
         </div>
-
-<!-- FIN VISTAS ADMINS -->
-
-        <!-- Repite el mismo patrón para otras tarjetas -->
     </div>
 </div>
+<!-- FIN VISTAS ADMINS -->
+<h3 style="font-family: 'Old English Text MT', sans-serif;">Alerta productos escasos:</h3>
+<a href="{{ route('alerta') }}"> <!-- Agregar la URL a la que deseas redirigir -->
+    <div class="card bg-white">
+       
+        <div class="card-body">
+            <h5 class="card-title"><strong class="text-danger">Cantidad Productos escasos</strong></h5>
+            <p class="card-text"> Hay <strong>{{ App\Models\Producto::where('cantidad', '<', 20)->count() }}</strong> productos con un stock menor o igual a 20.</p>
+        </div>
+    </div>
+</a>
 <h3 style="font-family: 'Old English Text MT', sans-serif;">Vistas usuario administrativo:</h3>
 <div class="container-fluid">
     <div class="row">

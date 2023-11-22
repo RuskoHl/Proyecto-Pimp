@@ -377,8 +377,8 @@ return [
                 ],
                 [
                     'text' => 'Alertas Stock Bajo',
-                    'url'  => 'panel/productos/create',
-                    'label'       => 4,
+                    'url'  => 'panel/alertas',
+                    'label'       => '♥',
                     'can' => 'lista_productos',
                 ],
                     
