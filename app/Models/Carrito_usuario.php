@@ -14,8 +14,10 @@ class Carrito_usuario extends Model
     protected $table = 'carrito_usuario';
 
     protected $fillable =[
-        'identificador_carrito','user_id','precio_total'
+        'identificador_carrito','user_id','precio_total','caja_id'
     ];
+    public function Caja() {
+        return $this->belongsTo(Caja::class, 'caja_id');
+    }
 
-    
 }

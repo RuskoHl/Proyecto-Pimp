@@ -25,7 +25,7 @@
                                 <form action="{{ route('carrito.actualizar', $item->rowId) }}" method="POST">
                                     @csrf
                                     <input type="number" name="cantidad" value="{{ $item->qty }}" min="1" class="form-control">
-                                    <button type="submit" class="btn btn-primary mt-1">Actualizar</button>
+                                    <button type="submit" class="btn btn-success mt-1">Actualizar</button>
                                 </form>
                             </td>
                             <td>${{ $item->price }}</td>
@@ -48,7 +48,7 @@
            <!-- Botón "Guardar Carrito" -->
 <form action="{{ route('carrito.store') }}" method="POST">
     @csrf
-    <button type="submit" class="btn btn-primary">Guardar Carrito</button>
+    <button type="submit" class="btn btn-success">Comprar Carrito</button>
 </form>
         @else
             <p class="mt-4">El carrito está vacío. <br><br><br><br><br><br></p>

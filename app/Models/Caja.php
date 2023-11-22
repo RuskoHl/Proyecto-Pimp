@@ -20,6 +20,8 @@ class Caja extends Model
         'cantidad_ventas',
         'status'
     ];
-
+    public function carrito(){
+        return $this->hasMany(Carrito_usuario::class, 'carrito_usuario_id');
+    }
 }
 

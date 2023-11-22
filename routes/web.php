@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +22,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/casa', [App\Http\Controllers\CasaController::class, 'mostrarCasa'])->name('casa');
 Route::get('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarCarrito'])->name('carrito');
@@ -30,6 +32,7 @@ Route::get('/vehiculos', [App\Http\Controllers\VehiculosController::class, 'most
 Route::get('/accesorios', [App\Http\Controllers\AccesoriosController::class, 'mostrarAccesorios'])->name('accesorios');
 Route::get('/detalles', [App\Http\Controllers\DetallesController::class, 'mostrarDetalles'])->name('detalles');
 Route::get('/producto/{id}', [App\Http\Controllers\DetallesController::class, 'mostrarProducto'])->name('mostrarProducto');
+Route::get('/preventa',[App\Http\Controllers\PreventaController::class,'index'])->name('preventa');
 
 Route::get('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarCarrito'])->name('carrito');
 Route::get('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarCarrito'])->name('carrito');
@@ -39,5 +42,3 @@ Route::post('/carrito/agregar/{id}', [App\Http\Controllers\CarritoController::cl
 Route::post('/carrito/actualizar/{rowId}', [App\Http\Controllers\CarritoController::class, 'actualizarItem'])->name('carrito.actualizar');
 Route::delete('/carrito/remover/{rowId}', [App\Http\Controllers\CarritoController::class, 'removerItem'])->name('carrito.remover');
 Route::post('/carrito/store', [App\Http\Controllers\CarritoController::class, 'storeCarritoEnBaseDeDatos'])->name('carrito.store');
-
-
