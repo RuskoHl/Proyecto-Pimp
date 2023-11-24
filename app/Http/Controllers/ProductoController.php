@@ -41,7 +41,7 @@ class ProductoController extends Controller
         $producto->descripcion= $request->get('descripcion');
         $producto->precio= $request->get('precio');
         $producto->categoria_id= $request->get('categoria_id');
-     
+        $producto->cantidad_minima= $request->get('cantidad_minima');
         $producto->cantidad= $request->get('cantidad');
 
         if($request->hasFile('imagen')){
@@ -65,10 +65,14 @@ class ProductoController extends Controller
     
     public function alerta()
     {
-        $producto = Producto::where('cantidad', '<', 20)->get();
+        // Suponiendo que 'cantidad_minima' es el nombre de la columna en tu tabla de productos
+        $productosEscasos = Producto::whereColumn('cantidad', '<', 'cantidad_minima')->get();
 
-        return view('panel.alertas', compact('producto'));
+    
+        return view('panel.alertas', compact('productosEscasos'));
     }
+    
+    
 
     public function edit(Producto $producto)
     {
@@ -82,6 +86,7 @@ class ProductoController extends Controller
         $producto->descripcion = $request->get('descripcion');
         $producto->precio = $request->get('precio');
         $producto->categoria_id = $request->get('categoria_id');
+        $producto->cantidad_minima= $request->get('cantidad_minima');
         $producto->cantidad = $request->get('cantidad');
 
         if ($request->hasFile('imagen')){
@@ -131,10 +136,12 @@ class ProductoController extends Controller
             $pdf->render();
             return $pdf->stream('productos-pdf');
         }
-        //public function mostrarProducto()
-            //{
-            // $productos = Producto::all(); // Recupera todos los productos de la base de datos
-            // return view('ropa', ['productos' => $productos]);
-        //}
+
+        public function ultimosAgregados()
+        {
+            $ultimosAgregados = Producto::latest()->take(6)->get();
+
+            return view('panel.ultimos_agregados', compact('ultimosAgregados'));
+        }
 
 }

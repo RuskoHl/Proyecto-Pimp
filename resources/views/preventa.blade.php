@@ -33,6 +33,12 @@
                     <input type="text" name="apellido" id="apellido" class="form-control m-1" required>
                 </div>
 
+                {{-- Campo de Telefono --}}
+                <div class="form-group">
+                    <label for="Telefono">Telefono:</label>
+                    <input type="number" name="telefono" id="telefono" class="form-control m-1" required>
+                </div>
+
                 {{-- Campo de Método de Pago --}}
                 <div class="form-group">
                     <label for="metodo_pago">Método de Pago:</label>
@@ -43,9 +49,10 @@
                     </select>
                 </div>
 
-                <a href="">
-                    total
-                </a>
+                <div class="m-2 form-group">
+                    <label for="total_carrito">Total del Carrito:</label>
+                    <h4 class="text-danger">$  {{ Cart::total() }}</h4>
+                </div>
 
                 {{-- Botón de Confirmar Compra --}}
                 <button type="submit" class="btn btn-success m-4">Confirmar Compra</button>

@@ -74,6 +74,17 @@
             </div>
             
             <div class="mb-3 row">
+                <label for="cantidad_minima" class="col-sm-4 col-form-label"> * Cantidad minima </label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control @error('cantidad_minima') is-invalid @enderror" id="cantidad_minima" name="cantidad_minima" value="{{ old('cantidad_minima', optional($producto)->cantidad_minima) }}">
+                    @error('cantidad_minima')
+                        <div class="invalid-feedback"> {{ $message }} </div>
+                        
+                    @enderror
+                </div>
+            </div>
+
+            <div class="mb-3 row">
                 <label for="cantidad" class="col-sm-4 col-form-label"> * Cantidad </label>
                 <div class="col-sm-8">
                     <input type="number" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{ old('cantidad', optional($producto)->cantidad) }}">

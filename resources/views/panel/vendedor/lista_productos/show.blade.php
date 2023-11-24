@@ -43,6 +43,9 @@
                         <p>Categoria: {{ $producto->categoria->nombre }}</p>
                     </div>
                     <div class="mb-3">
+                        <p>Cantidad minima: {{ $producto->cantidad_minima }}.</p>
+                    </div>
+                    <div class="mb-3">
                         <p>Cantidad disponible: {{ $producto->cantidad }}.</p>
                     </div>
                 </div>

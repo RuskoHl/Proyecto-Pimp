@@ -14,10 +14,9 @@
 @section('content')
 <a href="{{ route('producto.index') }}"> <!-- Agregar la URL a la que deseas redirigir -->
     <div class="card bg-white">
-       
         <div class="card-body">
             <h5 class="card-title"><strong class="text-danger">Cantidad Productos escasos</strong></h5>
-            <p class="card-text"> Hay <strong>{{ App\Models\Producto::where('cantidad', '<', 20)->count() }}</strong> productos con un stock menor o igual a 20.</p>
+            <p class="card-text"> Hay <strong>{{ App\Models\Producto::where('cantidad', '<', DB::raw('cantidad_minima'))->count() }}</strong> productos con un stock menor a <span class="text-info">su propia</span> cantidad mínima.</p>
         </div>
     </div>
 </a>
@@ -30,11 +29,12 @@
                     <th>Categoria</th>
                     <th>Nombre</th>
                     <th>imagen</th>
-                    <th>Stock</th>
+                    <th>Stock Disponible</th>
+                    <th>Stock Minimo</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($producto as $producto)
+                @foreach($productosEscasos as $producto)
                     <tr>
                         <td>{{ $producto->id }}</td>
                         <td>{{ $producto->categoria->nombre }}</td>
@@ -43,10 +43,12 @@
                             <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}" class="img-fluid" style="width: 150px;">
                         </td>
                         <td class="text-danger"><h1>{{ $producto->cantidad }}</h1></td>
+                        <td class="text-info"><h3>{{ $producto->cantidad_minima }}</h3></td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        
     </div>
 </div>
 @stop

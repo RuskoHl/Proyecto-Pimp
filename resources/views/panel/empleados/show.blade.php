@@ -59,6 +59,15 @@
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        new DataTable('#tabla-empleados', {
+            responsive: true
+        });
+    });
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Cuando se hace clic en el botón de eliminar
@@ -82,13 +91,7 @@
     });
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        new DataTable('#tabla-empleados', {
-            responsive: true
-        });
-    });
-</script>
+
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>

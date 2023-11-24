@@ -84,7 +84,7 @@ return [
     */
 
     'auth_logo' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo2.png',
             'alt' => 'Auth Logo',
@@ -107,7 +107,7 @@ return [
     */
 
     'preloader' => [
-        'enabled' => true,
+        'enabled' => false,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo2.png',
             'alt' => 'AdminLTE Preloader Image',
@@ -377,12 +377,18 @@ return [
                     'can' => 'lista_productos',
                 ],
                 [
+                    'text' => 'Ultimos Agregados',
+                    'url'  => 'panel/ultimos_agregados',
+                    'label'       => '▲',
+                    'can' => 'lista_productos',
+                ], 
+                [
                     'text' => 'Alertas Stock Bajo',
                     'url'  => 'panel/alertas',
-                    'label'       => '♥',
+                    'label'       => '▼',
                     'can' => 'lista_productos',
                 ],
-                    
+   
             ],
         ],
         [

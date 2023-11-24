@@ -19,10 +19,9 @@ return new class extends Migration
             $table->string('imagen', 100);
             $table->unsignedBigInteger('categoria_id');
             $table->foreign('categoria_id')->references('id')->on('categorias');
+            $table->unsignedInteger('cantidad_minima'); 
             $table->unsignedInteger('cantidad');
             $table->softDeletes();
-            
-
             $table->timestamps();
             
         });

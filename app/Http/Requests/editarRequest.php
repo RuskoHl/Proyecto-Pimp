@@ -27,7 +27,7 @@ class editarRequest extends FormRequest
             'descripcion' => 'required',
             'precio' => 'required|numeric',
             'categoria_id' => 'required|integer',
-            'cantidad' => 'required|numeric',
+            'cantidad' => 'required|numeric|min:0',
         ];
     }
     public function messages()
@@ -39,6 +39,7 @@ class editarRequest extends FormRequest
             'precio.required'=>'El producto necesita un precio obligatoriamente',
             'categoria.required'=>'La categoria es obligatoria',
             'cantidad.required'=>'¿Cuantos productos son?',
+            'cantidad.min' => 'La cantidad no puede ser menor a 0',
         ];
     }
 }

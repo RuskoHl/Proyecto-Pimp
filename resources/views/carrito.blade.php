@@ -25,7 +25,7 @@
                                 <form action="{{ route('carrito.actualizar', $item->rowId) }}" method="POST">
                                     @csrf
                                     <input type="number" name="cantidad" value="{{ $item->qty }}" min="1" class="form-control">
-                                    <button type="submit" class="btn btn-success mt-1">Actualizar</button>
+                                    <button onclick="Swal.fire('Actualizando todo el carrito...')" type="submit" class="btn btn-success mt-1">Actualizar</button>
                                 </form>
                             </td>
                             <td>${{ $item->price }}</td>

@@ -24,7 +24,7 @@ class ProductoFactory extends Factory
             'precio' => $this->faker->randomFloat(2, 2000, 10000),
             'imagen' => $this->faker->imageUrl(640,480),
             'categoria_id' => $categoria->id,
-        
+            'cantidad_minima' => $this->faker->numberBetween(1, 999), // Asegura que no sea mayor a 999
             'cantidad' => $this->faker->randomFloat(),
         ];
     }

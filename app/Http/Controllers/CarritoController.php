@@ -6,6 +6,7 @@ use Gloudemans\Shoppingcart\ShoppingcartServiceProvider;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Caja;
+use App\Http\Requests\CarritoRequest;
 use App\Models\Carrito_usuario;
 use App\Models\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -27,7 +28,7 @@ class CarritoController extends Controller
     return view('carritos.show', compact('carrito', 'productos'));
 }
 
-    public function agregarAlCarrito(Request $request, $id)
+    public function agregarAlCarrito(CarritoRequest $request, $id)
     {
         $producto = Producto::find($id);
         Cart::add([

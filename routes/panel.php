@@ -17,7 +17,7 @@ Route::get('/', function() {
 });
 
 
-// alerta productos
+// alerta productos escasos
 Route::get('/alertas', function() {
     return view('panel.alertas');
 });
@@ -26,6 +26,14 @@ Route::get('/alertas',[App\Http\Controllers\ProductoController::class, 'alerta']
 
 // fin alerta producots
 
+
+// alerta productos nuevos
+Route::get('/ultimos_agregados', function() {
+    return view('panel.ultimos_agregados');
+});
+Route::get('/ultimos_agregados', [ProductoController::class, 'ultimosAgregados'])->name('ultimos.agregados');
+
+// fin alerta producots escaos
 
 Route::group(['middleware' => ['permission:lista_productos']], function () {
     Route::resource('/productos', ProductoController::class)->names('producto');

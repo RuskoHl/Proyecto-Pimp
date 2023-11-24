@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use Illuminate\Http\Request;
+use App\Http\Requests\EmpleadoRequest;
 
 class EmpleadoController extends Controller
 {
@@ -29,15 +30,15 @@ class EmpleadoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EmpleadoRequest $request)
     {
         $request->validate([
             'dni' => 'required|unique:empleados,dni',
             'nombre' => 'required',
             'apellido' => 'required',
-            'domicilio' => 'required',
-            'telefono' => 'required',
-            'correo' => 'required|unique:empleados,correo',
+            'domicilio' => 'nullable',
+            'telefono' => 'nullable',
+            'correo' => 'nullable|unique:empleados,correo',
         ]);
 
         Empleado::create($request->all());
@@ -57,7 +58,7 @@ class EmpleadoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Empleado $empleado)
+    public function edit(Request $empleado)
     {
         return view('panel.empleados.edit', compact('empleado'));
     }
@@ -65,15 +66,15 @@ class EmpleadoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Empleado $empleado)
+    public function update(EmpleadoRequest $request, Empleado $empleado)
     {
         $request->validate([
             'dni' => 'required|unique:empleados,dni,' . $empleado->id,
             'nombre' => 'required',
             'apellido' => 'required',
-            'domicilio' => 'required',
-            'telefono' => 'required',
-            'correo' => 'required|unique:empleados,correo,' . $empleado->id,
+            'domicilio' => 'nullable',
+            'telefono' => 'nullable',
+            'correo' => 'nullable|unique:empleados,correo,' . $empleado->id,
         ]);
 
         $empleado->update($request->all());
