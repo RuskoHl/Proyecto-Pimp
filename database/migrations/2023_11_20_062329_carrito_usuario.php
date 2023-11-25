@@ -15,12 +15,11 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('caja_id');
             $table->decimal('precio_total', 10, 2)->default(0);
-           
-
             // Definición de las claves foráneas
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('caja_id')->references('id')->on('cajas')->onDelete('cascade');
-
+            $table->unsignedBigInteger('venta_id')->nullable();
+            $table->foreign('venta_id')->references('id')->on('ventas');
             $table->timestamps();
         });
     }
@@ -28,9 +27,9 @@ return new class extends Migration
 
 
     /*Reverse the migrations.*/
-  public function down(): void{
+    public function down(): void{
 
-    Schema::dropIfExists('carrito_usuario');
+      Schema::dropIfExists('carrito_usuario');
 
-  }
-};
+    }
+  };

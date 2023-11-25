@@ -15,7 +15,7 @@ class Venta extends Model
 
     
     protected $fillable= [
-        'fecha_emision', 'iva', 'valor_total'
+        'fecha_emision', 'valor_total','caja_id','user_id','carrito_usuario_id','cliente_id', 
     ];
 
     public function caja()
@@ -25,18 +25,11 @@ class Venta extends Model
     
     public function carrito()
     {
-        return $this->belongsTo(Carrito::class, 'carrito_id');
+        return $this->belongsTo(Carrito_usuario::class, 'carrito_usuario_id');
     }
-    
-    public function cliente()
+
+    public function User()
     {
-        return $this->belongsTo(Cliente::class, 'cliente_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
-    
-
-
-    public function products(): BelongsToMany {
-        return $this->belongsToMany(Product::class);
-    }
-
 }

@@ -13,6 +13,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Models\Venta;
 
 
 class CarritoController extends Controller
@@ -65,30 +66,60 @@ class CarritoController extends Controller
     {
         // Obtén el carrito actual
         $carrito = Cart::content();
+    
         // Obtén la caja abierta
         $caja = Caja::where('status', true)->latest()->first();
+    
         // Genera un identificador único para el carrito
         $identificadorCarrito = Str::uuid();
-        // Obtiene el ID del usuario autenticado
-        $userId = Auth::id();
+    
+        // Obtiene el usuario autenticado si existe
+        $user = Auth::user();
+    
+        // Verifica que el usuario esté autenticado antes de continuar
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión para completar esta acción');
+        }
+    
         // Calcula el precio total del carrito
         $precioTotal = Cart::total();
-
+    
         // Almacena el carrito y la asociación con el usuario en la tabla carrito_usuario
         $carritoUsuarioId = DB::table('carrito_usuario')->insertGetId([
             'identificador_carrito' => $identificadorCarrito,
-            'user_id' => $userId,
-            'caja_id' => $caja->id, // Utiliza el ID de la caja abierta
+            'user_id' => $user->id,
+            'caja_id' => $caja->id,
             'precio_total' => $precioTotal,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
+    
         // Almacena el contenido del carrito en la base de datos usando el identificador único
         Cart::store($identificadorCarrito);
-
-        return redirect()->route('preventa')->with('success', 'Carrito guardado en la base de datos');
+    
+        // Crea una nueva venta
+        $venta = new Venta([
+            'fecha_emision' => now(),
+            'valor_total' => $precioTotal,
+            'caja_id' => $caja->id,
+            'user_id' => $user->id,
+            'contenido' => Cart::content()->toJson(),
+        ]);
+    
+        // Guarda la venta
+        $venta->save();
+    
+        // Asocia la venta al carrito_usuario
+        DB::table('carrito_usuario')->where('id', $carritoUsuarioId)->update(['venta_id' => $venta->id]);
+    
+        // Elimina el carrito almacenado
+        Cart::destroy($identificadorCarrito);
+    
+        return redirect()->route('preventa')->with('success', 'Venta cerrada y carrito asociado a la venta');
     }
+    
+    
+    
     
     public function restoreCarritoDesdeBaseDeDatos($identifier)
    {

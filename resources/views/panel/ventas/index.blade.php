@@ -17,9 +17,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 mb-3">
-            <a href="{{ route('ventas.create') }}" class="btn btn-success text-uppercase">
-                Nuevo venta
-            </a>
+
         </div>
         
         @if (session('alert'))
@@ -39,12 +37,11 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col" class="text-uppercase">Fecha de Emisión</th>
-                                <th scope="col" class="text-uppercase">IVA</th>
-                                <th scope="col" class="text-uppercase">Valor Total</th>
-                                <th scope="col" class="text-uppercase">Caja</th>
+                                <th scope="col" class="text-uppercase">ID de Caja</th>
+                                <th scope="col" class="text-uppercase">ID de Cliente</th>
+                                <th scope="col" class="text-uppercase">Precio Total</th>
                                 <th scope="col" class="text-uppercase">Carrito</th>
-                                <th scope="col" class="text-uppercase">Cliente</th>
-                                <th scope="col" class="text-uppercase">Opciones</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -52,22 +49,15 @@
                             <tr>
                                 <td>{{ $venta->id }}</td>
                                 <td>{{ $venta->fecha_emision }}</td>
-                                <td>{{ $venta->iva }}</td>
-                                <td>{{ $venta->valor_total }}</td>
+                                <td>{{ $venta->caja ? $venta->caja->id : 'N/A' }}</td>
+                                <td>{{ $venta->user ? $venta->user->name : 'N/A' }}</td>
+                                <td>${{ $venta->valor_total }}</td>
+                                <td><a href="{{ route('panel.contenido', $venta) }}" class="btn btn-sm btn-info text-white text-uppercase me-1">
+                                    Ver Carrito
+                                </a></td>
                                 <td>{{ $venta->caja ? $venta->caja->nombre : 'N/A' }}</td>
-                                <td>{{ $venta->carrito ? $venta->carrito->nombre : 'N/A' }}</td>
-                                <td>{{ $venta->cliente ? $venta->cliente->nombre : 'N/A' }}</td>
 
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <a href="{{ route('ventas.show', $venta) }}" class="btn btn-sm btn-info text-white text-uppercase me-1">
-                                            Ver
-                                        </a>
-                                        <a href="{{ route('ventas.edit', $venta) }}" class="btn btn-sm btn-warning text-white text-uppercase me-1">
-                                            Editar
-                                        </a>
-                                    </div>
-                                </td>
+                               
                             </tr>
                             @endforeach
                         </tbody>

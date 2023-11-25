@@ -44,6 +44,10 @@ Route::group(['middleware' => ['permission:lista_productos']], function () {
 
 });
 
+Route::get('/contenido', function() {
+    return view('panel.contenido');
+})->name('panel.contenido');
+
 
 Route::resource('/proveedors', ProveedorController::class)->names('proveedor');
 Route::resource('/cajas', CajaController::class)->names('caja');
