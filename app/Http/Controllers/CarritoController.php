@@ -90,32 +90,44 @@ class CarritoController extends Controller
             'user_id' => $user->id,
             'caja_id' => $caja->id,
             'precio_total' => $precioTotal,
+            
             'created_at' => now(),
             'updated_at' => now(),
         ]);
     
         // Almacena el contenido del carrito en la base de datos usando el identificador único
         Cart::store($identificadorCarrito);
-    
+        // Obtiene el contenido del carrito desde la tabla 'shopping_cart'
+        $contenidoFromCart = Cart::content()->toJson();
+
+
+        
+
         // Crea una nueva venta
         $venta = new Venta([
             'fecha_emision' => now(),
             'valor_total' => $precioTotal,
             'caja_id' => $caja->id,
             'user_id' => $user->id,
-            'contenido' => Cart::content()->toJson(),
+            'contenido' => $contenidoFromCart ? $contenidoFromCart : Cart::content()->toJson(),
+            'estado' => 'pendiente',
         ]);
-    
+
         // Guarda la venta
         $venta->save();
-    
+
+        $venta->update(['contenido' => $contenidoFromCart]);
+
         // Asocia la venta al carrito_usuario
         DB::table('carrito_usuario')->where('id', $carritoUsuarioId)->update(['venta_id' => $venta->id]);
-    
+        
+        
+
         // Elimina el carrito almacenado
         Cart::destroy($identificadorCarrito);
-    
-        return redirect()->route('preventa')->with('success', 'Venta cerrada y carrito asociado a la venta');
+        session(['venta' => $venta]);
+        
+        return redirect()->route('preventa', ['venta' => $venta])->with('success', 'Venta cerrada y carrito asociado a la venta');
     }
     
     
@@ -127,4 +139,20 @@ class CarritoController extends Controller
 
        return redirect()->route('carrito.mostrar')->with('success', 'Carrito restaurado desde la base de datos');
    }
+   public function mostrarCarrito2()
+   {
+       // Obtén el identificador del carrito
+       $identificadorCarrito = Str::uuid();
+   
+       // Restaura el carrito desde la base de datos utilizando el identificador
+       Cart::restore($identificadorCarrito);
+   
+       // Obtén el contenido del carrito directamente como un array
+       $carrito = Cart::content()->toArray();
+   
+       // Renderiza la vista con el contenido del carrito
+       return view('panel.contenido', ['carrito' => $carrito]);
+   }
+   
+
 }

@@ -15,7 +15,7 @@ class Venta extends Model
 
     
     protected $fillable= [
-        'fecha_emision', 'valor_total','caja_id','user_id','carrito_usuario_id','cliente_id', 
+        'fecha_emision', 'valor_total','caja_id','user_id','carrito_usuario_id','cliente_id', 'contenido', 'estado'
     ];
 
     public function caja()

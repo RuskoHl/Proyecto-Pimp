@@ -1,5 +1,5 @@
 <div class="card mb-5">
-    <form action="{{ $venta->id ? route('ventas.update', $venta) : route('ventas.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ $venta->id ? route('ventas.update', $venta) : route('carrito.storeCarritoEnBaseDeDatos') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @if ($venta->id)
             @method('PUT')
@@ -7,26 +7,14 @@
 
         <div class="card-body">
 
-            <div class="mb-3 row">
-                <label for="fecha_emision" class="col-sm-4 col-form-label"> * Fecha de Emisión </label>
-                <div class="col-sm-8">
-                    <input type="date" class="form-control @error('fecha_emision') is-invalid @enderror" id="fecha_emision" name="fecha_emision" value="{{ old('fecha_emision', optional($venta)->fecha_emision) }}">
-                    @error('fecha_emision')
-                        <div class="invalid-feedback"> {{ $message }} </div>
-                    @enderror
-                </div>
+        <!-- En el formulario de edición -->
+        <div class="mb-3 row ">
+            <label for="fecha_emision" class="col-sm-4 col-form-label"> * Fecha de Emisión </label>
+            <div class="col-sm-8">
+                <input type="" class="form-control " id="fecha_emision" name="fecha_emision" value="{{ old('fecha_emision', $venta->fecha_emision) }}">
             </div>
-
-            <div class="mb-3 row">
-                <label for="iva" class="col-sm-4 col-form-label">* IVA </label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control @error('iva') is-invalid @enderror" id="iva" name="iva" value="{{ old('iva', optional($venta)->iva) }}">
-                    @error('iva')
-                        <div class="invalid-feedback"> {{ $message }} </div>
-                    @enderror
-                </div>
-            </div>
-
+        </div>
+        
             <div class="mb-3 row">
                 <label for="valor_total" class="col-sm-4 col-form-label"> * Valor Total </label>
                 <div class="col-sm-8">
@@ -36,19 +24,23 @@
                     @enderror
                 </div>
             </div>
-
-            <!-- Ajusta las relaciones según tus necesidades -->
             <div class="mb-3 row">
-                <label for="caja_id" class="col-sm-4 col-form-label"> * Caja </label>
+                <label for="estado" class="col-sm-4 col-form-label"> Estado </label>
                 <div class="col-sm-8">
-                    <select class="form-control @error('caja_id') is-invalid @enderror" id="caja_id" name="caja_id">
-                        <!-- Aquí debes incluir las opciones de las cajas -->
+                    <select id="estado" name="estado" class="form-control">
+                        <option value="retirado" {{ old('estado', optional($venta)->estado) == 'retirado' ? 'selected' : '' }}>Retirado</option>
+                        <option value="enviado" {{ old('estado', optional($venta)->estado) == 'enviado' ? 'selected' : '' }}>Enviado</option>
+                        <option value="entregado" {{ old('estado', optional($venta)->estado) == 'entregado' ? 'selected' : '' }}>Entregado</option>
+                        <option value="en_posesion" {{ old('estado', optional($venta)->estado) == 'en_posesion' ? 'selected' : '' }}>En Posesión</option>
                     </select>
-                    @error('caja_id')
+                    @error('estado')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror
                 </div>
             </div>
+            
+
+  
 
             <!-- Repite el bloque anterior para otras relaciones -->
 

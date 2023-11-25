@@ -9,7 +9,7 @@
 
 {{-- Titulo en el contenido de la Pagina --}}
 @section('content_header')
-    <h1>Lista de Ventas</h1>
+    <h1>Listado de <span class="text-danger">Ventas</span></h1>
 @stop
 
 {{-- Contenido de la Pagina --}}
@@ -35,26 +35,47 @@
                     <table id="tabla-ventas" class="table table-striped nowrap responsive hover display compact" style="width:100%">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col">Codigo Venta</th>
                                 <th scope="col" class="text-uppercase">Fecha de Emisión</th>
                                 <th scope="col" class="text-uppercase">ID de Caja</th>
-                                <th scope="col" class="text-uppercase">ID de Cliente</th>
+                                <th scope="col" class="text-uppercase">Username de Cliente</th>
                                 <th scope="col" class="text-uppercase">Precio Total</th>
-                                <th scope="col" class="text-uppercase">Carrito</th>
+                                <th scope="col" class="text-uppercase">Contenido del Carrito</th>
+                                <th scope="col">Acciones</th>
                                 
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($ventas as $venta)
                             <tr>
-                                <td>{{ $venta->id }}</td>
+                                <td><h2 class="text-danger">{{ $venta->id }}</h2></td>
                                 <td>{{ $venta->fecha_emision }}</td>
                                 <td>{{ $venta->caja ? $venta->caja->id : 'N/A' }}</td>
                                 <td>{{ $venta->user ? $venta->user->name : 'N/A' }}</td>
-                                <td>${{ $venta->valor_total }}</td>
-                                <td><a href="{{ route('panel.contenido', $venta) }}" class="btn btn-sm btn-info text-white text-uppercase me-1">
-                                    Ver Carrito
-                                </a></td>
+                                <td><h5>${{ $venta->valor_total }}</h5></td>
+                               
+                                <td>
+                                    @if ($venta->contenido)
+                                        @php
+                                            $carrito = json_decode($venta->contenido, true);
+                                        @endphp
+                                
+                                        @if ($carrito && count($carrito) > 0)
+                                            <ul>
+                                                @foreach ($carrito as $item)
+                                                    <li><h6 class="text-danger">{{ $item['name'] }}</h6> <span class="text-bold">Cantidad:<span class="text-info"> {{ $item['qty'] }}</span>,<br><span class="text-bold">Precio Unitario:</span><span class="text-info"> ${{ $item['price'] }}</span>,<br><span class="text-bold">Total:<span class="text-info"> ${{ $item['qty'] * $item['price'] }}</span>.</li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <p class="text-warning">No hay productos en el carrito.</p>
+                                        @endif
+                                    @else
+                                        <p>No hay boldrmación del carrito disponible.</p>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('ventas.edit', $venta->id) }}" class="btn btn-primary">Editar</a>
+                                </td>
                                 <td>{{ $venta->caja ? $venta->caja->nombre : 'N/A' }}</td>
 
                                

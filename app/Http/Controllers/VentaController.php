@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Venta;
-
+use App\Models\Caja;
 class VentaController extends Controller
 {
     public function index()
@@ -56,22 +56,22 @@ class VentaController extends Controller
     {
         // Validate the request data
         $request->validate([
-            // Add validation rules based on your requirements
+            'iva' => 'required',
+            'valor_total' => 'required',
+            // Agrega cualquier otra regla de validación según tus requisitos
         ]);
+    
+        // Elimina 'fecha_emision' del array de datos para que no se actualice
+        $data = $request->except(['fecha_emision']);
+    
+        // Actualiza la venta con los datos proporcionados (sin 'fecha_emision')
+        $venta->update($data);
+    
+        // Resto del código de actualización...
+        return view('venta.index')->with('venta', $venta);
 
-        // Update the venta instance
-        $venta->update([
-            'fecha_emision' => $request->input('fecha_emision'),
-            'iva' => $request->input('iva'),
-            'valor_total' => $request->input('valor_total'),
-            // Add any other fields you need to update in the database
-        ]);
-
-        // Sync products to the venta
-        $venta->products()->sync($request->input('product_ids'));
-
-        return redirect()->route('panel.ventas.index')->with('success', 'Venta updated successfully.');
     }
+
 
     public function destroy(Venta $venta)
     {
@@ -79,4 +79,16 @@ class VentaController extends Controller
 
         return redirect()->route('panel.ventas.index')->with('success', 'Venta deleted successfully.');
     }
+
+    public function resumenDia()
+    {
+        // Obtén la cantidad de ventas del día
+        $ventasDelDia = Venta::whereDate('fecha_emision', now()->toDateString())->count();
+
+        // Obtén el monto total agregado a la caja del día
+        $montoCajaDelDia = Caja::whereDate('created_at', now()->toDateString())->sum('monto');
+
+        return view('resumen_dia', compact('ventasDelDia', 'montoCajaDelDia'));
+    }
+
 }

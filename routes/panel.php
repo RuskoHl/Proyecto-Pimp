@@ -48,6 +48,11 @@ Route::get('/contenido', function() {
     return view('panel.contenido');
 })->name('panel.contenido');
 
+Route::get('/mostrar-carrito', [CarritoController::class, 'mostrarCarrito2'])->name('panel.mostrar-carrito');
+
+Route::get('/resumen-dia', [VentaController::class, 'resumenDia'])->name('resumen.dia');
+
+
 
 Route::resource('/proveedors', ProveedorController::class)->names('proveedor');
 Route::resource('/cajas', CajaController::class)->names('caja');
