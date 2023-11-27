@@ -19,16 +19,57 @@ class CajaController extends Controller
     
     public function index()
     {
+        // Obtener todas las cajas con sus ventas relacionadas
         $cajas = Caja::with('ventas')->latest()->get();
         
+        // Calcular el monto final de todas las cajas sumando sus montos finales individuales
         $totalMontoFinal = $cajas->sum('monto_final');
         
-        $cajas->each(function ($caja) {
+        // Iterar sobre las cajas para calcular la sumatoria de ventas y actualizar el monto final
+        foreach ($cajas as $caja) {
             $caja->sumatoriaVentas = $caja->ventas->sum('valor_total');
-        });
-        $montoFinalAutomatico = $cajas->sum('sumatoriaVentas');
+            $caja->monto_final = $caja->monto_inicial + $caja->sumatoriaVentas;
+        }
     
+        // Calcular el monto final automático sumando las sumatorias de ventas de todas las cajas
+        $montoFinalAutomatico = $cajas->sum('monto_final');
+    
+        // Renderizar la vista con los datos necesarios
         return view('panel.caja.index', compact('cajas', 'montoFinalAutomatico'))->with('totalMontoFinal', $totalMontoFinal);
+    }
+    
+    public function update(CajaRequest $request, Caja $caja)
+    {
+        // Actualizar los campos de la caja con los datos del formulario
+        $caja->fecha_apertura = $request->get('fecha_apertura');
+        $caja->monto_inicial = $request->get('monto_inicial');
+        $caja->fecha_cierre = $request->get('fecha_cierre');
+    
+        // Obtener las ventas en el rango de fechas de la caja
+        $ventas = Venta::when($caja->fecha_apertura, function ($query) use ($caja) {
+            return $query->where('fecha_emision', '>=', $caja->fecha_apertura);
+        })
+        ->when($caja->fecha_cierre, function ($query) use ($caja) {
+            return $query->where('fecha_emision', '<=', $caja->fecha_cierre);
+        })
+        ->get();
+
+    
+        // Calcular el monto total de las ventas
+        $montoVentas = $ventas->sum('valor_total');
+    
+        // Actualizar el monto final de la caja sumando el monto inicial y el monto de las ventas
+        $caja->monto_final = $caja->monto_inicial + $montoVentas;
+    
+        // Actualizar otros campos de la caja
+        $caja->cantidad_ventas = $request->get('cantidad_ventas');
+        $caja->status = $request->get('status') == 'Abierto' ? 1 : 0;
+    
+        // Guardar los cambios en la base de datos
+        $caja->save(); // Utilizar save() en lugar de update()
+    
+        // Redireccionar a la vista de índice de cajas con un mensaje de éxito
+        return redirect()->route('caja.index')->with('alert', 'Caja "' . $caja->fecha_apertura . '" actualizado exitosamente.');
     }
     
 
@@ -84,77 +125,43 @@ class CajaController extends Controller
         return view('panel.caja.edit', compact('caja','sumatoriaVentas'));
 
     }
-    public function update(CajaRequest $request, Caja $caja)
-{
-    $caja->fecha_apertura = $request->get('fecha_apertura');
-    $caja->monto_inicial = $request->get('monto_inicial');
-    $caja->fecha_cierre = $request->get('fecha_cierre');
-
-    // Calcular automáticamente el monto_final sumando el monto_inicial a las ventas
-    $ventas = Venta::where('fecha_emision', '>=', $caja->fecha_apertura)
-                  ->where('fecha_emision', '<=', $caja->fecha_cierre)
-                  ->get();
-
-    $montoVentas = $ventas->sum('valor_total');
-
-    // Agregamos logs para depurar
-    info('Monto inicial: ' . $caja->monto_inicial);
-    info('Monto ventas: ' . $montoVentas);
-
-    $caja->monto_final = $caja->monto_inicial + $montoVentas;
-
-    // Agregamos logs para depurar
-    info('Monto final calculado: ' . $caja->monto_final);
-    // Agregamos logs para depurar
-
-    $caja->cantidad_ventas = $request->get('cantidad_ventas');
-
-    // Convierte el valor 'status' a un número (0 o 1) según la selección del usuario
-    $caja->status = $request->get('status') == 'Abierto' ? 1 : 0;
-
-    $caja->update();
-
-    return redirect()
-        ->route('caja.index')
-        ->with('alert', 'Caja "' . $caja->fecha_apertura . '" actualizado exitosamente.');
-}
-
+  
 
 
     public function graficoIngresosEgresosCaja()
-    {
-        // Si se hace una petición AJAX
-        if (request()->ajax()) {
-            $labels = [];
-            $montosIniciales = [];
-            $montosFinales = [];
-    
-            // Obtén todas las cajas ordenadas por fecha de apertura
-            $cajas = Caja::orderBy('fecha_apertura')->get();
-    
-            foreach ($cajas as $caja) {
-                $idCaja = $caja->id; // Utiliza el ID de la caja como etiqueta
-    
-                $labels[] = $idCaja;
-                $montosIniciales[] = $caja->monto_inicial;
-                $montosFinales[] = $caja->monto_final;
-            }
-    
-            $response = [
-                'success' => true,
-                'data' => [
-                    'labels' => $labels,
-                    'iniciales' => $montosIniciales,
-                    'finales' => $montosFinales,
-                ],
-            ];
-    
-            return json_encode($response);
+{
+    // Si se hace una petición AJAX
+    if (request()->ajax()) {
+        $labels = [];
+        $montosIniciales = [];
+        $montosFinales = [];
+
+        // Obtén todas las cajas ordenadas por fecha de apertura
+        $cajas = Caja::orderBy('fecha_apertura')->get();
+
+        foreach ($cajas as $caja) {
+            $idCaja = $caja->id; // Utiliza el ID de la caja como etiqueta
+
+            $labels[] = $idCaja;
+            $montosIniciales[] = $caja->monto_inicial;
+            $montosFinales[] = $caja->monto_final;
         }
-    
-        return view('panel.caja.forms.grafico_egresos');
+
+        $response = [
+            'success' => true,
+            'data' => [
+                'labels' => $labels,
+                'iniciales' => $montosIniciales,
+                'finales' => $montosFinales,
+            ],
+        ];
+
+        return json_encode($response);
     }
-    
+
+    return view('panel.caja.forms.grafico_egresos');
+}
+
     
 
 

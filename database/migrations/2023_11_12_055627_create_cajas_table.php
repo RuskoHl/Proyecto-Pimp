@@ -19,6 +19,7 @@ return new class extends Migration
             $table->Decimal('monto_final')->nullable();
             $table->Decimal('cantidad_ventas')->nullable();
             $table->Boolean('status');
+            $table->decimal('extraccion', 10, 2)->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

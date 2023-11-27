@@ -18,7 +18,8 @@ class Caja extends Model
         'fecha_cierre',
         'monto_final',
         'cantidad_ventas',
-        'status'
+        'status',
+        'extraccion'
     ];
     public function carrito(){
         return $this->hasMany(Carrito_usuario::class, 'carrito_usuario_id');

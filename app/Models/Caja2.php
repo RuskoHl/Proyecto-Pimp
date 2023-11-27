@@ -18,6 +18,7 @@ class Caja2 extends Model
         'fecha_cierre',
         'monto_final',
         'cantidad_ventas',
-        'status'
+        'status',
+        'extraccion'
     ];
 }
