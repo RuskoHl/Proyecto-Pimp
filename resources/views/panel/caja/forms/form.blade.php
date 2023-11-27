@@ -38,10 +38,13 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
+            <div class="d-none mb-3 row">
                 <label for="monto_final" class="col-sm-4 col-form-label"> * Monto Final </label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control @error('monto_final') is-invalid @enderror" id="monto_final" name="monto_final" value="{{ old('monto_final', optional($caja)->monto_final) }}">
+                    <tr>
+                        <td>Monto Final </td>
+                    </tr>
+                </div>
                     @error('monto_final')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror

@@ -90,7 +90,6 @@ class CarritoController extends Controller
             'user_id' => $user->id,
             'caja_id' => $caja->id,
             'precio_total' => $precioTotal,
-            
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -99,10 +98,6 @@ class CarritoController extends Controller
         Cart::store($identificadorCarrito);
         // Obtiene el contenido del carrito desde la tabla 'shopping_cart'
         $contenidoFromCart = Cart::content()->toJson();
-
-
-        
-
         // Crea una nueva venta
         $venta = new Venta([
             'fecha_emision' => now(),
@@ -153,6 +148,4 @@ class CarritoController extends Controller
        // Renderiza la vista con el contenido del carrito
        return view('panel.contenido', ['carrito' => $carrito]);
    }
-   
-
 }

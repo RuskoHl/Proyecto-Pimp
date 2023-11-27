@@ -17,7 +17,20 @@ class Venta extends Model
     protected $fillable= [
         'fecha_emision', 'valor_total','caja_id','user_id','carrito_usuario_id','cliente_id', 'contenido', 'estado'
     ];
+    public static function boot()
+    {
+        parent::boot();
 
+        static::saved(function ($venta) {
+            // Actualizar el monto acumulado en la caja correspondiente
+            $caja = $venta->caja;
+            if ($caja) {
+                $montoAcumulado = $caja->ventas()->sum('valor_total');
+                $caja->monto_final = $montoAcumulado;
+                $caja->save();
+            }
+        });
+    }
     public function caja()
     {
         return $this->belongsTo(Caja::class, 'caja_id');

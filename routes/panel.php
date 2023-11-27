@@ -61,6 +61,7 @@ Route::resource('/cajas', CajaController::class)->names('caja');
 Route::get('graficos-productos',[ProductoController::class,'graficosProductosxCategoria'])->name('graficos-productos');
 Route::get('/panel/cajas2/edit2', [ProductoController::class,'editarCajaConStatus1'])->name('panel.caja2.edit2');
 
+Route::get('/graficos-cajas',[CajaController::class,'graficosCajas'])->name('graficos-cajas');
 Route::resource('/categorias', CategoriaController::class)->names('categoria');
 Route::resource('/ventas', VentaController::class)->names('ventas');
 Route::resource('/subcategorias', SubcategoriaController::class)->names('subcategoria');

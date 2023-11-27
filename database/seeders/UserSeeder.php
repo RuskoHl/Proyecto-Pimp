@@ -17,18 +17,21 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('12345'),
-        ])->assignRole('admin');
+        ])
+        ->assignRole('admin');
 
         User::create([
             'name' => 'vendedor',
             'email' => 'vendedor@gmail.com',
             'password' => Hash::make('12345'),
-        ])->assignRole('vendedor');
+        ])
+        ->assignRole('vendedor');
 
         User::create([
             'name' => 'cliente',
             'email' => 'cliente@gmail.com',
             'password' => Hash::make('12345'),
-        ])->assignRole('cliente');
+        ])
+        ->assignRole('cliente');
     }
 }

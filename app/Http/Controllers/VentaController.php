@@ -26,6 +26,7 @@ class VentaController extends Controller
         $request->validate([
             // Add validation rules based on your requirements
         ]);
+        
 
         // Create a new venta instance
         $venta = Venta::create([

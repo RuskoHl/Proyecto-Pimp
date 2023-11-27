@@ -50,7 +50,7 @@
                             <tr>
                                 <td><h2 class="text-danger">{{ $venta->id }}</h2></td>
                                 <td>{{ $venta->fecha_emision }}</td>
-                                <td>{{ $venta->caja ? $venta->caja->id : 'N/A' }}</td>
+                                <td>{{ $venta->caja_id }}</td>
                                 <td>{{ $venta->user ? $venta->user->name : 'N/A' }}</td>
                                 <td><h5>${{ $venta->valor_total }}</h5></td>
                                
@@ -70,7 +70,7 @@
                                             <p class="text-warning">No hay productos en el carrito.</p>
                                         @endif
                                     @else
-                                        <p>No hay boldrmación del carrito disponible.</p>
+                                        <p>No hay información del carrito disponible.</p>
                                     @endif
                                 </td>
                                 <td>

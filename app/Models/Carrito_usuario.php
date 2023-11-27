@@ -23,4 +23,8 @@ class Carrito_usuario extends Model
     {
         return $this->hasMany(Carrito_usuario::class, 'venta_id');
     }
+    public function ventas()
+    {
+    return $this->hasMany(Venta::class, 'carrito_usuario_id');
+    }
 }
