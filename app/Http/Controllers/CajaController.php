@@ -7,6 +7,8 @@ use App\Http\Requests\CajaRequest;
 use App\Models\Caja;
 use App\Models\Venta;
 use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Log;
 class CajaController extends Controller
 {
     public function __construct()
@@ -18,19 +20,17 @@ class CajaController extends Controller
     public function index()
     {
         $cajas = Caja::with('ventas')->latest()->get();
-       
         
-        $totalMontoFinal = Caja::sum('monto_final');
+        $totalMontoFinal = $cajas->sum('monto_final');
         
         $cajas->each(function ($caja) {
             $caja->sumatoriaVentas = $caja->ventas->sum('valor_total');
         });
         $montoFinalAutomatico = $cajas->sum('sumatoriaVentas');
-
-
-
-        return view('panel.caja.index', compact('cajas','montoFinalAutomatico'))->with('totalMontoFinal', $totalMontoFinal);;
+    
+        return view('panel.caja.index', compact('cajas', 'montoFinalAutomatico'))->with('totalMontoFinal', $totalMontoFinal);
     }
+    
 
     public function create()
     {
@@ -85,69 +85,124 @@ class CajaController extends Controller
 
     }
     public function update(CajaRequest $request, Caja $caja)
-    {
-        $caja->fecha_apertura = $request->get('fecha_apertura');
-        $caja->monto_inicial = $request->get('monto_inicial');
-        $caja->fecha_cierre = $request->get('fecha_cierre');
-    
-        // Calcular automáticamente el monto_final sumando las ventas
-        $ventas = Venta::where('fecha_emision', '>=', $caja->fecha_apertura)
-                      ->where('fecha_emision', '<=', $caja->fecha_cierre)
-                      ->get();
-        $caja->monto_final = $ventas->sum('valor_total');
-    
-        $caja->cantidad_ventas = $request->get('cantidad_ventas');
-    
-        // Convierte el valor 'status' a un número (0 o 1) según la selección del usuario
-        $caja->status = $request->get('status') == 'Abierto' ? 1 : 0;
-    
-        $caja->update();
-    
-        return redirect()
-            ->route('caja.index')
-            ->with('alert', 'Caja "' . $caja->fecha_apertura . '" actualizado exitosamente.');
-    }
-    public function graficosCajas()
 {
-    // Si se hace una petición AJAX
-    if (request()->ajax()) {
-        $labels = [];
-        $montosFinales = [];
+    $caja->fecha_apertura = $request->get('fecha_apertura');
+    $caja->monto_inicial = $request->get('monto_inicial');
+    $caja->fecha_cierre = $request->get('fecha_cierre');
 
-        $cajas = Caja::all(); // Obtén todas las cajas, puedes ajustar esto según tus necesidades
+    // Calcular automáticamente el monto_final sumando el monto_inicial a las ventas
+    $ventas = Venta::where('fecha_emision', '>=', $caja->fecha_apertura)
+                  ->where('fecha_emision', '<=', $caja->fecha_cierre)
+                  ->get();
 
-        foreach ($cajas as $caja) {
-            // Asegúrate de que la fecha esté en el formato correcto, puedes ajustar según sea necesario
-            $fecha = Carbon::parse($caja->fecha_apertura)->format('Y-m-d');
+    $montoVentas = $ventas->sum('valor_total');
 
-            // Agrega la fecha al array de etiquetas si aún no está presente
-            if (!in_array($fecha, $labels)) {
-                $labels[] = $fecha;
+    // Agregamos logs para depurar
+    info('Monto inicial: ' . $caja->monto_inicial);
+    info('Monto ventas: ' . $montoVentas);
+
+    $caja->monto_final = $caja->monto_inicial + $montoVentas;
+
+    // Agregamos logs para depurar
+    info('Monto final calculado: ' . $caja->monto_final);
+    // Agregamos logs para depurar
+
+    $caja->cantidad_ventas = $request->get('cantidad_ventas');
+
+    // Convierte el valor 'status' a un número (0 o 1) según la selección del usuario
+    $caja->status = $request->get('status') == 'Abierto' ? 1 : 0;
+
+    $caja->update();
+
+    return redirect()
+        ->route('caja.index')
+        ->with('alert', 'Caja "' . $caja->fecha_apertura . '" actualizado exitosamente.');
+}
+
+
+
+    public function graficoIngresosEgresosCaja()
+    {
+        // Si se hace una petición AJAX
+        if (request()->ajax()) {
+            $labels = [];
+            $montosIniciales = [];
+            $montosFinales = [];
+    
+            // Obtén todas las cajas ordenadas por fecha de apertura
+            $cajas = Caja::orderBy('fecha_apertura')->get();
+    
+            foreach ($cajas as $caja) {
+                $idCaja = $caja->id; // Utiliza el ID de la caja como etiqueta
+    
+                $labels[] = $idCaja;
+                $montosIniciales[] = $caja->monto_inicial;
+                $montosFinales[] = $caja->monto_final;
             }
-
-            // Agrega el monto final al array de montosFinales correspondiente a la fecha
-            $montosFinales[$fecha] = isset($montosFinales[$fecha]) ? $montosFinales[$fecha] + $caja->monto_final : $caja->monto_final;
+    
+            $response = [
+                'success' => true,
+                'data' => [
+                    'labels' => $labels,
+                    'iniciales' => $montosIniciales,
+                    'finales' => $montosFinales,
+                ],
+            ];
+    
+            return json_encode($response);
         }
+    
+        return view('panel.caja.forms.grafico_egresos');
+    }
+    
+    
 
-        // Ordena las fechas
-        sort($labels);
 
-        // Organiza los montos finales según las fechas
-        $data = [];
-        foreach ($labels as $fecha) {
-            $data[] = $montosFinales[$fecha] ?? 0;
+    public function graficosCajas()
+    {
+        // Si se hace una petición AJAX
+        if (request()->ajax()) {
+            $labels = [];
+            $montosFinales = [];
+    
+            // Obtén todas las cajas ordenadas por fecha de apertura
+            $cajas = Caja::with('ventas')->orderBy('fecha_apertura')->get();
+    
+            foreach ($cajas as $caja) {
+                // Formatea la fecha a un formato que Chart.js pueda entender
+                $fecha = Carbon::parse($caja->fecha_apertura)->format('Y-m-d');
+    
+                if (!in_array($fecha, $labels)) {
+                    $labels[] = $fecha;
+                }
+    
+                // Suma los montos finales de las ventas de esta caja
+                $montoFinalCaja = $caja->ventas->sum('valor_total');
+    
+                // Asegúrate de sumar el monto final correctamente
+                $montosFinales[$fecha] = isset($montosFinales[$fecha]) ? $montosFinales[$fecha] + $montoFinalCaja : $montoFinalCaja;
+            }
+    
+            // Ordena las fechas
+            sort($labels);
+    
+            $data = [];
+            foreach ($labels as $fecha) {
+                $data[] = $montosFinales[$fecha] ?? 0;
+            }
+    
+            $response = [
+                'success' => true,
+                'data' => [$labels, $data],
+            ];
+    
+            return json_encode($response);
         }
-
-        $response = [
-            'success' => true,
-            'data' => [$labels, $data],
-        ];
-
-        return json_encode($response);
+    
+        return view('panel.caja.forms.graficos_cajas');
     }
 
-    return view('panel.caja.forms.graficos_cajas');
-}
+
 
     public function destroy(Caja $caja)
     {

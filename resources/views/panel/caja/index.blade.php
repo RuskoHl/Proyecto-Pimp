@@ -24,9 +24,11 @@
                 Nueva caja
             </a>
             <a href="{{ route('graficos-cajas')}}" class="btn btn-danger" title="ChartJs">
-                <i class="fas fa-chart-pie"></i> Gráficos
+                <i class="fas fa-chart-pie"></i> Gráficos Dias
             </a>
-            
+            <a href="{{ route('grafico-egresos')}}" class="btn btn-warning" title="ChartJs">
+                <i class="fas fa-chart-pie"></i> Gráficos Ingresos
+            </a>
         </div>
         
         @if (session('alert'))
@@ -38,13 +40,7 @@
             </div>
         @endif
 
-        <div class="card bg-white">
-            <div class="card-body">
-                <h5 class="card-title"><strong class="text-danger">Suma Total de las Cajas</strong></h5>
-                <p class="card-text"><strong>$ {{ $totalMontoFinal }}</strong></p>
-            </div>
-            
-        </div>
+
 
       
     <div class="col-12">
@@ -57,9 +53,11 @@
                             <th scope="col" class="text-uppercase">fecha_apertura</th>
                             <th scope="col" class="text-uppercase">monto_inicial</th>
                             <th scope="col" class="text-uppercase">fecha_cierre</th>
+                            <th scope="col" class="text-uppercase">sumatoria ventas</th>
+                            <th scope="col" class="text-uppercase">Status</th>
                             <th scope="col" class="text-uppercase">monto_final</th>
                             <th scope="col" class="text-uppercase">cantidad_ventas</th>
-                            <th scope="col" class="text-uppercase">Status</th>
+                            
                             <th scope="col" class="text-uppercase">Opciones</th>
                         </tr>
                     </thead>
@@ -71,15 +69,17 @@
                             <td>{{ $caja->monto_inicial }}</td>
                             <td>{{ $caja->fecha_cierre }}</td>
                             <td>{{ $caja->sumatoriaVentas }}</td>
-                            <td>{{ $caja->cantidadVentas() }}</td>
-                            
                             <td>
                                 @if ($caja->status === 1)
-                                    <span class="badge bg-primary">Abierto</span>
+                                    <span class="badge bg-info">Abierto</span>
                                 @else
                                     <span class="badge bg-danger">Cerrado</span>
                                 @endif
                             </td>
+                            <td><h6 class="text-success">{{ $caja->monto_final }}</h6></td>
+                            <td>{{ $caja->cantidadVentas() }}</td>
+                            
+                            
                             <td>
                                 <div class="d-flex flex-column">
                                     <a href="{{ route('caja.show', $caja) }}" class="btn btn-sm btn-info text-white text-uppercase me-1 ">

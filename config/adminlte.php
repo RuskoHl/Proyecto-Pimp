@@ -393,7 +393,7 @@ return [
                     'url'  => 'panel/productos/create',
                     'can' => 'lista_productos',
                 ],
-                [
+                                [
                     'text' => 'Mas vendidos',
                     'url'  => 'panel/productos_mas_vendidos',
                     'label'       => 'Ω',
@@ -405,6 +405,7 @@ return [
                     'label'       => '▲',
                     'can' => 'lista_productos',
                 ], 
+
                 [
                     'text' => 'Alertas Stock Bajo',
                     'url'  => 'panel/alertas',
@@ -442,6 +443,21 @@ return [
             'icon' => 'fas fa-envelope'
         ],
         [
+            'text' => 'Cliente',
+            'url'  => 'admin/settings',
+            'icon' => 'fas fa-fw fa-user',
+            'submenu' => [
+                [
+                    'text' => 'Lista de clientes',
+                    'url'  => '',
+                ],
+                [
+                'text' => 'Subir Nuevo Prospecto',
+                'url'  => '',
+                ],
+            ],
+        ],
+        [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
@@ -471,21 +487,7 @@ return [
             'icon'       => 'fas fa-fw fa-home',
             'url'        => 'casa',
         ],
-        [
-            'text' => 'Cliente',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-            'submenu' => [
-                [
-                    'text' => 'Lista de clientes',
-                    'url'  => '',
-                ],
-                [
-                'text' => 'Subir Nuevo Prospecto',
-                'url'  => '',
-                ],
-            ],
-        ],
+
     ],
 
     /*

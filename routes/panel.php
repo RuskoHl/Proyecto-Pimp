@@ -53,7 +53,7 @@ Route::get('/mostrar-carrito', [CarritoController::class, 'mostrarCarrito2'])->n
 
 Route::get('/resumen-dia', [VentaController::class, 'resumenDia'])->name('resumen.dia');
 
-
+Route::get('/grafico-egresos',[CajaController::class,'graficoIngresosEgresosCaja'])->name('grafico-egresos');
 
 Route::resource('/proveedors', ProveedorController::class)->names('proveedor');
 Route::resource('/cajas', CajaController::class)->names('caja');
