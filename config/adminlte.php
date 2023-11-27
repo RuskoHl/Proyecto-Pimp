@@ -355,9 +355,26 @@ return [
             'icon' => 'fas fa-fw fa-money-bill',
             'submenu' => [
                 [
-                    'text' => 'Lista de ventas',
+                    'text' => 'Listado de ventas',
                     'url'  => 'panel/ventas',
                 ],
+            ],
+        ],
+        [
+            'text'    => 'Categorias',
+            'icon'    => 'fas fa-sitemap',
+            'submenu' => [
+                [
+                    'text' => 'Registro Categoria',
+                    'url'  => 'panel/categorias',
+                    'can' => 'lista_productos',
+                ],
+                [
+                    'text' => 'Registro Subcategoria',
+                    'url'  => 'panel/subcategorias',
+                    'can' => 'lista_productos',
+                ],
+
             ],
         ],
 
@@ -377,6 +394,12 @@ return [
                     'can' => 'lista_productos',
                 ],
                 [
+                    'text' => 'Mas vendidos',
+                    'url'  => 'panel/productos_mas_vendidos',
+                    'label'       => 'Ω',
+                    'can' => 'lista_productos',
+                ],
+                [
                     'text' => 'Ultimos Agregados',
                     'url'  => 'panel/ultimos_agregados',
                     'label'       => '▲',
@@ -388,7 +411,7 @@ return [
                     'label'       => '▼',
                     'can' => 'lista_productos',
                 ],
-   
+
             ],
         ],
         [
@@ -412,47 +435,7 @@ return [
                     ],
             ],
         ],
-        [
-            'text'    => 'Categorias',
-            'icon'    => 'fa fa-table',
-            'submenu' => [
-                [
-                    'text' => 'Registro Categoria',
-                    'url'  => 'panel/categorias',
-                    'can' => 'lista_productos',
-                ],
-
-
-            ],
-        ],
-        [
-            'text'    => 'Subcategorias',
-            'icon'    => 'fas fa-sitemap',
-            'submenu' => [
-                [
-                    'text' => 'Registro Subcategoria',
-                    'url'  => 'panel/subcategorias',
-                    'can' => 'lista_productos',
-                ],
-
-
-            ],
-        ],
-        [
-            'text' => 'Cliente',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-            'submenu' => [
-                [
-                    'text' => 'Lista de clientes',
-                    'url'  => '',
-                ],
-                [
-                'text' => 'Subir Nuevo Prospecto',
-                'url'  => '',
-                ],
-            ],
-        ],
+       
         [
             'text' => 'Mails',
             'route' => 'mails.form',
@@ -487,6 +470,21 @@ return [
             'icon_color' => 'red',
             'icon'       => 'fas fa-fw fa-home',
             'url'        => 'casa',
+        ],
+        [
+            'text' => 'Cliente',
+            'url'  => 'admin/settings',
+            'icon' => 'fas fa-fw fa-user',
+            'submenu' => [
+                [
+                    'text' => 'Lista de clientes',
+                    'url'  => '',
+                ],
+                [
+                'text' => 'Subir Nuevo Prospecto',
+                'url'  => '',
+                ],
+            ],
         ],
     ],
 

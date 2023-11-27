@@ -4,6 +4,9 @@
 {{-- Activamos el Plugin de Datatables instalado en AdminLTE --}}
 @section('plugins.Datatables', true)
 
+{{-- Activamos el plugin de Chartjs --}}
+@section('plugins.Chartjs', true)
+
 {{-- Titulo en las tabulaciones del Navegador --}}
 @section('title', 'Cajas')
 
@@ -17,10 +20,13 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 mb-3">
-            
             <a href="{{ route('caja2.create') }}" class="btn btn-success text-uppercase">
                 Nueva caja
             </a>
+            <a href="{{ route('graficos-cajas')}}" class="btn btn-danger" title="ChartJs">
+                <i class="fas fa-chart-pie"></i> Gráficos
+            </a>
+            
         </div>
         
         @if (session('alert'))
@@ -32,6 +38,15 @@
             </div>
         @endif
 
+        <div class="card bg-white">
+            <div class="card-body">
+                <h5 class="card-title"><strong class="text-danger">Suma Total de las Cajas</strong></h5>
+                <p class="card-text"><strong>$ {{ $totalMontoFinal }}</strong></p>
+            </div>
+            
+        </div>
+
+      
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -55,8 +70,8 @@
                             <td>{{ $caja->fecha_apertura }}</td>
                             <td>{{ $caja->monto_inicial }}</td>
                             <td>{{ $caja->fecha_cierre }}</td>
-                            <td>{{ $caja->monto_final }}</td>
-                            <td>{{ $caja->cantidad_ventas }}</td>
+                            <td>{{ $caja->sumatoriaVentas }}</td>
+                            <td>{{ $caja->cantidadVentas() }}</td>
                             
                             <td>
                                 @if ($caja->status === 1)
@@ -70,12 +85,8 @@
                                     <a href="{{ route('caja.show', $caja) }}" class="btn btn-sm btn-info text-white text-uppercase me-1 ">
                                         Ver
                                     </a>
-
-
                                 </div>
                             </td>
-
-
                         </tr>
                         @endforeach
                     </tbody>
@@ -83,6 +94,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Gráfico de Línea -->
+    
 </div>
 @stop
 
@@ -94,7 +108,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 @stop
 
-
 {{-- Importacion de Archivos JS --}}
 @section('js')
 <script>
@@ -104,11 +117,64 @@
         });
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Obtener datos para el gráfico
+        var labels = [];
+        var montosFinales = [];
+
+        @foreach ($cajas as $caja)
+            labels.push("{{ $caja->fecha_apertura }}");
+            montosFinales.push({{ $caja->monto_final }});
+        @endforeach
+
+        // Dibujar el gráfico
+        var ctx = document.getElementById('cajasChart').getContext('2d');
+        var cajasChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Montos Finales',
+                    data: montosFinales,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false,
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day',
+                            displayFormats: {
+                                day: 'MMM D'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Fecha de Apertura'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Monto Final'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
-    {{-- La funcion asset() es una funcion de Laravel PHP que nos dirige a la carpeta "public" --}}
-    <script src="{{ asset('js/cajas.js') }}"></script>
+
+{{-- La funcion asset() es una funcion de Laravel PHP que nos dirige a la carpeta "public" --}}
+<script src="{{ asset('js/cajas.js') }}"></script>
 @stop

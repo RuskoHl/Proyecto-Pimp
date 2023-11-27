@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\SubcategoriaController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\CarritoController;
 use App\Models\Producto;
 use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +26,7 @@ Route::get('/alertas', function() {
 Route::get('/alertas',[App\Http\Controllers\ProductoController::class, 'alerta'])->name('alerta');
 
 // fin alerta producots
-
+Route::get('/productos_mas_vendidos', [CarritoController::class, 'ProductosMasVendidos'])->name('productosMasVendidos');
 
 // alerta productos nuevos
 Route::get('/ultimos_agregados', function() {

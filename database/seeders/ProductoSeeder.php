@@ -49,7 +49,7 @@ class ProductoSeeder extends Seeder
             'imagen' => 'zapatillas.png',
             'categoria_id' => '1',
             'cantidad_minima' => '70',
-            'cantidad' => '100',
+            'cantidad' => '50',
         ]);
 
         Producto::create([
@@ -87,7 +87,7 @@ class ProductoSeeder extends Seeder
             'nombre' => 'Bicicleta de Montaña',
             'descripcion' => 'Construcción resistente para terrenos difíciles',
             'precio' => '12000',
-            'imagen' => 'bicicleta.png',
+            'imagen' => 'bmx.png',
             'categoria_id' => '2',
             'cantidad_minima' => '30',
             'cantidad' => '60',
@@ -97,7 +97,7 @@ class ProductoSeeder extends Seeder
             'nombre' => 'Monopatín Clásico',
             'descripcion' => 'Diversión garantizada en cada paseo',
             'precio' => '2500',
-            'imagen' => 'monopatin.pngs',
+            'imagen' => 'monopatin.png',
             'categoria_id' => '2',
             'cantidad_minima' => '50',
             'cantidad' => '90',
@@ -153,8 +153,8 @@ class ProductoSeeder extends Seeder
         ]);
 
         Producto::create([
-            'nombre' => 'Lentes de Protección',
-            'descripcion' => 'Protección UV y estilo en un solo accesorio',
+            'nombre' => 'Lentes YSY A - Casi un G',
+            'descripcion' => 'La puse a bailar por casi un g, si viene por nieve no va a comer okey okey la trampa es ley, la gorra que la chup* no sabe que hacer okey okey free bars hotel... ¿Cuantos caramelos queres?',
             'precio' => '2000',
             'imagen' => 'lentes.png',
             'categoria_id' => '3',

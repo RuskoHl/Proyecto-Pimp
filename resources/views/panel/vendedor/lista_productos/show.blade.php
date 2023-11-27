@@ -28,7 +28,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}" id="image_preview" class="img-fluid" style="object-fit: cover; object-position: center; height: 420px; width: 100%;">
+                        <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->nombre }}" id="image_preview" class="img-fluid" style="object-fit: cover; object-position: center; height: 420px; width: 100%;">
                     </div>
                     <div class="mb-3">    
                         <h2>Nombre: {{ $producto->nombre }}</h2>

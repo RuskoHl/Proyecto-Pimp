@@ -41,7 +41,7 @@
                                 <th scope="col" class="text-uppercase">Username de Cliente</th>
                                 <th scope="col" class="text-uppercase">Precio Total</th>
                                 <th scope="col" class="text-uppercase">Contenido del Carrito</th>
-                                <th scope="col">Acciones</th>
+                                {{-- <th scope="col">Acciones</th> --}}
                                 
                             </tr>
                         </thead>
@@ -73,9 +73,9 @@
                                         <p>No hay información del carrito disponible.</p>
                                     @endif
                                 </td>
-                                <td>
+                                {{-- <td>
                                     <a href="{{ route('ventas.edit', $venta->id) }}" class="btn btn-primary">Editar</a>
-                                </td>
+                                </td> --}}
                                 <td>{{ $venta->caja ? $venta->caja->nombre : 'N/A' }}</td>
 
                                

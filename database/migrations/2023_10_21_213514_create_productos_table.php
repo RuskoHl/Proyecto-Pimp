@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->unsignedInteger('cantidad_minima'); 
             $table->unsignedInteger('cantidad');
+            $table->unsignedInteger('cantidad_vendida')->default(0);
             $table->softDeletes();
             $table->timestamps();
             

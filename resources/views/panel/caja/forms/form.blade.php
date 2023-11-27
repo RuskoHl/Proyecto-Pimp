@@ -44,14 +44,13 @@
                     <tr>
                         <td>Monto Final </td>
                     </tr>
-                </div>
                     @error('monto_final')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror
                 </div>
             </div>
 
-            <div class="mb-3 row">
+            <div class="mb-3 row d-none">
                 <label for="cantidad_ventas" class="col-sm-4 col-form-label"> * cantidad_ventas </label>
                 <div class="col-sm-8">
                     <input type="number" class="form-control @error('cantidad_ventas') is-invalid @enderror" id="cantidad_ventas" name="cantidad_ventas" value="{{ old('cantidad_ventas', optional($caja)->cantidad_ventas) }}">
@@ -77,15 +76,12 @@
                     @enderror
                 </div>
             </div>
-            
+            <button id="xd" type="submit" class="btn btn-warning text-uppercase">
+                {{ $caja->id ? 'Cerrar' : 'Crear' }}
+            </button>
+        </form>
         
         </div>
-
-        <button id="xd" type="submit" class="btn btn-warning text-uppercase">
-            {{ $caja->id ? 'Cerrar' : 'Crear' }}
-        </button>
-    </form>
-
 </div>
 
 @push('js')

@@ -24,7 +24,7 @@ class Caja2Controller extends Controller
     public function create()
     {
         $caja = new Caja2();
-        return view('panel.caja2.create', compact('caja'));
+        return view('panel.caja.create', compact('caja'));
 
     }
 
@@ -46,12 +46,12 @@ class Caja2Controller extends Controller
         $caja->save();
 
         return redirect()
-                ->route('caja2.index')
+                ->route('caja.index')
                 ->with('alert', 'caja "' . $caja->fecha_apertura . '" agregado exitosamente.');
     }
     public function show(Caja2 $caja)
     {
-        return view('panel.caja2.show', compact('caja'));
+        return view('panel.caja.show', compact('caja'));
 
     }
     // public function edit(Caja2 $caja)

@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-md-2 mt-2"></div>
                 <div class="col-md-5 mt-3">
-                    <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}" class="img-fluid">
+                    <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->nombre }}" class="img-fluid">
                 </div>
                 <div class="col-md-5 mt-3">
                     <h2>{{ $producto->nombre }}</h2>

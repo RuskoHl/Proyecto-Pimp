@@ -40,7 +40,7 @@
                         <td>{{ $producto->categoria->nombre }}</td>
                         <td>{{ $producto->nombre }}</td>
                         <td>
-                            <img src="{{ $producto->imagen }}" alt="{{ $producto->nombre }}" class="img-fluid" style="width: 150px;">
+                            <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->nombre }}" class="img-fluid" style="width: 150px;">
                         </td>
                         <td class="text-danger"><h1>{{ $producto->cantidad }}</h1></td>
                         <td class="text-info"><h3>{{ $producto->cantidad_minima }}</h3></td>
