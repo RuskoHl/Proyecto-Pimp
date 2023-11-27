@@ -6,14 +6,14 @@
 @section('plugins.Chartjs', true)
 
 @section('content_header')
-    <h1 class="text-bold">Graficos Caja</h1>
+    <h1 class="text-bold">Gráficos Caja</h1>
 @stop
 
 @section('content')
     <div class="container-fluid">
         <h3>Datos Estadísticos de <span class="text-danger">Montos recaudados por día</span></h3>
         <div class="row">
-            <!-- line CHART -->
+            <!-- Gráfico de Línea -->
             <div class="col-md-6 mx-auto">
                 <div class="card">
                     <div class="card-header bg-danger text-white">
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <!-- bar CHART -->
+            <!-- Gráfico de Barras -->
             <div class="col-md-6 mx-auto">
                 <div class="card">
                     <div class="card-header bg-danger text-white">
@@ -42,101 +42,92 @@
             </div>
         </div>
     </div>
+
+    <!-- Contenedores para almacenar la configuración de los gráficos -->
+    <div id="config_linechart" style="display: none;"></div>
+    <div id="config_barchart" style="display: none;"></div>
 @stop
 
 @section('css')
-
+    <!-- Agrega estilos CSS personalizados si es necesario -->
 @stop
 
 @section('js')
+    <!-- Agrega jQuery y Chart.js desde un CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
-        $(function() {
+        $(document).ready(function() {
             const lineChartDias = document.getElementById('lineChartDias').getContext('2d');
             const barChartDias = document.getElementById('barChartDias').getContext('2d');
 
-            const configDatalineChart = $('#config_linechart');
-            const configDatabarChart = $('#config_barchart');
-
-            // Peticion AJAX para extraer datos de la BD y graficar
+            // Hacer la llamada AJAX para obtener los datos
             $.get(location.href, function(response) {
                 response = JSON.parse(response);
 
                 // Si hay éxito en la petición
-                if(response.success) {
-                    let labels = response.data[0];
-                    let count = response.data[1];
+                if (response.success) {
+                    let labels = response.data.labels;
+                    let montosIniciales = response.data.montosIniciales;
+                    let montosFinales = response.data.montosFinales;
 
-                    // Graficar el Diagrama de línea (Días)
-                    graficar(lineChartDias, 'line', labels, count, 'Monto recaudado por día', configDatalineChart);
+                    // Graficar el Diagrama de línea (Cajas)
+                    graficar(lineChartDias, 'line', labels, [montosIniciales, montosFinales], 'Montos Iniciales y Finales de Caja');
 
-                    // Graficar el Diagrama de Barras (Días)
-                    graficar(barChartDias, 'bar', labels, count, 'Monto recaudado por día', configDatabarChart);
+                    // Graficar el Diagrama de Barras (Cajas)
+                    graficar(barChartDias, 'bar', labels, [montosIniciales, montosFinales], 'Montos Iniciales y Finales de Caja');
                 } else {
                     console.log(response.message);
                 }
-            })
-            .fail(function(error) {
+            }).fail(function(error) {
                 console.log(error.statusText, error.status);
             });
 
-            $.get(location.href, function(response) {
-    response = JSON.parse(response);
-
-    // Si hay éxito en la petición
-    if(response.success) {
-        let labels = response.data[0];
-        let montosIniciales = response.data[1];
-        let montosFinales = response.data[2];
-
-        // Graficar el Diagrama de línea (Días)
-        graficar(lineChartDias, 'line', labels, montosIniciales, montosFinales, 'Montos Iniciales y Finales de Caja', configDatalineChart);
-    } else {
-        console.log(response.message);
-    }
-})
-.fail(function(error) {
-    console.log(error.statusText, error.status);
-});
-
-function graficar(context, typeGraphic, label, montosIniciales, montosFinales, title, inputData) {
-    let configChart = {
-        type: typeGraphic,
-        data: {
-            labels: label,
-            datasets: [{
-                label: 'Monto Inicial',
-                data: montosIniciales,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 2
-            },
-            {
-                label: 'Monto Final',
-                data: montosFinales,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true
+            function graficar(context, typeGraphic, label, datasets, title) {
+                let configChart = {
+                    type: typeGraphic,
+                    data: {
+                        labels: label,
+                        datasets: [{
+                            label: 'Monto Inicial',
+                            data: datasets[0],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Monto Final',
+                            data: datasets[1],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    // Ajusta el mínimo y máximo según tus datos reales
+                                    min: Math.min.apply(null, [].concat.apply([], datasets)),
+                                    max: Math.max.apply(null, [].concat.apply([], datasets)),
+                                    callback: function(value, index, values) {
+                                        return '$' + value; // Ajusta el formato según tus necesidades
+                                    }
+                                }
+                            }]
+                        }
                     }
-                }],
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
+                };
+
+                new Chart(context, configChart);
             }
-        }
-    };
-
-    inputData.val(JSON.stringify(configChart));
-    new Chart(context, configChart);
-}
         });
     </script>
 @stop

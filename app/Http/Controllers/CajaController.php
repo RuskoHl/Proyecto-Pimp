@@ -164,36 +164,32 @@ class CajaController extends Controller
         if (request()->ajax()) {
             $labels = [];
             $montosFinales = [];
+            $montosIniciales = [];
     
             // Obtén todas las cajas ordenadas por fecha de apertura
             $cajas = Caja::with('ventas')->orderBy('fecha_apertura')->get();
     
             foreach ($cajas as $caja) {
-                // Formatea la fecha a un formato que Chart.js pueda entender
-                $fecha = Carbon::parse($caja->fecha_apertura)->format('Y-m-d');
+                // Utiliza el ID de la caja como label en lugar de la fecha
+                $idCaja = $caja->id;
+                $labels[] = $idCaja;
     
-                if (!in_array($fecha, $labels)) {
-                    $labels[] = $fecha;
-                }
+                // Utiliza el monto inicial de la caja directamente
+                $montoInicialCaja = $caja->monto_inicial;
+                $montosIniciales[$idCaja] = $montoInicialCaja;
     
-                // Suma los montos finales de las ventas de esta caja
-                $montoFinalCaja = $caja->ventas->sum('valor_total');
-    
-                // Asegúrate de sumar el monto final correctamente
-                $montosFinales[$fecha] = isset($montosFinales[$fecha]) ? $montosFinales[$fecha] + $montoFinalCaja : $montoFinalCaja;
-            }
-    
-            // Ordena las fechas
-            sort($labels);
-    
-            $data = [];
-            foreach ($labels as $fecha) {
-                $data[] = $montosFinales[$fecha] ?? 0;
+                // Utiliza el monto final de la caja directamente
+                $montoFinalCaja = $caja->monto_final;
+                $montosFinales[$idCaja] = $montoFinalCaja;
             }
     
             $response = [
                 'success' => true,
-                'data' => [$labels, $data],
+                'data' => [
+                    'labels' => $labels,
+                    'montosIniciales' => $montosIniciales,
+                    'montosFinales' => $montosFinales,
+                ],
             ];
     
             return json_encode($response);
@@ -201,6 +197,10 @@ class CajaController extends Controller
     
         return view('panel.caja.forms.graficos_cajas');
     }
+    
+    
+
+    
 
 
 
