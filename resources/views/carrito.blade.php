@@ -6,7 +6,10 @@
     <div class="container border">
         <h1 class="mt-4 mb-4" style="font-family: 'Old English Text MT', sans-serif;">Carrito de Compras</h1>
         <!-- Añade este botón donde desees en tu aplicación -->
-    <a href="{{ route('historial.compras') }}" class="btn btn-danger">Ver Historial de Compras</a>
+        @auth
+        <a href="{{ route('historial.compras') }}" class="btn btn-danger">Ver Historial de Compras</a>
+        @endauth
+    
 
         @if (Cart::count() > 0)
             <table class="table mt-3">
