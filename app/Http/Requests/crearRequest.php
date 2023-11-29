@@ -24,11 +24,11 @@ class crearRequest extends FormRequest
         return [
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nombre' => 'required|unique:productos|max:255',
-            'descripcion' => 'required',
-            'precio' => 'required|numeric|max:9999999', // gomoso lcdtm
+            'descripcion' => 'required|max:255',
+            'precio' => 'required|numeric|max:9999999|min:5', // <zzz>
             'categoria_id' => 'required|integer',
             'cantidad' => 'required|numeric|min:0',
-            'cantidad_minima' => 'required|numeric|min:1',
+            'cantidad_minima' => 'required|numeric|min:1|max:9999',
         ];
     }
     public function messages()
@@ -40,12 +40,15 @@ class crearRequest extends FormRequest
             'precio.required' => 'El producto necesita un precio obligatoriamente.',
             'precio.numeric' => 'El precio debe ser un valor numérico.',
             'precio.max' => 'El precio no puede exceder los millones.',
+            'precio.min' => 'El precio no puede ser menor a 5.',
             'categoria_id.required' => 'La categoría del producto es obligatoria.',
             'categoria_id.integer' => 'La categoría debe ser un valor entero.',
             'cantidad.required' => '¿Cuántos productos son? Este campo es obligatorio.',
+            'cantidad_minima.required' => '¿Cuántos productos minimos? Este campo es obligatorio.',
             'cantidad.numeric' => 'La cantidad debe ser un valor numérico.',
             'cantidad.min' => 'La cantidad no puede ser menor a 0.',
-            'cantidad_minima.min' => 'La cantidad no puede ser 0.',
+            'cantidad_minima.min' => 'La cantidad minima no puede ser 0.',
+            'cantidad_minima.max' => 'La cantidad minima no puede contener 4 cifras.',
         ];
     }
 }

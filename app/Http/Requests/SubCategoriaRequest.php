@@ -22,7 +22,7 @@ class SubCategoriaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|unique:categorias|alpha',
+            'nombre' => 'required|unique:categorias|unique:subcategorias|alpha|max:80',
         ];
     }
 
@@ -35,8 +35,9 @@ class SubCategoriaRequest extends FormRequest
     {
         return [
             'nombre.required' => 'El nombre de la categoría es obligatorio.',
-            'nombre.unique' => 'El nombre no puede ser igual a otra Subcategoría.',
+            'nombre.unique' => 'El nombre no puede ser igual a otra Subcategoría o Categoría.',
             'nombre.alpha' => 'El nombre debe contener letras ',
+            'nombre.max' => 'El nombre debe ser relativamente corto. ',
         ];
     }
 }

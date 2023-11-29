@@ -15,7 +15,7 @@
                     @enderror
                 </div>
             </div>
-        </div>
+        
         <div class="mb-3 row">
             <label for="categoria" class="col-sm-4 col-form-label"> * Categoria </label>
             <div class="col-sm-8">

@@ -22,7 +22,7 @@ class CajaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fecha_apertura' => 'required',
+            'fecha_apertura' => 'required','date',
             'monto_inicial' => 'required',
             'fecha_cierre' => 'nullable',
             'monto_final' => 'nullable',

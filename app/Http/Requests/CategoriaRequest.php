@@ -22,7 +22,7 @@ class CategoriaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|unique:categorias|alpha',
+            'nombre' => 'required|unique:categorias|alpha|max:80',
         ];
     }
 
@@ -37,6 +37,7 @@ class CategoriaRequest extends FormRequest
             'nombre.required' => 'El nombre de la categoría es obligatorio.',
             'nombre.unique' => 'El nombre no puede ser igual a otra categoría.',
             'nombre.alpha' => 'El nombre debe contener letras. ',
+            'nombre.max' => 'El nombre debe ser relativamente corto. ',
         ];
     }
 }
