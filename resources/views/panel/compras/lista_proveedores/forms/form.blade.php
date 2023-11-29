@@ -21,7 +21,7 @@
             <div class="mb-3 row">
                 <label for="email" class="col-sm-4 col-form-label">* Mail </label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" rows="10">{{ old('email', optional($proveedor)->email) }}</input>
+                    <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" rows="10" value="{{ old('email', optional($proveedor)->email) }}">
                     @error('email')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror

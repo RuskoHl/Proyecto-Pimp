@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoriaRequest;
+use App\Http\Requests\editarCatRequest;
 use App\Models\Categoria;
 
 class CategoriaController extends Controller
@@ -28,7 +30,7 @@ class CategoriaController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(CategoriaRequest $request)
     {
         $categoria = new Categoria();
 
@@ -51,7 +53,7 @@ class CategoriaController extends Controller
         return view('panel.categoria.lista_categorias.edit', compact('categoria', 'categorias'));
 
     }
-    public function update(Request $request, Categoria $categoria)
+    public function update(editarCatRequest $request, Categoria $categoria)
     {
         $categoria->nombre = $request->get('nombre');
 

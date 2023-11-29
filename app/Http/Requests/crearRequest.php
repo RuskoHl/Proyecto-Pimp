@@ -25,21 +25,27 @@ class crearRequest extends FormRequest
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nombre' => 'required|unique:productos|max:255',
             'descripcion' => 'required',
-            'precio' => 'required|numeric',
+            'precio' => 'required|numeric|max:9999999', // gomoso lcdtm
             'categoria_id' => 'required|integer',
             'cantidad' => 'required|numeric|min:0',
+            'cantidad_minima' => 'required|numeric|min:1',
         ];
     }
     public function messages()
     {
-        return[
-            'nombre.required'=>'El nombre es obligatorio',
-            'nombre.unique'=>'El nombre debe ser unico',
-            'imagen.required'=> 'La imagen es requerida',
-            'precio.required'=>'El producto necesita un precio obligatoriamente',
-            'categoria.required'=>'La categoria es obligatoria',
-            'cantidad.required'=>'¿Cuantos productos son?',
-            'cantidad.min' => 'La cantidad no puede ser menor a 0',
+        return [
+            'nombre.required' => 'El nombre del producto es obligatorio.',
+            'nombre.unique' => 'Ya existe un producto con este nombre. Por favor, elige otro.',
+            'imagen.required' => 'La imagen del producto es requerida.',
+            'precio.required' => 'El producto necesita un precio obligatoriamente.',
+            'precio.numeric' => 'El precio debe ser un valor numérico.',
+            'precio.max' => 'El precio no puede exceder los millones.',
+            'categoria_id.required' => 'La categoría del producto es obligatoria.',
+            'categoria_id.integer' => 'La categoría debe ser un valor entero.',
+            'cantidad.required' => '¿Cuántos productos son? Este campo es obligatorio.',
+            'cantidad.numeric' => 'La cantidad debe ser un valor numérico.',
+            'cantidad.min' => 'La cantidad no puede ser menor a 0.',
+            'cantidad_minima.min' => 'La cantidad no puede ser 0.',
         ];
     }
 }

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Subcategoria;
+use App\Http\Requests\SubCategoriaRequest;
+use App\Http\Requests\editarSubCatRequest;
+
 use App\Models\Categoria;
 
 class SubcategoriaController extends Controller
@@ -16,7 +19,8 @@ class SubcategoriaController extends Controller
    
     public function index()
     {
-        $subcategorias = Subcategoria::latest()->get();
+        $subcategorias = Subcategoria::all();
+
         return view('panel.subcategoria.lista_subcategorias.index', compact('subcategorias'));
     }
     
@@ -29,7 +33,7 @@ class SubcategoriaController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(SubCategoriaRequest $request)
     {
         $subcategoria = new Subcategoria();
 
@@ -46,14 +50,13 @@ class SubcategoriaController extends Controller
         return view('panel.subcategoria.lista_subcategorias.show', compact('subcategoria'));
 
     }
-    public function edit(Subcategoria $Subcategoria)
-    {
-        $subcategoria = Subcategoria::all();
-        $categorias = Categoria::all();
-        return view('panel.subcategoria.lista_subcategorias.edit', compact('subcategoria', 'categorias'));
+    public function edit(Subcategoria $subcategoria)
+{
+    $categorias = Categoria::all();
+    return view('panel.subcategoria.lista_subcategorias.edit', compact('subcategoria', 'categorias'));
+}
 
-    }
-    public function update(Request $request, Subcategoria $subcategoria)
+    public function update(editarSubCatRequest $request, Subcategoria $subcategoria)
     {
         $subcategoria->nombre = $request->get('nombre');
         $subcategoria->categoria_id= $request->get('categoria_id');

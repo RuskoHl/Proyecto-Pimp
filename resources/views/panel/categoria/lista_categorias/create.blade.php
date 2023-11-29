@@ -10,7 +10,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mb-3">
-            <h1>Creación de una Nueva Categoria/h1>
+            <h1>Creación de una Nueva Categoria</h1>
             <a href="{{ route('categoria.index') }}" class="btn btn-sm btn-secondary text-uppercase">
                 Volver al Listado
             </a>

@@ -21,7 +21,7 @@
             <div class="mb-3 row">
                 <label for="apellido" class="col-sm-4 col-form-label">* Apellido </label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control @error('apellido') is-invalid @enderror" id="apellido" name="apellido" rows="10">{{ old('apellido', optional($empleado)->apellido) }}</input>
+                    <input type="text" class="form-control @error('apellido') is-invalid @enderror" id="apellido" name="apellido" rows="10" value="{{ old('apellido', optional($empleado)->apellido) }}">
                     @error('apellido')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror
