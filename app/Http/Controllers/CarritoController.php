@@ -45,9 +45,17 @@ class CarritoController extends Controller
 
     public function actualizarItem($rowId)
     {
-        $cantidad = request('cantidad'); 
+        $cantidadNueva = request('cantidad');
+        $item = Cart::get($rowId); // Obtiene el item actual en el carrito
+        $producto = Producto::find($item->id);
 
-        Cart::update($rowId, $cantidad);
+        // Verifica si la cantidad nueva supera la cantidad disponible en la base de datos
+        if ($cantidadNueva > $producto->cantidad) {
+            return back()->with('error', 'No hay suficiente stock disponible para esta cantidad');
+        }
+
+        // Actualiza la cantidad en el carrito solo si la validación es exitosa
+        Cart::update($rowId, $cantidadNueva);
 
         return back()->with('success', 'Cantidad actualizada con éxito');
     }
@@ -78,24 +86,31 @@ class CarritoController extends Controller
         if (!$user) {
             return redirect()->route('login')->with('error', 'Debes iniciar sesión para completar esta acción');
         }
-
-        // Inicializa un array para almacenar las cantidades vendidas por producto
-        $cantidadesVendidas = [];
-
+    
+        // Validar que exista el user_id y caja_id
+        if (!$user->id || !$caja) {
+            return redirect()->route('pagina_de_error')->with('error', 'No se puede procesar la venta. Falta información requerida.');
+        }
+    
         // Itera sobre los productos del carrito
         foreach ($carrito as $item) {
             $producto = Producto::find($item->id);
-
+    
+            // Verificar que la cantidad del producto sea suficiente
+            if (!$producto || $item->qty > $producto->cantidad) {
+                return redirect()->route('pagina_de_error')->with('error', 'No hay suficientes existencias para uno o más productos en el carrito.');
+            }
+    
             // Incrementa la cantidad vendida de cada producto
             $producto->update(['cantidad_vendida' => $producto->cantidad_vendida + $item->qty]);
-
+    
             // Resta la cantidad vendida de la cantidad disponible
             $nuevaCantidad = $producto->cantidad - $item->qty;
-
+    
             // Actualiza la cantidad disponible en el modelo de Producto
             $producto->update(['cantidad' => $nuevaCantidad]);
         }
-
+    
         // Calcula el precio total del carrito
         $precioTotal = Cart::total();
 
@@ -137,6 +152,21 @@ class CarritoController extends Controller
 
         return redirect()->route('preventa', ['venta' => $venta])->with('success', 'Venta cerrada y carrito asociado a la venta');
     }
+
+
+    public function historialCompras()
+    {
+        // Obtén el usuario autenticado
+        $user = Auth::user();
+    
+        // Obtén las compras del usuario
+        $ventas = $user->ventas;
+    
+        return view('historial_compras', compact('ventas'));
+    }
+    
+
+    
 
     
     public function ProductosMasVendidos()

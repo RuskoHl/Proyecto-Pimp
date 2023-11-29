@@ -42,3 +42,5 @@ Route::post('/carrito/agregar/{id}', [App\Http\Controllers\CarritoController::cl
 Route::post('/carrito/actualizar/{rowId}', [App\Http\Controllers\CarritoController::class, 'actualizarItem'])->name('carrito.actualizar');
 Route::delete('/carrito/remover/{rowId}', [App\Http\Controllers\CarritoController::class, 'removerItem'])->name('carrito.remover');
 Route::post('/carrito/store', [App\Http\Controllers\CarritoController::class, 'storeCarritoEnBaseDeDatos'])->name('carrito.store');
+Route::get('/pagina-de-error', [App\Http\Controllers\ErrorController::class, 'paginaDeError'])->name('pagina_de_error');
+Route::get('/historial-compras', [App\Http\Controllers\CarritoController::class, 'historialCompras'])->name('historial.compras');

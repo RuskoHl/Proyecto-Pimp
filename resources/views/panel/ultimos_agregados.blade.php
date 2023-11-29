@@ -26,7 +26,7 @@
         @foreach($ultimosAgregados as $producto)
             <div class="col-md-4 mx-">
                 <div class="card">
-                    <img src="{{ $producto->imagen }}" class="card-img-top" alt="{{ $producto->nombre }}">
+                    <img src="{{ asset($producto->imagen) }}" class="card-img-top" alt="{{ $producto->nombre }}">
                     <div class="card-body mx">
                         <h5 class="card-text text-bold text-truncate">{{ $producto->nombre }}</h5>
                         <p class="card-text text-truncate">{{ $producto->descripcion }}</p>

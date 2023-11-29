@@ -27,7 +27,7 @@
                     <div class="col-md-3">    
                         <form action="{{ route('carrito.agregar', ['id' => $producto->id]) }}" method="POST">
                             @csrf
-                            <input type="text" id="cantidad" value="1" name="cantidad" maxlength="2" />
+                            <input type="text" id="cantidad" value="1" name="cantidad" maxlength="2"  class="d-none"/>
                             <button onclick="Swal.fire('Añadiendo al carrito!')" type="submit" class="btn mb-4" style="background: none; border: none;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="red" class="bi bi-cart-check" viewBox="0 0 16 16">
                                     <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>

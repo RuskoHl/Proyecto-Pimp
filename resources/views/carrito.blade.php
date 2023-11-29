@@ -5,9 +5,11 @@
 @section('content')
     <div class="container border">
         <h1 class="mt-4 mb-4" style="font-family: 'Old English Text MT', sans-serif;">Carrito de Compras</h1>
+        <!-- Añade este botón donde desees en tu aplicación -->
+    <a href="{{ route('historial.compras') }}" class="btn btn-danger">Ver Historial de Compras</a>
 
         @if (Cart::count() > 0)
-            <table class="table">
+            <table class="table mt-3">
                 <thead>
                     <tr>
                         <th scope="col">Producto</th>
@@ -25,6 +27,17 @@
                                 <form action="{{ route('carrito.actualizar', $item->rowId) }}" method="POST">
                                     @csrf
                                     <input type="number" name="cantidad" value="{{ $item->qty }}" min="1" class="form-control">
+                                    @if(session('success'))
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
+                                
+                                @if(session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
                                     <button onclick="Swal.fire('Actualizando todo el carrito...')" type="submit" class="btn btn-success mt-1">Actualizar</button>
                                 </form>
                             </td>

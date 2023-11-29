@@ -21,7 +21,7 @@
                 @method('DELETE')
             </form>
             
-            <button id="deleteButton2" class="btn btn-sm btn-danger text-uppercase">
+            <button id="deleteButton2" class="btn btn-sm btn-danger text-uppercase d-none">
                 Eliminar
             </button>
         </div>
