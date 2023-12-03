@@ -47,6 +47,9 @@
                         <p>Cantidad de Ventas mientras la caja esta abierta: {{ $caja->cantidad_ventas }}</p>
                     </div>
                     <div class="mb-3">
+                        <p>Egresos: {{ $caja->extraccion }}</p>
+                    </div>
+                    <div class="mb-3">
                         <p>Status:  @if ($caja->status === 1)
                             <span class="badge bg-primary">Abierto</span>
                         @else

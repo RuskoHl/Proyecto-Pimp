@@ -25,6 +25,8 @@ Route::post('/compra/cambiar-estado-cobro/{compra}', [CompraController::class,'c
 Route::put('/panel/compra/cambiar-estado-entrega/{compra}', [CompraController::class, 'cambiarEstadoEntrega'])->name('compra.cambiar-estado-entrega');
 Route::get('/compras/listado', [CompraController::class, 'listadoCompras'])->name('compra.listado');
 Route::post('/panel/compra/cambiar-estado-cobro/{compra}', [CompraController::class, 'cambiarEstadoCobro'])->name('compra.cambiar-estado-cobro');
+Route::put('/panel/compra/cambiar-estado-cobro/{id}', [CompraController::class, 'cambiarEstadoCobro'])->name('compra.cambiarEstadoCobro');
+
 
 
 Route::get('/compras', [CompraController::class,'listadoCompras'])->name('compras.listado');

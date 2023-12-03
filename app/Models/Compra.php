@@ -4,6 +4,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Compra extends Model
 {
@@ -12,6 +14,10 @@ class Compra extends Model
         'monto_total',
     ];
 
+    public function caja(): BelongsTo
+    {
+        return $this->belongsTo(Caja::class, 'caja_id');
+    }
     // Relación con la tabla de productos
     public function productos()
     {

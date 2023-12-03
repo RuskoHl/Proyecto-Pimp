@@ -7,6 +7,9 @@
         <div class="row">
             <h1>Listado de <span class="text-danger">Compras Realizadas</span></h1>
             <br>
+            <div class="col-md-12">
+                <a href="{{ route('compra.index') }}" class="btn btn-danger">Volver a Realizar compra</a>
+            </div>
             <div class="col-md-12 mx-auto mt-2 mb-2">
                 <div class="card">
                     <div class="card-body">

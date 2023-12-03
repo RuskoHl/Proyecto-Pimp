@@ -12,6 +12,8 @@ class CreateComprasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('proveedor_id')->nullable();
             $table->foreign('proveedor_id')->references('id')->on('proveedors');
+            $table->unsignedBigInteger('caja_id')->nullable();
+            $table->foreign('caja_id')->references('id')->on('cajas');
             $table->decimal('monto_total', 10, 2);
             $table->boolean('estatus_entrega')->default(false);
             $table->boolean('estatus_cobro')->default(false);
@@ -23,4 +25,5 @@ class CreateComprasTable extends Migration
     {
         Schema::dropIfExists('compras');
     }
+    
 } 

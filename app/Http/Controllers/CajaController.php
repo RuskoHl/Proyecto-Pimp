@@ -43,7 +43,7 @@ class CajaController extends Controller
         // Actualizar los campos de la caja con los datos del formulario
         $caja->fecha_apertura = $request->get('fecha_apertura');
         $caja->monto_inicial = $request->get('monto_inicial');
-        $caja->fecha_cierre = $request->get('fecha_cierre');
+        $caja->fecha_cierre = $request->get('fecha_cierre');        
     
         // Obtener las ventas en el rango de fechas de la caja
         $ventas = Venta::when($caja->fecha_apertura, function ($query) use ($caja) {
@@ -95,7 +95,7 @@ class CajaController extends Controller
     $ventas = Venta::where('fecha_emision', '>=', $caja->fecha_apertura)
                   ->where('fecha_emision', '<=', $caja->fecha_cierre)
                   ->get();
-    $caja->monto_final = $ventas->sum('valor_total');
+                  $caja->monto_final = $ventas->sum('valor_total');
     
     if ($caja->count() === 1 && (!$caja->monto_final || $caja->monto_final == 0)) {
         $caja->monto_final = Venta::sum('valor_total');
