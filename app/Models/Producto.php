@@ -24,7 +24,10 @@ class Producto extends Model
     {
         return $this->belongsTo(Proveedor::class, 'proveedor_id');
     }
-
+    public function compras()
+    {
+        return $this->belongsToMany(Compra::class)->withPivot('cantidad');
+    }
     
    
 }

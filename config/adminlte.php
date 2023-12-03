@@ -432,7 +432,7 @@ return [
                 ],
                 [
                     'text' => 'Realizar orden de Compra',
-                    'url'  => '',
+                    'url'  => 'panel/compra/formulario',
                     ],
             ],
         ],

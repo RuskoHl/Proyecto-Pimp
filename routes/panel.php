@@ -10,12 +10,20 @@ use App\Http\Controllers\SubcategoriaController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\CarritoController;
 use App\Models\Producto;
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function() {
     return view('panel.index');
 });
+
+
+Route::get('/compra', [CompraController::class, 'index'])->name('compra.index');
+Route::post('/compra', [CompraController::class, 'store'])->name('compra.store');
+Route::get('/compra/formulario', [CompraController::class, 'formulario',])->name('compra.formulario');
+Route::get('/obtener-productos/{proveedorId}', [CompraController::class, 'obtenerProductos']);
+
 
 
 // alerta productos escasos

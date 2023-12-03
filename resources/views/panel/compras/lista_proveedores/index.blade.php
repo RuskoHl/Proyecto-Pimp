@@ -21,6 +21,8 @@
             <a href="{{ route('proveedor.create') }}" class="btn btn-success text-uppercase">
                 Nuevo Proveedor
             </a>
+            <a href="{{ route('compra.formulario') }}" class="btn btn-primary">Ir al Formulario de Compra</a>
+
         </div>
         
         @if (session('alert'))

@@ -141,7 +141,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '3',
             'cantidad_minima' => '70',
             'cantidad' => '100',
-            
+            'proveedor_id' => '3'
         ]);
 
         Producto::create([
