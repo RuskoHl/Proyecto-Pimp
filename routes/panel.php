@@ -19,6 +19,17 @@ Route::get('/', function() {
 });
 
 
+
+Route::post('/compra/cambiar-estado-entrega/{compra}', [CompraController::class,'cambiarEstadoEntrega'])->name('compra.cambiar-estado-entrega');
+Route::post('/compra/cambiar-estado-cobro/{compra}', [CompraController::class,'cambiarEstadoEntrega'])->name('compra.cambiar-estado-cobro');
+Route::put('/panel/compra/cambiar-estado-entrega/{compra}', [CompraController::class, 'cambiarEstadoEntrega'])->name('compra.cambiar-estado-entrega');
+Route::get('/compras/listado', [CompraController::class, 'listadoCompras'])->name('compra.listado');
+Route::post('/panel/compra/cambiar-estado-cobro/{compra}', [CompraController::class, 'cambiarEstadoCobro'])->name('compra.cambiar-estado-cobro');
+
+
+Route::get('/compras', [CompraController::class,'listadoCompras'])->name('compras.listado');
+
+
 Route::get('/compra', [CompraController::class, 'index'])->name('compra.index');
 Route::post('/compra', [CompraController::class, 'store'])->name('compra.store');
 Route::get('/compra/formulario', [CompraController::class, 'formulario',])->name('compra.formulario');

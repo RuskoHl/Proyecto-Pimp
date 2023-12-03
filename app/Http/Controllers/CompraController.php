@@ -70,5 +70,50 @@ class CompraController extends Controller
         return view('panel.compra.index', compact('proveedores'));
     }
  
-    
+    public function listadoCompras()
+    {
+        $compras = Compra::orderBy('created_at', 'desc')->get();
+        return view('panel.compra.listado', compact('compras'));
+    }
+    public function cambiarEstadoEntrega($compraId)
+    {
+        $compra = Compra::findOrFail($compraId);
+
+        // Modificar el estado de entrega
+        $compra->estatus_entrega = !$compra->estatus_entrega;
+        $compra->save();
+
+        // Realizar acciones adicionales según el estado (puedes personalizar estas acciones)
+        if ($compra->estatus_entrega) {
+            // Ejemplo: Incrementar la cantidad de productos al recibir la entrega
+            foreach ($compra->productos as $producto) {
+                $producto->increment('cantidad', $producto->pivot->cantidad);
+            }
+        } else {
+            // Ejemplo: Deshacer acciones al revertir la entrega
+            // Puedes agregar lógica según tus necesidades
+        }
+
+        return redirect()->route('compra.listado')->with('success', 'Estado de entrega modificado con éxito');
+    }
+
+    public function cambiarEstadoCobro($compraId)
+    {
+        $compra = Compra::findOrFail($compraId);
+
+        // Modificar el estado de cobro
+        $compra->estatus_cobro = !$compra->estatus_cobro;
+        $compra->save();
+
+        // Realizar acciones adicionales según el estado (puedes personalizar estas acciones)
+        if ($compra->estatus_cobro) {
+            // Ejemplo: Restar el monto de la caja al cobrar
+            // Puedes agregar lógica según tus necesidades
+        } else {
+            // Ejemplo: Deshacer acciones al revertir el cobro
+            // Puedes agregar lógica según tus necesidades
+        }
+
+        return redirect()->route('compra.listado')->with('success', 'Estado de cobro modificado con éxito');
+    }
 }

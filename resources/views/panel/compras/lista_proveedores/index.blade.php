@@ -18,10 +18,9 @@
     <div class="row">
         <div class="col-12 mb-3">
             
-            <a href="{{ route('proveedor.create') }}" class="btn btn-success text-uppercase">
-                Nuevo Proveedor
-            </a>
+            <a href="{{ route('proveedor.create') }}" class="btn btn-success text-uppercase">Nuevo Proveedor</a>
             <a href="{{ route('compra.formulario') }}" class="btn btn-primary">Ir al Formulario de Compra</a>
+            <a href="{{ route('compras.listado') }}" class="btn btn-danger">Ver Listado de Compras</a>
 
         </div>
         

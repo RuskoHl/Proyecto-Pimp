@@ -4,6 +4,11 @@
 <div class="container">
     <div class="row">
         <h1>Realizar compra a un <span class="text-danger">Proveedor</span>.</h1>
+        <div class="col-md-12">
+            <div class="">
+                <a href="{{ route('compras.listado') }}" class="btn btn-danger">Ver Listado de Compras</a>
+            </div>
+        </div>
         <br>
         <div class="col-md-12 mx-auto mt-2 mb-2">
             @if(session('success'))
@@ -63,7 +68,7 @@
                             <input type="number" name="monto_total" id="monto_total" class="form-control" step="0.01" required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Realizar Compra</button>
+                        <button type="submit" class="btn btn-success">Realizar Compra</button>
                     </form>
                 </div>
             </div>
