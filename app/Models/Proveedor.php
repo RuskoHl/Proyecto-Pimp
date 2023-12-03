@@ -11,11 +11,13 @@ class Proveedor extends Model
     use HasFactory;
     use SoftDeletes;
 
-    //Nombre de la tabla que se conecta a este Modelo
     protected $table = 'proveedors';
 
-    //Nombre de las columnas que son modificables
     protected $fillable = [
         'nombre', 'email', 'telefono', 'direccion', 'cuit', 'comentario'
     ];
+
+    public function productos() {
+        return $this->hasMany(Producto::class, 'proveedor_id');
+    }
 }

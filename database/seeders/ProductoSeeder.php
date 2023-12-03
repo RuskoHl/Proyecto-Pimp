@@ -21,6 +21,7 @@ class ProductoSeeder extends Seeder
             'categoria_id'=>'1',
             'cantidad_minima'=>'100',
             'cantidad' => '150',
+            'proveedor_id' => '1'
         ]);
         Producto::create([
             'nombre' => 'Remera Blanca PIMP',
@@ -30,6 +31,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '1',
             'cantidad_minima' => '80',
             'cantidad' => '120',
+            'proveedor_id' => '2'
         ]);
 
         Producto::create([
@@ -40,6 +42,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '1',
             'cantidad_minima' => '60',
             'cantidad' => '90',
+            'proveedor_id' => '3'
         ]);
 
         Producto::create([
@@ -50,6 +53,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '1',
             'cantidad_minima' => '70',
             'cantidad' => '50',
+            'proveedor_id' => '1'
         ]);
 
         Producto::create([
@@ -60,6 +64,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '1',
             'cantidad_minima' => '90',
             'cantidad' => '110',
+            'proveedor_id' => '2'
         ]);
 
 
@@ -72,6 +77,7 @@ class ProductoSeeder extends Seeder
             'categoria_id'=>'2',
             'cantidad_minima'=>'50',
             'cantidad' => '100',
+            'proveedor_id' => '3'
         ]);
         Producto::create([
             'nombre' => 'Patines en Línea Profesionales',
@@ -81,6 +87,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '2',
             'cantidad_minima' => '40',
             'cantidad' => '80',
+            'proveedor_id' => '1'
         ]);
 
         Producto::create([
@@ -91,6 +98,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '2',
             'cantidad_minima' => '30',
             'cantidad' => '60',
+            'proveedor_id' => '2'
         ]);
 
         Producto::create([
@@ -101,6 +109,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '2',
             'cantidad_minima' => '50',
             'cantidad' => '90',
+            'proveedor_id' => '3'
         ]);
 
         Producto::create([
@@ -111,6 +120,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '2',
             'cantidad_minima' => '20',
             'cantidad' => '40',
+            'proveedor_id' => '1'
         ]);
 
         Producto::create([
@@ -121,6 +131,7 @@ class ProductoSeeder extends Seeder
             'categoria_id'=>'3',
             'cantidad_minima'=>'100',
             'cantidad' => '120',
+            'proveedor_id' => '2'
         ]);
         Producto::create([
             'nombre' => 'Guantes Duramax',
@@ -130,6 +141,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '3',
             'cantidad_minima' => '70',
             'cantidad' => '100',
+            
         ]);
 
         Producto::create([
@@ -140,6 +152,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '3',
             'cantidad_minima' => '40',
             'cantidad' => '70',
+            'proveedor_id' => '1'
         ]);
 
         Producto::create([
@@ -150,6 +163,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '3',
             'cantidad_minima' => '60',
             'cantidad' => '90',
+            'proveedor_id' => '2'
         ]);
 
         Producto::create([
@@ -160,6 +174,7 @@ class ProductoSeeder extends Seeder
             'categoria_id' => '3',
             'cantidad_minima' => '50',
             'cantidad' => '80',
+            'proveedor_id' => '3'
         ]);
     }
     }

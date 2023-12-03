@@ -13,22 +13,36 @@ class ProveedorSeeder extends Seeder
      */
     public function run(): void
     {
-        Proveedor::create([
-            'nombre'=>'GorllaClub',
-            'mail'=>'gc@gmail.com',
-            'telefono'=>'3875696010',
-            'direccion'=>'LaLuna',
-            'cuit'=>'546168464',
-            'comentario'=>'LaLuna',
+        $proveedor1 = Proveedor::create([
+            'nombre' => 'GorllaClub',
+            'email' => 'gc@gmail.com',
+            'telefono' => '3875696010',
+            'direccion' => 'LaBsas',
+            'cuit' => '546168464',
+            'comentario' => 'Ñañeras',
         ]);
 
-        Proveedor::create([
-            'nombre'=>'Adidas',
-            'mail'=>'Adidas@gmail.com',
-            'telefono'=>'3875696011',
-            'direccion'=>'LaLuna2',
-            'cuit'=>'5461684644',
-            'comentario'=>'LaLuna2',
+        $proveedor2 = Proveedor::create([
+            'nombre' => 'blackrock',
+            'email' => 'blackrock@gmail.com',
+            'telefono' => '3875696011',
+            'direccion' => 'LaLunaOscura',
+            'cuit' => '3121231231',
+            'comentario' => 'LaLunaOscura',
+        ]);
+
+        $proveedor3 = Proveedor::create([
+            'nombre' => 'Grifith',
+            'email' => 'grifith@gmail.com',
+            'telefono' => '3875696012',
+            'direccion' => 'LaManoDeDios',
+            'cuit' => '31231111300',
+            'comentario' => 'Femtho...',
+        ]);
+
+        // Modificar la creación del ProductoSeeder para usar los IDs de los proveedores creados
+        $this->call(ProductoSeeder::class, [
+            'proveedorIds' => [$proveedor1->id, $proveedor2->id, $proveedor3->id],
         ]);
     }
 }
