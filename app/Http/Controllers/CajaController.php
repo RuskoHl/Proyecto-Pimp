@@ -43,7 +43,7 @@ class CajaController extends Controller
     public function update(CajaRequest $request, Caja $caja)
     {
         // Obtener las ventas en el rango de fechas de la caja
-        $ventas = Venta::whereBetween('fecha_emision', [$caja->fecha_apertura, $caja->fecha_cierre])->get();
+        $ventas = Venta::whereBetween('fecha_emision', [$caja->fecha_apertura, $request->get('fecha_cierre')])->get();
     
         // Calcular el monto total de las ventas
         $montoVentas = $ventas->sum('valor_total');
@@ -55,11 +55,11 @@ class CajaController extends Controller
         $nuevoMontoFinal = $request->get('monto_inicial') + $montoVentas - $extraccion;
     
         // Mostrar información de depuración
-// Mostrar información de depuración
-Log::info('Monto Inicial:', ['monto_inicial' => $request->get('monto_inicial')]);
-Log::info('Monto Ventas:', ['monto_ventas' => $montoVentas]);
-Log::info('Extracción:', ['extraccion' => $extraccion]);
-Log::info('Nuevo Monto Final:', ['nuevo_monto_final' => $nuevoMontoFinal]);
+        Log::info('Ventas: ', ['ventas' => $ventas]);
+        Log::info('Monto Inicial:', ['monto_inicial' => $request->get('monto_inicial')]);
+        Log::info('Monto Ventas:', ['monto_ventas' => $montoVentas]);
+        Log::info('Extracción:', ['extraccion' => $extraccion]);
+        Log::info('Nuevo Monto Final:', ['nuevo_monto_final' => $nuevoMontoFinal]);
 
     
         // Actualizar el monto final de la caja
@@ -70,7 +70,7 @@ Log::info('Nuevo Monto Final:', ['nuevo_monto_final' => $nuevoMontoFinal]);
             'fecha_cierre' => $request->get('fecha_cierre'),
             'cantidad_ventas' => $request->get('cantidad_ventas'),
             'status' => $request->get('status') == 'Abierto' ? 1 : 0,
-            'extraccion' => $extraccion - $montoVentas, // Restar el monto total de las ventas al valor de extracción
+            'extraccion' => $extraccion, // Restar el monto total de las ventas al valor de extracción
         ]);
     
         // Redireccionar a la vista de índice de cajas con un mensaje de éxito
