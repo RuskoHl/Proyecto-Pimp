@@ -19,67 +19,66 @@ class CajaController extends Controller
     
     public function index()
     {
-        // Obtener todas las cajas con sus ventas relacionadas
-        $cajas = Caja::with('ventas')->latest()->get();
-        
-        // Calcular el monto final de todas las cajas sumando sus montos finales individuales
-        $totalMontoFinal = $cajas->sum('monto_final');
-        
-        // Iterar sobre las cajas para calcular la sumatoria de ventas y actualizar el monto final
-        foreach ($cajas as $caja) {
-            $caja->sumatoriaVentas = $caja->ventas->sum('valor_total');
-            $caja->monto_final = $caja->monto_inicial + $caja->sumatoriaVentas;
-        }
-    
-        // Calcular el monto final automático sumando las sumatorias de ventas de todas las cajas
-        $montoFinalAutomatico = $cajas->sum('monto_final');
-    
-        // Renderizar la vista con los datos necesarios
-        return view('panel.caja.index', compact('cajas', 'montoFinalAutomatico'))->with('totalMontoFinal', $totalMontoFinal);
+    // Obtener todas las cajas con sus ventas relacionadas
+    $cajas = Caja::with('ventas')->latest()->get();
+
+    // Calcular el monto final de todas las cajas sumando sus montos finales individuales
+    $totalMontoFinal = $cajas->sum('monto_final');
+
+    // Iterar sobre las cajas para calcular la sumatoria de ventas y actualizar el monto final
+    foreach ($cajas as $caja) {
+        $caja->sumatoriaVentas = $caja->ventas->sum('valor_total');
+        // Ajusta el monto final para reflejar lo que está almacenado en la base de datos
+        $caja->monto_final = $caja->monto_inicial + $caja->sumatoriaVentas - $caja->extraccion;
     }
+
+    // Calcular el monto final automático sumando las sumatorias de ventas de todas las cajas
+    $montoFinalAutomatico = $cajas->sum('monto_final');
+
+    // Renderizar la vista con los datos necesarios
+    return view('panel.caja.index', compact('cajas', 'montoFinalAutomatico'))->with('totalMontoFinal', $totalMontoFinal);
+    }
+
     
     public function update(CajaRequest $request, Caja $caja)
     {
-        // Actualizar los campos de la caja con los datos del formulario
-        $caja->fecha_apertura = $request->get('fecha_apertura');
-        $caja->monto_inicial = $request->get('monto_inicial');
-        $caja->fecha_cierre = $request->get('fecha_cierre');        
-    
         // Obtener las ventas en el rango de fechas de la caja
-        $ventas = Venta::when($caja->fecha_apertura, function ($query) use ($caja) {
-            return $query->where('fecha_emision', '>=', $caja->fecha_apertura);
-        })
-        ->when($caja->fecha_cierre, function ($query) use ($caja) {
-            return $query->where('fecha_emision', '<=', $caja->fecha_cierre);
-        })
-        ->get();
-
+        $ventas = Venta::whereBetween('fecha_emision', [$caja->fecha_apertura, $caja->fecha_cierre])->get();
     
         // Calcular el monto total de las ventas
         $montoVentas = $ventas->sum('valor_total');
     
-        // Actualizar el monto final de la caja sumando el monto inicial y el monto de las ventas
-        $caja->monto_final = $caja->monto_inicial + $montoVentas;
+        // Obtener el valor de extracción de la caja
+        $extraccion = $caja->extraccion;
     
-        // Actualizar otros campos de la caja
-        $caja->cantidad_ventas = $request->get('cantidad_ventas');
-        $caja->status = $request->get('status') == 'Abierto' ? 1 : 0;
+        // Calcular el nuevo monto final de la caja
+        $nuevoMontoFinal = $request->get('monto_inicial') + $montoVentas - $extraccion;
     
-        // Guardar los cambios en la base de datos
-        $caja->save(); // Utilizar save() en lugar de update()
+        // Mostrar información de depuración
+// Mostrar información de depuración
+Log::info('Monto Inicial:', ['monto_inicial' => $request->get('monto_inicial')]);
+Log::info('Monto Ventas:', ['monto_ventas' => $montoVentas]);
+Log::info('Extracción:', ['extraccion' => $extraccion]);
+Log::info('Nuevo Monto Final:', ['nuevo_monto_final' => $nuevoMontoFinal]);
+
+    
+        // Actualizar el monto final de la caja
+        $caja->update([
+            'monto_final' => $nuevoMontoFinal,
+            'fecha_apertura' => $request->get('fecha_apertura'),
+            'monto_inicial' => $request->get('monto_inicial'),
+            'fecha_cierre' => $request->get('fecha_cierre'),
+            'cantidad_ventas' => $request->get('cantidad_ventas'),
+            'status' => $request->get('status') == 'Abierto' ? 1 : 0,
+            'extraccion' => $extraccion - $montoVentas, // Restar el monto total de las ventas al valor de extracción
+        ]);
     
         // Redireccionar a la vista de índice de cajas con un mensaje de éxito
         return redirect()->route('caja.index')->with('alert', 'Caja "' . $caja->fecha_apertura . '" actualizado exitosamente.');
     }
     
-
-    public function create()
-    {
-        $caja = new Caja();
-        return view('panel.caja.create', compact('caja'));
-
-    }
-
+    
+    
     public function store(CajaRequest $request)
 {
     // Crea una nueva instancia de Caja
@@ -95,11 +94,8 @@ class CajaController extends Controller
     $ventas = Venta::where('fecha_emision', '>=', $caja->fecha_apertura)
                   ->where('fecha_emision', '<=', $caja->fecha_cierre)
                   ->get();
-                  $caja->monto_final = $ventas->sum('valor_total');
-    
-    if ($caja->count() === 1 && (!$caja->monto_final || $caja->monto_final == 0)) {
-        $caja->monto_final = Venta::sum('valor_total');
-    }
+    $caja->monto_final = $request->get('monto_inicial') + $ventas->sum('valor_total');
+
     // Convierte el valor 'status' a un número (0 o 1) según la selección del usuario
     $caja->status = $request->get('status') == 'Abierto' ? 1 : 0;
 
@@ -107,12 +103,20 @@ class CajaController extends Controller
     $caja->save();
 
     $montoFinalAutomatico = $caja->sum('sumatoriaVentas');
-   return redirect()
+
+    return redirect()
         ->route('caja.index')
         ->with('alert', 'Caja "' . $caja->fecha_apertura . '" agregada exitosamente.')
         ->with('montoFinalAutomatico', $montoFinalAutomatico);
 }
 
+    
+    public function create()
+    {
+        $caja = new Caja();
+        return view('panel.caja.create', compact('caja'));
+
+    }
     public function show(Caja $caja)
     {
         return view('panel.caja.show', compact('caja'));

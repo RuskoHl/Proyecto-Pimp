@@ -52,34 +52,33 @@
                                             </td>
                                             <td>
                                                 @if($compra->estatus_cobro)
-                                                    <span class="badge badge-primary">Cobrado</span>
+                                                    <span class="badge badge-success">Cobrado</span>
                                                 @else
-                                                    <span class="badge badge-warning">Esperando Cobro</span>
+                                                    <span class="badge badge-danger">Esperando Cobro</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 <form action="{{ route('compra.cambiar-estado-entrega', $compra->id) }}" method="post" class="d-inline">
                                                     @csrf
                                                     @method('PUT')
-                                                    <button type="submit" class="btn btn-info btn-sm">
+                                                    <button type="submit" class="btn btn-info btn-sm ">
                                                         @if($compra->estatus_entrega)
-                                                            Marcar como No Recibido
+                                                            No Recibido
                                                         @else
                                                             Marcar como Recibido
                                                         @endif
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('compra.cambiar-estado-cobro', $compra->id) }}" method="post" class="d-inline">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <button type="submit" class="btn btn-warning btn-sm">
-                                                        @if($compra->estatus_cobro)
-                                                            Marcar como No Cobrado
-                                                        @else
+    
+                                                @if(!$compra->estatus_cobro)
+                                                    <form action="{{ route('compra.cambiar-estado-cobro', $compra->id) }}" method="post" class="d-inline">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-danger btn-sm">
                                                             Marcar como Cobrado
-                                                        @endif
-                                                    </button>
-                                                </form>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

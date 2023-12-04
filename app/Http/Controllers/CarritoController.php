@@ -142,7 +142,7 @@ class CarritoController extends Controller
 
         // Guarda la venta
         $venta->save();
-
+        $caja->extraccion -= $precioTotal;
         // Asocia la venta al carrito_usuario
         DB::table('carrito_usuario')->where('id', $carritoUsuarioId)->update(['venta_id' => $venta->id]);
 

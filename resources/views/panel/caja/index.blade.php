@@ -56,39 +56,49 @@
                             <th scope="col" class="text-uppercase">sumatoria ventas</th>
                             <th scope="col" class="text-uppercase">Status</th>
                             <th scope="col" class="text-uppercase">monto_final</th>
-                            <th scope="col" class="text-uppercase">cantidad_ventas</th>
-                            
+                            <th scope="col" class="text-uppercase">Cantidad_ventas</th>
+                            <th scope="col" class="text-uppercase">Egresos</th>
                             <th scope="col" class="text-uppercase">Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($cajas as $caja)
-                        <tr>
-                            <td>{{ $caja->id }}</td>
-                            <td>{{ $caja->fecha_apertura }}</td>
-                            <td>{{ $caja->monto_inicial }}</td>
-                            <td>{{ $caja->fecha_cierre }}</td>
-                            <td>{{ $caja->sumatoriaVentas }}</td>
-                            <td>
-                                @if ($caja->status === 1)
-                                    <span class="badge bg-info">Abierto</span>
-                                @else
-                                    <span class="badge bg-danger">Cerrado</span>
-                                @endif
-                            </td>
-                            <td><h6 class="text-success">{{ $caja->monto_final }}</h6></td>
-                            <td>{{ $caja->cantidadVentas() }}</td>
-                            
-                            
-                            <td>
-                                <div class="d-flex flex-column">
-                                    <a href="{{ route('caja.show', $caja) }}" class="btn btn-sm btn-info text-white text-uppercase me-1 ">
-                                        Ver
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
+    <tr>
+        <td>{{ $caja->id }}</td>
+        <td>{{ $caja->fecha_apertura }}</td>
+        <td>{{ $caja->monto_inicial }}</td>
+        <td>{{ $caja->fecha_cierre }}</td>
+        <td>
+            @if (isset($caja->sumatoriaVentas))
+                {{ $caja->sumatoriaVentas }}
+            @else
+                Calculando... <!-- Puedes personalizar el mensaje mientras se calcula -->
+            @endif
+        </td>
+        <td>
+            @if ($caja->status === 1)
+                <span class="badge bg-info">Abierto</span>
+            @else
+                <span class="badge bg-danger">Cerrado</span>
+            @endif
+        </td>
+        <td>
+            <h6 class="text-success">{{ $caja->monto_final }}</h6>
+        </td>
+        <td>{{ $caja->cantidadVentas() }}</td>
+        <td>
+            <span class="text-danger">${{ $caja->extraccion }}</span>
+        </td>
+        <td>
+            <div class="d-flex flex-column">
+                <a href="{{ route('caja.show', $caja) }}" class="btn btn-sm btn-info text-white text-uppercase me-1">
+                    Ver
+                </a>
+            </div>
+        </td>
+    </tr>
+@endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -112,7 +122,7 @@
 @section('js')
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        new DataTable('#tabla-proveedors', {
+        new DataTable('#tabla-cajas', {
             responsive: true
         });
     });

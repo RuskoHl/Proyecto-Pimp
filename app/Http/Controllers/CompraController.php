@@ -50,16 +50,23 @@ class CompraController extends Controller
         $compra->save();
 
         // Asignar la caja a la compra
+        // $caja = Caja::where('status', 1)
+        //     ->whereDate('fecha_apertura', '<=', $compra->created_at->toDateString())
+        //     ->whereDate('fecha_cierre', '>=', $compra->created_at->toDateString())
+        //     ->first();
+ 
+    //    O considerando solo la fecha de apertura
         $caja = Caja::where('status', 1)
-            ->where('fecha_apertura', '<=', $compra->created_at)
-            ->where('fecha_cierre', '>=', $compra->created_at)
+            ->whereDate('fecha_apertura', '<=', $compra->created_at->toDateString())
             ->first();
 
         if ($caja) {
             $compra->caja_id = $caja->id;
             $compra->save();
+            
+        } else {
+            dd('No se asignó una caja a la compra pero igual se guardo como null');
         }
-
         // Adjuntar solo los productos seleccionados a la compra
         foreach ($cantidades as $productoId => $cantidad) {
             if ($cantidad > 0) { // Verificar si la cantidad es mayor que cero
@@ -91,6 +98,8 @@ class CompraController extends Controller
     {
         $compra = Compra::findOrFail($compraId);
 
+        $estadoAnterior = $compra->estatus_entrega;
+
         // Modificar el estado de entrega
         $compra->estatus_entrega = !$compra->estatus_entrega;
         $compra->save();
@@ -104,6 +113,11 @@ class CompraController extends Controller
         } else {
             // Ejemplo: Deshacer acciones al revertir la entrega
             // Puedes agregar lógica según tus necesidades
+            if ($estadoAnterior) {
+                foreach ($compra->productos as $producto) {
+                    $producto->decrement('cantidad', $producto->pivot->cantidad);
+                }
+            }
         }
 
         return redirect()->route('compra.listado')->with('success', 'Estado de entrega modificado con éxito');
@@ -115,43 +129,23 @@ class CompraController extends Controller
     
         // Verificar si la compra ya está marcada como cobrada
         if ($compra->estatus_cobro) {
-            $caja = Caja::where('status', 1)
-                ->where('fecha_apertura', '<=', $compra->created_at)
-                ->where('fecha_cierre', '>=', $compra->created_at)
-                ->first();
-    
-            if ($caja) {
-                // Resta o suma el monto_total según el estatus_cobro
-                $caja->extraccion += ($compra->estatus_cobro ? -1 : 1) * $compra->monto_total;
-                $caja->save();
-            }
-    
-            // Modificar el estado de cobro después de actualizar la extracción
-            $compra->estatus_cobro = !$compra->estatus_cobro;
-            $compra->save();
-    
-            return redirect()->route('compra.listado')->with('success', 'Estado de cobro modificado con éxito');
-        } else {
-            // Realizar acciones al cobrar (si es necesario)
-            // ...
-    
-            // Actualizar la columna extraccion en la caja
-            $caja = Caja::where('status', 1)
-                ->where('fecha_apertura', '<=', $compra->created_at)
-                ->where('fecha_cierre', '>=', $compra->created_at)
-                ->first();
-    
-            if ($caja) {
-                $caja->extraccion += $compra->monto_total;
-                $caja->save();
-            }
+            return redirect()->route('compra.listado')->with('error', 'La compra ya ha sido marcada como cobrada y no puede revertirse.');
         }
     
-        // Modificar el estado de cobro
-        $compra->estatus_cobro = !$compra->estatus_cobro;
+        // Obtener la caja correspondiente a la compra
+        $cajaId = $compra->caja_id;
+    
+        // Resta o suma el monto_total según el estatus_cobro
+        $caja = Caja::find($cajaId);
+        $caja->extraccion += ($compra->estatus_cobro ? -1 : 1) * $compra->monto_total;
+        $caja->save();
+    
+        // Modificar el estado de cobro después de actualizar la extracción
+        $compra->estatus_cobro = true;
         $compra->save();
     
         return redirect()->route('compra.listado')->with('success', 'Estado de cobro modificado con éxito');
     }
     
+
 }
