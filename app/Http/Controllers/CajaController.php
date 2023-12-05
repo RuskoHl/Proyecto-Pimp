@@ -80,35 +80,35 @@ class CajaController extends Controller
     
     
     public function store(CajaRequest $request)
-{
-    // Crea una nueva instancia de Caja
-    $caja = new Caja();
+    {
+        // Crea una nueva instancia de Caja
+        $caja = new Caja();
 
-    // Llena los campos de la caja desde la solicitud
-    $caja->fecha_apertura = $request->get('fecha_apertura');
-    $caja->monto_inicial = $request->get('monto_inicial');
-    $caja->fecha_cierre = $request->get('fecha_cierre');
-    $caja->cantidad_ventas = $request->get('cantidad_ventas');
+        // Llena los campos de la caja desde la solicitud
+        $caja->fecha_apertura = $request->get('fecha_apertura');
+        $caja->monto_inicial = $request->get('monto_inicial');
+        $caja->fecha_cierre = $request->get('fecha_cierre');
+        $caja->cantidad_ventas = $request->get('cantidad_ventas');
 
-    // Calcula automáticamente el monto_final sumando las ventas
-    $ventas = Venta::where('fecha_emision', '>=', $caja->fecha_apertura)
-                  ->where('fecha_emision', '<=', $caja->fecha_cierre)
-                  ->get();
-    $caja->monto_final = $request->get('monto_inicial') + $ventas->sum('valor_total');
+        // Calcula automáticamente el monto_final sumando las ventas
+        $ventas = Venta::where('fecha_emision', '>=', $caja->fecha_apertura)
+                    ->where('fecha_emision', '<=', $caja->fecha_cierre)
+                    ->get();
+        $caja->monto_final = $request->get('monto_inicial') + $ventas->sum('valor_total');
 
-    // Convierte el valor 'status' a un número (0 o 1) según la selección del usuario
-    $caja->status = $request->get('status') == 'Abierto' ? 1 : 0;
+        // Convierte el valor 'status' a un número (0 o 1) según la selección del usuario
+        $caja->status = $request->get('status') == 'Abierto' ? 1 : 0;
 
-    // Guarda la caja en la base de datos
-    $caja->save();
+        // Guarda la caja en la base de datos
+        $caja->save();
 
-    $montoFinalAutomatico = $caja->sum('sumatoriaVentas');
+        $montoFinalAutomatico = $caja->sum('sumatoriaVentas');
 
-    return redirect()
-        ->route('caja.index')
-        ->with('alert', 'Caja "' . $caja->fecha_apertura . '" agregada exitosamente.')
-        ->with('montoFinalAutomatico', $montoFinalAutomatico);
-}
+        return redirect()
+            ->route('caja.index')
+            ->with('alert', 'Caja "' . $caja->fecha_apertura . '" agregada exitosamente.')
+            ->with('montoFinalAutomatico', $montoFinalAutomatico);
+    }
 
     
     public function create()

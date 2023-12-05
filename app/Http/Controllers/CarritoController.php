@@ -14,10 +14,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\Venta;
+use App\Services\MercadoPagoService;
 
 
 class CarritoController extends Controller
 {
+    public function __construct( private MercadoPagoService $mercadoPagoService,)
+    {
+
+    }
     public function mostrarCarrito()
     {
         return view('carrito');
@@ -67,7 +72,7 @@ class CarritoController extends Controller
         return back()->with('success', 'Producto eliminado del carrito con éxito');
     }
    
-
+    
     public function storeCarritoEnBaseDeDatos()
     {
         // Obtén el carrito actual
@@ -126,6 +131,8 @@ class CarritoController extends Controller
 
         // Almacena el contenido del carrito en la base de datos usando el identificador único
         Cart::store($identificadorCarrito);
+        $mercadoPagoService = new MercadoPagoService();
+        $preferencia = $mercadoPagoService->crearPreferencia($precioTotal);
 
         // Obtiene el contenido del carrito desde la tabla 'shopping_cart'
         $contenidoFromCart = Cart::content()->toJson();
@@ -142,7 +149,7 @@ class CarritoController extends Controller
 
         // Guarda la venta
         $venta->save();
-        $caja->extraccion -= $precioTotal;
+
         // Asocia la venta al carrito_usuario
         DB::table('carrito_usuario')->where('id', $carritoUsuarioId)->update(['venta_id' => $venta->id]);
 
@@ -150,7 +157,7 @@ class CarritoController extends Controller
         Cart::destroy($identificadorCarrito);
         session(['venta' => $venta]);
 
-        return redirect()->route('preventa', ['venta' => $venta])->with('success', 'Venta cerrada y carrito asociado a la venta');
+        return redirect($preferencia->sandbox_init_point);
     }
 
 
