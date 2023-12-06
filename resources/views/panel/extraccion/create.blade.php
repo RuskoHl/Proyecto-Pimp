@@ -11,8 +11,8 @@
         </a>
         <div class="card mt-3">
             <div class="card-body">
-                <form action="{{ route('extraccion.store') }}" method="post">
-                    @csrf
+<form action="{{ route('extraccion.store') }}" method="post" id="extraccionForm">
+    @csrf
 
                     <div class="mb-3">
                         <label for="monto" class="form-label">Monto a extraer:</label>
@@ -31,4 +31,32 @@
             </div>
         </div>
     </div>
+    @push('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Capturamos el formulario
+            const extraccionForm = document.getElementById('extraccionForm');
+    
+            extraccionForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevenir el envío del formulario por defecto
+    
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "¡Se realizará una extracción!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, realizar extracción"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Si se confirma, enviar el formulario de extracción
+                        extraccionForm.submit();
+                    }
+                });
+            });
+        });
+    </script>
+    @endpush
 @endsection

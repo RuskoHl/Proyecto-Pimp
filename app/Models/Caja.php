@@ -28,10 +28,16 @@ class Caja extends Model
     {
         return $this->hasMany(Venta::class);
     }
-public function cantidadVentas()
-{
-    return $this->ventas()->count();
-}
+    
+    public function compras()
+    {
+        return $this->hasMany(Compra::class, 'caja_id');
+    }
+
+    public function cantidadVentas()
+    {
+        return $this->ventas()->count();
+    }
 
 }
 

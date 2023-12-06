@@ -6,23 +6,35 @@
 @section('plugins.Chartjs', true)
 
 @section('content_header')
-    <h1 class="text-bold">Gráfico Ingresos/Egresos Caja</h1>
+    <h1 class="text-bold">Gráfico <span class="text-danger">Ingresos</span>/<span class="text-danger">Egresos</span> Caja</h1>
 @stop
 
 @section('content')
-    <div class="container-fluid">
-        <h3>Datos Estadísticos de <span class="text-danger">Ingresos y Egresos a Caja</span></h3>
-
-        <div class="row">
-            <!-- Montos Iniciales CHART -->
-    
-
-            <!-- Agrega este elemento para el gráfico -->
-            <div class="col-md-12">
-                <canvas class="lineChart" data-chart-type="line" id="lineChart"></canvas>
+<div class="container-fluid">
+    <h3>Datos Estadísticos de <span class="text-danger">Ingresos y Egresos a Caja</span></h3>
+    <a href="{{ route('caja.index') }}" class="btn btn-sm btn-danger text-uppercase mb-2">
+        Volver al Listado de cajas
+    </a>
+    <div class="row">
+        <!-- Agrega este elemento para el gráfico -->
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <canvas class="lineChart" data-chart-type="line" id="lineChart"></canvas>
+                </div>
             </div>
+
+            <!-- Configuración del gráfico -->
+            @php
+                $config_linechart_ingresos_egresos = [
+                    // Aquí va la configuración del gráfico
+                    // ...
+                ];
+            @endphp
+            <input type="hidden" id="config_linechart_ingresos_egresos" value="{{ json_encode($config_linechart_ingresos_egresos) }}">
         </div>
     </div>
+</div>
 @stop
 
 @section('css')

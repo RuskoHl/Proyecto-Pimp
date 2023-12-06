@@ -1,5 +1,3 @@
-<!-- resources/views/panel/compra/listado.blade.php -->
-
 @extends('adminlte::page')
 
 @section('content')
@@ -8,6 +6,18 @@
             <h1>Listado de <span class="text-danger">Compras Realizadas</span></h1>
             <br>
             <div class="col-md-12">
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-info">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <a href="{{ route('compra.index') }}" class="btn btn-danger">Volver a Realizar compra</a>
             </div>
             <div class="col-md-12 mx-auto mt-2 mb-2">
@@ -58,10 +68,10 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <form action="{{ route('compra.cambiar-estado-entrega', $compra->id) }}" method="post" class="d-inline">
+                                                <form id="form-cobro-{{ $compra->id }}" action="{{ route('compra.cambiar-estado-cobro', $compra->id) }}" method="post" class="d-inline">
                                                     @csrf
                                                     @method('PUT')
-                                                    <button type="submit" class="btn btn-info btn-sm ">
+                                                    <button type="submit" class="btn btn-info btn-sm">
                                                         @if($compra->estatus_entrega)
                                                             No Recibido
                                                         @else
@@ -69,15 +79,11 @@
                                                         @endif
                                                     </button>
                                                 </form>
-    
+                                            
                                                 @if(!$compra->estatus_cobro)
-                                                    <form action="{{ route('compra.cambiar-estado-cobro', $compra->id) }}" method="post" class="d-inline">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <button type="submit" class="btn btn-danger btn-sm">
-                                                            Marcar como Cobrado
-                                                        </button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmarCobro('{{ $compra->id }}')">
+                                                        Marcar como Cobrado
+                                                    </button>
                                                 @endif
                                             </td>
                                         </tr>
@@ -90,4 +96,26 @@
             </div>
         </div>
     </div>
+    @push('js')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            function confirmarCobro(compraId) {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Este proceso es irreversible. ¿Deseas marcar la compra como cobrada?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, cobrar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Realizar la acción de cambio de estado aquí (usando AJAX o un formulario)
+                        document.getElementById('form-cobro-' + compraId).submit();
+                    }
+                });
+            }
+        </script>
+    @endpush
 @endsection

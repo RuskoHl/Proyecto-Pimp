@@ -79,6 +79,8 @@
 <!-- Agregar un script para manejar la carga dinámica de productos -->
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
     $(document).ready(function () {
         // Escuchar el evento de cambio en el campo de proveedores
@@ -125,9 +127,27 @@
                 $('input[name="cantidad[' + targetId + ']"]').prop('disabled', true);
             });
         });
+        // Agregar SweetAlert para la confirmación de compra
+        $('form').submit(function (e) {
+                    e.preventDefault(); // Evitar que el formulario se envíe directamente
 
-    });
-</script>
+                    Swal.fire({
+                        title: "Confirmar Compra",
+                        text: "¿Estás seguro de realizar esta compra?",
+                        icon: "info",
+                        showCancelButton: true,
+                        confirmButtonColor: "#28a745", // Color verde
+                        cancelButtonColor: "#dc3545", // Color rojo
+                        confirmButtonText: "Sí, realizar compra"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Si se confirma, enviar el formulario de compra
+                            $(this).unbind('submit').submit();
+                        }
+                    });
+                });
+            });
+        </script>
 @endsection
 
 @endsection

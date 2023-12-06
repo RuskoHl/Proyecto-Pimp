@@ -21,4 +21,10 @@ class Caja2 extends Model
         'status',
         'extraccion'
     ];
+    
+    public function compras()
+    {
+        return $this->hasMany(Compra::class, 'caja_id');
+    }
+
 }

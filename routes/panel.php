@@ -19,6 +19,11 @@ Route::get('/', function() {
     return view('panel.index');
 });
 
+Route::get('/panel/compra/mostrar-mensaje-caja-cerrada', [CompraController::class, 'mostrarMensajeCajaCerrada'])->name('mostrar-mensaje-caja-cerrada');
+Route::get('/panel/compra/mostrar-formulario-compra', [CompraController::class, 'mostrarFormularioCompra'])->name('mostrar-formulario-compra');
+
+
+
 Route::get('/panel/extraccion', [App\Http\Controllers\ExtraccionController::class, 'index'])->name('extraccion.index');
 Route::get('/extraccion', [ExtraccionController::class, 'index'])->name('extraccion.index');
 Route::get('/extraccion/create', [ExtraccionController::class, 'create'])->name('extraccion.create');

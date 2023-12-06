@@ -8,11 +8,19 @@ use App\Models\Compra;
 use App\Models\Caja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Redirect;
 
 class CompraController extends Controller
 {
     public function index()
     {
+        // Verificar si hay una caja abierta con status 1
+        $cajaAbierta = Caja::where('status', 1)->first();
+        // Si no hay caja abierta, redirigir a la vista 'mostrar-mensaje-caja-cerrada'
+        if (!$cajaAbierta) {
+            return Redirect::route('mostrar-mensaje-caja-cerrada');
+        }
+
         $proveedores = Proveedor::all();
         $productos = Producto::all();
 
@@ -28,6 +36,7 @@ class CompraController extends Controller
 
     public function store(Request $request)
     {
+        
         // Validar los datos del formulario
         $request->validate([
             'proveedor' => 'required|exists:proveedors,id',
@@ -55,17 +64,18 @@ class CompraController extends Controller
         //     ->whereDate('fecha_cierre', '>=', $compra->created_at->toDateString())
         //     ->first();
  
-    //    O considerando solo la fecha de apertura
+        //    O considerando solo la fecha de apertura
+        // Obtener la caja correspondiente a la compra
         $caja = Caja::where('status', 1)
-            ->whereDate('fecha_apertura', '<=', $compra->created_at->toDateString())
+            ->whereDate('fecha_apertura', '<=', now())  // Utilizar now() para obtener la fecha actual
+            ->whereNull('fecha_cierre')  // Asegurarse de que no haya fecha de cierre
             ->first();
 
         if ($caja) {
             $compra->caja_id = $caja->id;
             $compra->save();
-            
         } else {
-            dd('No se asignó una caja a la compra pero igual se guardo como null');
+            return redirect()->route('compra.listado')->with('error', 'No hay una caja abierta. La compra se cargó con caja null.');
         }
         // Adjuntar solo los productos seleccionados a la compra
         foreach ($cantidades as $productoId => $cantidad) {
@@ -132,13 +142,25 @@ class CompraController extends Controller
             return redirect()->route('compra.listado')->with('error', 'La compra ya ha sido marcada como cobrada y no puede revertirse.');
         }
     
-        // Obtener la caja correspondiente a la compra
-        $cajaId = $compra->caja_id;
+        // Verificar si el campo caja_id de la compra tiene un valor válido
+        if (!$compra->caja_id) {
+            return redirect()->route('compra.listado')->with('error', 'La compra no tiene asignada una caja válida.');
+        }
     
-        // Resta o suma el monto_total según el estatus_cobro
-        $caja = Caja::find($cajaId);
-        $caja->extraccion += ($compra->estatus_cobro ? -1 : 1) * $compra->monto_total;
-        $caja->save();
+        // Obtener la caja correspondiente a la compra directamente por el caja_id
+        $caja = Caja::find($compra->caja_id);
+    
+        // Agregamos mensajes de depuración
+        // dd($caja);
+    
+        // Verificar si la caja fue encontrada y está abierta
+        if ($caja && $caja->status == 1 && is_null($caja->fecha_cierre)) {
+            $caja->extraccion += ($compra->estatus_cobro ? -1 : 1) * $compra->monto_total;
+            $caja->save();
+        } else {
+            // Manejar el caso en el que la caja no fue encontrada, no está abierta o ya está cerrada
+            return redirect()->route('compra.listado')->with('error', 'No se pudo encontrar la caja abierta para cargar el monto de extracción');
+        }
     
         // Modificar el estado de cobro después de actualizar la extracción
         $compra->estatus_cobro = true;
@@ -146,6 +168,28 @@ class CompraController extends Controller
     
         return redirect()->route('compra.listado')->with('success', 'Estado de cobro modificado con éxito');
     }
+    
+    public function mostrarFormularioCompra()
+    {
+        // Verificar si hay una caja abierta con status 1
+        $cajaAbierta = Caja::where('status', 1)->first();
+    
+        // Si no hay caja abierta, redirigir a una nueva ruta
+        if (!$cajaAbierta) {
+            return redirect()->route('mostrar-mensaje-caja-cerrada');
+        }
+    
+        // Pasar la variable $cajaAbierta a la vista
+        return view('nombre_de_la_vista', compact('cajaAbierta'));
+    }
+    
+    public function mostrarMensajeCajaCerrada()
+    {
+        return view('panel.compra.mensaje_caja_cerrada');
+    }
+      
+    
+
     
 
 }

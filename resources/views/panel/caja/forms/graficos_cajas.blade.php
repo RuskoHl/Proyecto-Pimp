@@ -7,11 +7,15 @@
 
 @section('content_header')
     <h1 class="text-bold">Gráficos Caja</h1>
+    
 @stop
 
 @section('content')
     <div class="container-fluid">
         <h3>Datos Estadísticos de <span class="text-danger">Montos recaudados por día</span></h3>
+        <a href="{{ route('caja.index') }}" class="btn btn-sm btn-danger text-uppercase mb-2">
+            Volver al Listado de cajas
+        </a>
         <div class="row">
             <!-- Gráfico de Línea -->
             <div class="col-md-6 mx-auto">

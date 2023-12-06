@@ -18,6 +18,8 @@ class Compra extends Model
     {
         return $this->belongsTo(Caja::class, 'caja_id');
     }
+    
+    
     // Relación con la tabla de productos
     public function productos()
     {
