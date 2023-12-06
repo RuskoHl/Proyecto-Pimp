@@ -25,9 +25,9 @@ class Caja extends Model
         return $this->hasMany(Carrito_usuario::class, 'carrito_usuario_id');
     }
     public function ventas()
-{
-    return $this->hasMany(Venta::class, 'caja_id');
-}
+    {
+        return $this->hasMany(Venta::class);
+    }
 public function cantidadVentas()
 {
     return $this->ventas()->count();

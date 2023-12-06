@@ -20,9 +20,6 @@
                 @method('DELETE')
             </form>
             
-            <button id="deleteButton2" class="btn btn-sm btn-danger text-uppercase">
-                Eliminar
-            </button>
             <a href="{{ route('caja.edit', $caja) }}" class="btn btn-sm btn-warning text-white text-uppercase me-1">
                 CERRAR
             </a>

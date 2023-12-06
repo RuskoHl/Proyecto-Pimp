@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CajaRequest;
 use App\Models\Caja2;
 use App\Models\Caja;
+use Carbon\Carbon;
 
 class Caja2Controller extends Controller
 {
@@ -23,11 +24,29 @@ class Caja2Controller extends Controller
 
     public function create()
     {
-        $caja = new Caja2();
-        return view('panel.caja.create', compact('caja'));
-
+        // Recuperar el monto final de la caja anterior
+        $montoFinalCajaAnterior = Caja::where('status', 0)->latest('fecha_cierre')->value('monto_final');
+    
+        // Si no hay caja anterior, asumir un monto predeterminado o manejarlo según tu lógica
+        if (!$montoFinalCajaAnterior) {
+            $montoFinalCajaAnterior = 0;
+        }
+    
+        // Crear una nueva instancia de Caja
+        $caja = new Caja([
+            'fecha_apertura' => Carbon::now(), // Establece la fecha actual automáticamente
+        ]);
+    
+        // Pasa $caja y $montoFinalCajaAnterior a la vista
+        return view('panel.caja.create', compact('caja', 'montoFinalCajaAnterior'));
     }
+    
+    public function obtenerMontoFinalCajaAnterior()
+    {
+        $cajaAnterior = Caja::where('status', 0)->latest('fecha_apertura')->first();
 
+        return $cajaAnterior ? $cajaAnterior->monto_final : 0;
+    }
     public function store(CajaRequest $request)
     {
         $caja = new Caja2();

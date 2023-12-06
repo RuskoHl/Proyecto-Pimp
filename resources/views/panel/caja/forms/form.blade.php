@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
+            <div class="mb-3 row d-none">
                 <label for="fecha_cierre" class="col-sm-4 col-form-label"> * Fecha Cierre </label>
                 <div class="col-sm-8">
                     <input type="datetime-local" class="form-control @error('fecha_cierre') is-invalid @enderror" id="fecha_cierre" name="fecha_cierre" value="{{ old('fecha_cierre', optional($caja)->fecha_cierre) }}">
@@ -60,34 +60,61 @@
                 </div>
             </div>
 
-            <div class="mb-3 row">
-                <label for="status" class="col-sm-4 col-form-label"> * Status </label>
-                <div class="col-sm-8">
-                    <label>
-                        <input type="radio" name="status" value="0" {{ old('status', optional($caja)->status) === 'Abierto' ? 'checked' : '' }}>
-                        Cerrar
-                    </label>
-                    <label>
-                        <input class="d-none" type="radio" name="status" value="0" {{ old('status', optional($caja)->status) === 'Cerrado' ? 'checked' : '' }}>
-                        
-                    </label>
-                    @error('status')
-                        <div class="invalid-feedback"> {{ $message }} </div>
-                    @enderror
+
+
+
+            {{-- modificar desde aqui --}}
+                <div class="card mb-3">
+                    <div class="card-body border border-warning" id="cerrarCajaCard">
+                        <div class="row">
+                            <div class="col-7">
+                            
+                            <h5 class="card-title d-none">Status</h5>
+                            <form>
+                                <div class="form-check form-check-inline d-none">
+                                    <input class="form-check-input" type="radio" name="status" id="abierto" value="Abierto" {{ old('status', optional($caja)->status) == 'Abierto' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="abierto">Abierto</label>
+                                </div>
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="radio" name="status" id="cerrado" value="Cerrado" {{ old('status', optional($caja)->status) == 'Cerrado' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="cerrado"><h2 class="text-warning mb-1"> <span class="text-bold"> Cerrar caja</span></h2></label>
+                                </div>
+                                @error('status')
+                                    <div class="invalid-feedback"> {{ $message }} </div>
+                                @enderror
+                            </form>
+
+                            </div>
+                            <div class="col-4 d-flex align-items-center justify-content-end ">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="60" width="60" viewBox="0 0 448 512" fill="orange"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M50.7 58.5L0 160H208V32H93.7C75.5 32 58.9 42.3 50.7 58.5zM240 160H448L397.3 58.5C389.1 42.3 372.5 32 354.3 32H240V160zm208 32H0V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V192z"/></svg>                            </div>
+                            <div class="col-1"></div>
+                        </div>
+
+                    </div>  
                 </div>
+                <div>
+                    <button id="xd" type="submit" class="btn btn-warning text-uppercase">
+                        {{ $caja->id ? 'Cerrar' : 'Crear' }}
+                    </button>
+                   </div>
             </div>
-            <button id="xd" type="submit" class="btn btn-warning text-uppercase">
-                {{ $caja->id ? 'Cerrar' : 'Crear' }}
-            </button>
-        </form>
         
-        </div>
+
+        </form>
+    </div>
+        
 </div>
 
 @push('js')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Cuando se hace clic en el botón de eliminar
+        // Cuando se hace clic en cualquier parte del card
+        document.getElementById('cerrarCajaCard').addEventListener('click', function () {
+            // Activar el radio de cerrar
+            document.getElementById('cerrado').checked = true;
+        });
+
+        // Cuando se hace clic en el botón de cerrar
         document.getElementById('xd').addEventListener('click', function () {
             // Mostrar SweetAlert de confirmación
             Swal.fire({
@@ -100,12 +127,11 @@
                 confirmButtonText: "Sí, eliminarlo"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Si se confirma, enviar el formulario de eliminación
+                    // Si se confirma, enviar el formulario de cerrar caja
                     document.getElementById('deleteForm2').submit();
                 }
             });
         });
     });
 </script>
-    
 @endpush

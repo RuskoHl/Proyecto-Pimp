@@ -3,73 +3,79 @@
 @section('title', 'PIMP | Carrito')
 
 @section('content')
-    <div class="container border">
-        <h1 class="mt-4 mb-4" style="font-family: 'Old English Text MT', sans-serif;">Carrito de Compras</h1>
-        <!-- Añade este botón donde desees en tu aplicación -->
-        @auth
-        <a href="{{ route('historial.compras') }}" class="btn btn-danger">Ver Historial de Compras</a>
-        @endauth
-    
+    <div class="container mt-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title" style="font-family: 'Old English Text MT', sans-serif;">Carrito de Compras</h1>
+            </div>
+            <div class="card-body ">
+                <!-- Añade este botón donde desees en tu aplicación -->
+                @auth
+                    <a href="{{ route('historial.compras') }}" class="btn btn-danger mb-3">Ver Historial de Compras</a>
+                @endauth
 
-        @if (Cart::count() > 0)
-            <table class="table mt-3">
-                <thead>
-                    <tr>
-                        <th scope="col">Producto</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Precio Unitario</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (Cart::content() as $item)
-                        <tr>
-                            <td>{{ $item->name }}</td>
-                            <td>
-                                <form action="{{ route('carrito.actualizar', $item->rowId) }}" method="POST">
-                                    @csrf
-                                    <input type="number" name="cantidad" value="{{ $item->qty }}" min="1" class="form-control">
-                                    @if(session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
-                                
-                                @if(session('error'))
-                                    <div class="alert alert-danger">
-                                        {{ session('error') }}
-                                    </div>
-                                @endif
-                                    <button onclick="Swal.fire('Actualizando todo el carrito...')" type="submit" class="btn btn-success mt-1">Actualizar</button>
-                                </form>
-                            </td>
-                            <td>${{ $item->price }}</td>
-                            <td>${{ $item->total }}</td>
-                            <td>
-                                <form action="{{ route('carrito.remover', $item->rowId) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                @if (Cart::count() > 0)
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Precio Unitario</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Cart::content() as $item)
+                                <tr>
+                                    <td>{{ $item->name }}</td>
+                                    <td>
+                                        <form action="{{ route('carrito.actualizar', $item->rowId) }}" method="POST">
+                                            @csrf
+                                            <input type="number" name="cantidad" value="{{ $item->qty }}" min="1" class="form-control">
+                                            @if(session('success'))
+                                                <div class="alert alert-success">
+                                                    {{ session('success') }}
+                                                </div>
+                                            @endif
 
-            <h2 class="mt-4">Total del Carrito: <span class="text-danger">${{ Cart::total() }}</span></h2>
+                                            @if(session('error'))
+                                                <div class="alert alert-danger">
+                                                    {{ session('error') }}
+                                                </div>
+                                            @endif
+                                            <button onclick="Swal.fire('Actualizando todo el carrito...')" type="submit" class="btn btn-success mt-1">Actualizar</button>
+                                        </form>
+                                    </td>
+                                    <td>${{ $item->price }}</td>
+                                    <td>${{ $item->total }}</td>
+                                    <td>
+                                        <form action="{{ route('carrito.remover', $item->rowId) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
 
-            <!-- Botón "Realizar Compra" -->
-            <!-- Botón "Guardar Carrito" -->
-            <form action="{{ route('carrito.store') }}" method="POST" id="comprarCarritoForm">
-                @csrf
-                <button type="button" class="btn btn-success" id="comprarCarritoBtn">Comprar Carrito</button>
-            </form>
-        @else
-            <p class="mt-4">El carrito está vacío. <br><br><br><br><br><br></p> </span>
-        @endif
+                    <h2 class="mt-4">Total del Carrito: <span class="text-danger">${{ Cart::total() }}</span></h2>
+
+                    <!-- Botón "Realizar Compra" -->
+                    <!-- Botón "Guardar Carrito" -->
+                    <form action="{{ route('carrito.store') }}" method="POST" id="comprarCarritoForm">
+                        @csrf
+                        <button type="button" class="btn btn-success" id="comprarCarritoBtn">Comprar Carrito</button>
+                    </form>
+                @else
+                    <p class="mt-4">El carrito está vacío.</p>
+                @endif
+            </div>
+        </div>
     </div>
+
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 

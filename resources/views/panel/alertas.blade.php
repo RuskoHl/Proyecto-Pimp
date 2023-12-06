@@ -9,6 +9,9 @@
 {{-- Titulo en el contenido de la Pagina --}}
 @section('content_header')
     <h1>Lista de Productos Escasos</h1>
+    <a href="{{ route('producto.index') }}" class="btn btn-sm btn-danger text-uppercase">
+        Volver al Listado de Productos
+    </a>
 @stop
 
 @section('content')

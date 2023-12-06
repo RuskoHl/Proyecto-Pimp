@@ -17,7 +17,8 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 mb-3">
-
+            <a href="{{ route('productosMasVendidos')}}" class="btn btn-danger m-1" title="0w0">+ vendidos
+            </a>
         </div>
         
         @if (session('alert'))

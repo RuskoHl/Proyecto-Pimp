@@ -5,6 +5,9 @@
 @section('content_header')
     <h1 >Últimos Productos Agregados</h1>
     <p class="text">Los <span class="text-danger">6</span> productos mas recientes.</p>
+    <a href="{{ route('producto.index') }}" class="btn btn-sm btn-danger text-uppercase">
+        Volver al Listado de Productos
+    </a>
 @stop
 
 @section('content')

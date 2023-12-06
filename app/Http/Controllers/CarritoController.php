@@ -19,10 +19,11 @@ use App\Services\MercadoPagoService;
 
 class CarritoController extends Controller
 {
-    public function __construct( private MercadoPagoService $mercadoPagoService,)
-    {
+    public function __construct(
 
-    }
+        private MercadoPagoService $mercadoPagoService,
+    )
+    {}
     public function mostrarCarrito()
     {
         return view('carrito');
@@ -131,8 +132,9 @@ class CarritoController extends Controller
 
         // Almacena el contenido del carrito en la base de datos usando el identificador único
         Cart::store($identificadorCarrito);
-        $mercadoPagoService = new MercadoPagoService();
-        $preferencia = $mercadoPagoService->crearPreferencia($precioTotal);
+
+
+        
 
         // Obtiene el contenido del carrito desde la tabla 'shopping_cart'
         $contenidoFromCart = Cart::content()->toJson();
@@ -155,8 +157,16 @@ class CarritoController extends Controller
 
         // Elimina el carrito almacenado
         Cart::destroy($identificadorCarrito);
+
+        // Almacena la información de la venta en la sesión para que esté disponible después de la redirección
         session(['venta' => $venta]);
 
+
+        // Crea la preferencia de Mercado Pago
+        $mercadoPagoService = new MercadoPagoService();
+        $preferencia = $mercadoPagoService->crearPreferencia($precioTotal);
+
+        // Redirige al usuario al punto de inicio del sandbox de Mercado Pago
         return redirect($preferencia->sandbox_init_point);
     }
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\SubcategoriaController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\CarritoController;
 use App\Models\Producto;
+use App\Http\Controllers\ExtraccionController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,10 @@ Route::get('/', function() {
     return view('panel.index');
 });
 
+Route::get('/panel/extraccion', [App\Http\Controllers\ExtraccionController::class, 'index'])->name('extraccion.index');
+Route::get('/extraccion', [ExtraccionController::class, 'index'])->name('extraccion.index');
+Route::get('/extraccion/create', [ExtraccionController::class, 'create'])->name('extraccion.create');
+Route::post('/extraccion', [ExtraccionController::class, 'store'])->name('extraccion.store');
 
 
 Route::post('/compra/cambiar-estado-entrega/{compra}', [CompraController::class,'cambiarEstadoEntrega'])->name('compra.cambiar-estado-entrega');

@@ -8,6 +8,7 @@ use App\Models\Caja;
 use App\Models\Venta;
 use Carbon\Carbon;
 
+
 use Illuminate\Support\Facades\Log;
 class CajaController extends Controller
 {
@@ -20,7 +21,7 @@ class CajaController extends Controller
     public function index()
     {
     // Obtener todas las cajas con sus ventas relacionadas
-    $cajas = Caja::with('ventas')->latest()->get();
+    $cajas = Caja::with('ventas')->latest('created_at')->get();
 
     // Calcular el monto final de todas las cajas sumando sus montos finales individuales
     $totalMontoFinal = $cajas->sum('monto_final');
@@ -41,41 +42,47 @@ class CajaController extends Controller
 
     
     public function update(CajaRequest $request, Caja $caja)
-    {
-        // Obtener las ventas en el rango de fechas de la caja
-        $ventas = Venta::whereBetween('fecha_emision', [$caja->fecha_apertura, $request->get('fecha_cierre')])->get();
+{
+    // Obtener las ventas en el rango de fechas de la caja
+    $ventas = Venta::whereBetween('fecha_emision', [$caja->fecha_apertura, $request->get('fecha_cierre')])->get();
+
+    // Calcular el monto total de las ventas
+    $montoVentas = $ventas->sum('valor_total');
+
+    // Obtener el valor de extracción de la caja HERRAMIENTA ARREGLO
+    $extraccion = $caja->extraccion;
+
+    // Añadir la línea para manejar la extracción correctamente
+    $caja->extraccion = $request->get('status') == 'Cerrado' ? $montoVentas : 0;
+
+    // Calcular el nuevo monto final de la caja Magia SUPUESTO ARREGLO
+    $nuevoMontoFinal = $request->get('monto_inicial') + $montoVentas - $extraccion;
+    $sumatoriaVentas = $caja->ventas->sum('valor_total');
+    $monto_final =   $caja->monto_inicial + $sumatoriaVentas - $extraccion;
+    //aca ta la magia
+
+    // Establecer automáticamente la fecha de cierre si la caja se está cerrando
+    if ($request->get('status') == 'Cerrado' && $caja->status == 1) {
+        $caja->fecha_cierre = now();
+    }
     
-        // Calcular el monto total de las ventas
-        $montoVentas = $ventas->sum('valor_total');
-    
-        // Obtener el valor de extracción de la caja
-        $extraccion = $caja->extraccion;
-    
-        // Calcular el nuevo monto final de la caja
-        $nuevoMontoFinal = $request->get('monto_inicial') + $montoVentas - $extraccion;
-    
-        // Mostrar información de depuración
-        Log::info('Ventas: ', ['ventas' => $ventas]);
-        Log::info('Monto Inicial:', ['monto_inicial' => $request->get('monto_inicial')]);
-        Log::info('Monto Ventas:', ['monto_ventas' => $montoVentas]);
-        Log::info('Extracción:', ['extraccion' => $extraccion]);
-        Log::info('Nuevo Monto Final:', ['nuevo_monto_final' => $nuevoMontoFinal]);
+
+    // Actualizar el monto final de la caja
+    $caja->update([
+        
+        'fecha_apertura' => $request->get('fecha_apertura'),
+        'monto_inicial' => $request->get('monto_inicial'),
+        'cantidad_ventas' => $request->get('cantidad_ventas'),
+        'status' => $request->get('status') == 'Cerrado' ? 0 : 1, // Invierte el valor para reflejar la lógica de apertura/cierre
+        'extraccion' => $extraccion, // Restar el monto total de las ventas al valor de extracción
+        'monto_final' => $monto_final,
+    ]);
+
+    // Redireccionar a la vista de índice de cajas con un mensaje de éxito
+    return redirect()->route('caja.index')->with('alert', 'Caja "' . $caja->fecha_apertura . '" actualizado exitosamente.');
+}
 
     
-        // Actualizar el monto final de la caja
-        $caja->update([
-            'monto_final' => $nuevoMontoFinal,
-            'fecha_apertura' => $request->get('fecha_apertura'),
-            'monto_inicial' => $request->get('monto_inicial'),
-            'fecha_cierre' => $request->get('fecha_cierre'),
-            'cantidad_ventas' => $request->get('cantidad_ventas'),
-            'status' => $request->get('status') == 'Abierto' ? 1 : 0,
-            'extraccion' => $extraccion, // Restar el monto total de las ventas al valor de extracción
-        ]);
-    
-        // Redireccionar a la vista de índice de cajas con un mensaje de éxito
-        return redirect()->route('caja.index')->with('alert', 'Caja "' . $caja->fecha_apertura . '" actualizado exitosamente.');
-    }
     
     
     
@@ -113,10 +120,21 @@ class CajaController extends Controller
     
     public function create()
     {
+        // Recuperar el monto final de la caja anterior
+        $montoFinalCajaAnterior = Caja::where('status', 0)->latest('fecha_cierre')->value('monto_final');
+    
+        // Si no hay caja anterior, asumir un monto predeterminado o manejarlo según tu lógica
+        if (!$montoFinalCajaAnterior) {
+            $montoFinalCajaAnterior = 0;
+        }
+    
+        // Crear una nueva instancia de Caja
         $caja = new Caja();
-        return view('panel.caja.create', compact('caja'));
-
+    
+        // Pasa $caja y $montoFinalCajaAnterior a la vista
+        return view('panel.caja.create', compact('caja', 'montoFinalCajaAnterior'));
     }
+    
     public function show(Caja $caja)
     {
         return view('panel.caja.show', compact('caja'));
@@ -130,7 +148,12 @@ class CajaController extends Controller
 
     }
   
+    public function obtenerMontoFinalCajaAnterior()
+    {
+        $cajaAnterior = Caja::where('status', 0)->latest('fecha_apertura')->first();
 
+        return $cajaAnterior ? $cajaAnterior->monto_final : 0;
+    }
 
     public function graficoIngresosEgresosCaja()
 {

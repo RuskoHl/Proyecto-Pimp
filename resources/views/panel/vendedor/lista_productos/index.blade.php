@@ -53,7 +53,8 @@
                             <th scope="col">#</th>
                             <th scope="col" class="text-uppercase">Categoría</th>
                             <th scope="col" class="text-uppercase">Nombre</th>
-                            <th scope="col" class="text-uppercase">Descripción</th>
+                            <th scope="col" class="text-uppercase">Stock</th>
+                            <th scope="col" class="text-uppercase">Descripción</th>                         
                             <th scope="col" class="text-uppercase">Imagen</th>
                             <th scope="col" class="text-uppercase">Opciones</th>
                         </tr>
@@ -62,9 +63,10 @@
                         @foreach ($productos as $producto)
                         <tr>
                             <td>{{ $producto->id }}</td>
-                            <td>{{ $producto->categoria->nombre }}</td>
-                            <td>{{ $producto->nombre }}</td>
-                            <td>{{ Str::limit($producto->descripcion, 80) }}</td>
+                            <td class="text-info">{{ $producto->categoria->nombre }}</td>
+                            <td class="text-bold">{{ $producto->nombre }}</td>
+                            <td class="text-danger"><span class="text-bold">{{ $producto->cantidad }}</span></td>
+                            <td>{{ Str::limit($producto->descripcion, 20) }}</td>
                             <td>
                                 <img src="{{ asset($producto->imagen) }}" alt="{{ $producto->nombre }}" class="img-fluid" style="width: 150px;">
                             </td>
