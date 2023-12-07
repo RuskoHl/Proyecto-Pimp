@@ -4,7 +4,7 @@
 
 @section('content')
     <!--BodyPagprincipal-->
-
+    
     {{-- imagen  --}}
     <div class="container-fluid ">
       <div class="row">

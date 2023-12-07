@@ -22,7 +22,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-
+Route::get('/video', function () {
+    return view('video');
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/casa', [App\Http\Controllers\CasaController::class, 'mostrarCasa'])->name('casa');
