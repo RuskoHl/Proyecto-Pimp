@@ -61,15 +61,23 @@
             <div class="mb-3 row">
                 <label for="correo" class="col-sm-4 col-form-label"> * Correo </label>
                 <div class="col-sm-8">
-                    <textarea class="form-control @error('correo') is-invalid @enderror" id="correo" name="correo" value="{{ old('correo', optional($empleado)->correo) }}"></textarea>
+                    <input type="email" class="form-control @error('correo') is-invalid @enderror" id="correo" name="correo" value="{{ old('correo', optional($empleado)->correo) }}">
                     @error('correo')
                         <div class="invalid-feedback"> {{ $message }} </div>
                     @enderror
                 </div>
             </div>
-        
-        </div>
-
+            
+            <div class="mb-3 row">
+                <label for="password" class="col-sm-4 col-form-label"> * ContraseÃ±a </label>
+                <div class="col-sm-8">
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
+                    @error('password')
+                        <div class="invalid-feedback"> {{ $message }} </div>
+                    @enderror
+                </div>
+            </div>
+       
         <div class="card-footer">
             <button type="submit" class="btn btn-success text-uppercase">
                 {{ $empleado->id ? 'Actualizar' : 'Crear' }}

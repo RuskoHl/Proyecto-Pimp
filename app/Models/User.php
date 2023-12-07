@@ -43,7 +43,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    
+    public function empleado()
+    {
+        return $this->hasOne(Empleado::class);
+    }
     public function ventas()
     {
         return $this->hasMany(Venta::class, 'user_id');

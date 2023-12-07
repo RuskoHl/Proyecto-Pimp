@@ -1,0 +1,7 @@
+.password-visible {
+    display: inline;
+}
+
+.password-hidden {
+    display: none;
+}

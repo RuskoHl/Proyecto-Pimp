@@ -45,5 +45,8 @@ class Venta extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    
+    public static function sumarCantidadVentasPorCaja($cajaId)
+    {
+        return static::where('caja_id', $cajaId)->sum('cantidad_ventas');
+    }
 }

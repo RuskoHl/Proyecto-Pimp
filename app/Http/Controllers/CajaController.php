@@ -7,6 +7,7 @@ use App\Http\Requests\CajaRequest;
 use App\Models\Caja;
 use App\Models\Venta;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 
 use Illuminate\Support\Facades\Log;
@@ -42,45 +43,42 @@ class CajaController extends Controller
 
     
     public function update(CajaRequest $request, Caja $caja)
-{
-    // Obtener las ventas en el rango de fechas de la caja
-    $ventas = Venta::whereBetween('fecha_emision', [$caja->fecha_apertura, $request->get('fecha_cierre')])->get();
-
-    // Calcular el monto total de las ventas
-    $montoVentas = $ventas->sum('valor_total');
-
-    // Obtener el valor de extracción de la caja HERRAMIENTA ARREGLO
-    $extraccion = $caja->extraccion;
-
-    // Añadir la línea para manejar la extracción correctamente
-    $caja->extraccion = $request->get('status') == 'Cerrado' ? $montoVentas : 0;
-
-    // Calcular el nuevo monto final de la caja Magia SUPUESTO ARREGLO
-    $nuevoMontoFinal = $request->get('monto_inicial') + $montoVentas - $extraccion;
-    $sumatoriaVentas = $caja->ventas->sum('valor_total');
-    $monto_final =   $caja->monto_inicial + $sumatoriaVentas - $extraccion;
-    //aca ta la magia
-
-    // Establecer automáticamente la fecha de cierre si la caja se está cerrando
-    if ($request->get('status') == 'Cerrado' && $caja->status == 1) {
-        $caja->fecha_cierre = now();
-    }
+    {
+        // Obtener las ventas en el rango de fechas de la caja
+        $ventas = Venta::whereBetween('fecha_emision', [$caja->fecha_apertura, $request->get('fecha_cierre')])->get();
     
-
-    // Actualizar el monto final de la caja
-    $caja->update([
-        
-        'fecha_apertura' => $request->get('fecha_apertura'),
-        'monto_inicial' => $request->get('monto_inicial'),
-        'cantidad_ventas' => $request->get('cantidad_ventas'),
-        'status' => $request->get('status') == 'Cerrado' ? 0 : 1, // Invierte el valor para reflejar la lógica de apertura/cierre
-        'extraccion' => $extraccion, // Restar el monto total de las ventas al valor de extracción
-        'monto_final' => $monto_final,
-    ]);
-
-    // Redireccionar a la vista de índice de cajas con un mensaje de éxito
-    return redirect()->route('caja.index')->with('alert', 'Caja "' . $caja->fecha_apertura . '" actualizado exitosamente.');
-}
+        // Calcular el monto total de las ventas
+        $montoVentas = $ventas->sum('valor_total');
+    
+        // Obtener el valor de extracción de la caja HERRAMIENTA ARREGLO
+        $extraccion = $caja->extraccion;
+    
+        // Añadir la línea para manejar la extracción correctamente
+        $caja->extraccion = $request->get('status') == 'Cerrado' ? $montoVentas : 0;
+    
+        // Calcular el nuevo monto final de la caja Magia SUPUESTO ARREGLO
+        $nuevoMontoFinal = $request->get('monto_inicial') + $montoVentas - $extraccion;
+        $sumatoriaVentas = $ventas->sum('cantidad_ventas'); // Utilizar la columna correcta
+        $monto_final = $caja->monto_inicial + $sumatoriaVentas - $extraccion;
+    
+        // Establecer automáticamente la fecha de cierre si la caja se está cerrando
+        if ($request->get('status') == 'Cerrado' && $caja->status == 1) {
+            $caja->fecha_cierre = now();
+        }
+    
+        // Actualizar el monto final y la cantidad de ventas de la caja
+        $caja->update([
+            'fecha_apertura' => $request->get('fecha_apertura'),
+            'monto_inicial' => $request->get('monto_inicial'),
+            'cantidad_ventas' => $request->get('sumatoriaVentas'), // Actualiza la cantidad de ventas
+            'status' => $request->get('status') == 'Cerrado' ? 0 : 1,
+            'extraccion' => $extraccion,
+            'monto_final' => $monto_final,
+        ]);
+    
+        // Redireccionar a la vista de índice de cajas con un mensaje de éxito
+        return redirect()->route('caja.index')->with('alert', 'Caja "' . $caja->fecha_apertura . '" actualizado exitosamente.');
+    }
 
     
     
@@ -140,10 +138,11 @@ class CajaController extends Controller
         return view('panel.caja.show', compact('caja'));
 
     }
+    
     public function edit(Caja $caja)
-
     {
         $sumatoriaVentas = Venta::sum('valor_total');
+        
         return view('panel.caja.edit', compact('caja','sumatoriaVentas'));
 
     }

@@ -21,6 +21,7 @@ class CreateEmpleadosTable extends Migration
             $table->string('domicilio', 255)->nullable();
             $table->string('telefono', 20)->nullable();
             $table->string('correo')->nullable()->unique();
+            $table->string('password')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

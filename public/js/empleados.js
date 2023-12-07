@@ -40,3 +40,13 @@ let configurationDataTable = {
 $(function() {
     table = $('#tabla-empleados').DataTable(configurationDataTable);
 });
+$(document).ready(function () {
+    $(".toggle-password").click(function () {
+        var passwordCell = $(this).closest("td.password-column");
+        var hiddenPassword = passwordCell.find(".password-hidden");
+        var visiblePassword = passwordCell.find(".password-visible");
+
+        hiddenPassword.toggleClass("d-none");
+        visiblePassword.toggleClass("d-none");
+    });
+});

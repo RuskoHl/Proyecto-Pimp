@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Empleado;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\EmpleadoRequest;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+
+
+
 
 class EmpleadoController extends Controller
 {
@@ -38,13 +44,26 @@ class EmpleadoController extends Controller
             'apellido' => 'required',
             'domicilio' => 'nullable',
             'telefono' => 'nullable',
-            'correo' => 'nullable|unique:empleados,correo',
+            'correo' => 'required|email|unique:empleados,correo',
+            'password' => 'required|min:6',
         ]);
-
-        Empleado::create($request->all());
-
+    
+        // Crea el usuario con el rol de vendedor
+        $user = User::create([
+            'name' => $request->input('nombre'),  // Puedes cambiar esto según tus necesidades
+            'email' => $request->input('correo'), // Usa el campo 'correo' para el correo electrónico del usuario
+            'password' => Hash::make($request->input('password')),
+        ]);
+        $vendedorRole = Role::where('name', 'vendedor')->first();
+        $user->assignRole($vendedorRole);
+    
+        // Crea el empleado y vincula al usuario
+        $empleado = Empleado::create($request->all());
+        $empleado->user_id = $user->id;
+        $empleado->save();
+    
         return redirect()->route('empleado.index')
-            ->with('success', 'Empleado creado exitosamente.');
+            ->with('success', 'Empleado y cuenta creados exitosamente.');
     }
 
     /**

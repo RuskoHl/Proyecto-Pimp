@@ -16,7 +16,11 @@ class Empleado extends Model
 
     //Nombre de las columnas que son modificables
     protected $fillable = [
-        'dni', 'nombre', 'apellido', 'domicilio', 'telefono', 'correo', 'created_at',
+        'dni', 'nombre', 'apellido', 'domicilio', 'telefono', 'correo', 'password', 'created_at',
         'updated_at'
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
