@@ -2,33 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Proveedor;
 use App\Models\Producto;
 use App\Models\Compra;
 use App\Models\Caja;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
+
 
 class CompraController extends Controller
 {
     public function index()
     {
-        // Verificar si hay una caja abierta con status 1
-        $cajaAbierta = Caja::where('status', 1)->first();
-        // Si no hay caja abierta, redirigir a la vista 'mostrar-mensaje-caja-cerrada'
-        if (!$cajaAbierta) {
-            return Redirect::route('mostrar-mensaje-caja-cerrada');
-        }
-
+        // Asegúrate de obtener las cajas según tu lógica
+        $cajas = Caja::all();
+        
         $proveedores = Proveedor::all();
         $productos = Producto::all();
-
-        return view('panel.compra.index', compact('proveedores', 'productos'));
+    
+        return view('panel.compra.index', compact('proveedores', 'productos', 'cajas'));
     }
 
     public function obtenerProductos($proveedorId)
     {
+        
+
         $productos = Producto::where('proveedor_id', $proveedorId)->get();
         return response()->json($productos);
     }
@@ -95,8 +94,16 @@ class CompraController extends Controller
 
     public function formulario()
     {
+        $cajas = Caja::all();
+        // Verificar si hay una caja abierta con status 1
+        $cajaAbierta = Caja::where('status', 1)->first();
+        // Si no hay caja abierta, redirigir a la vista 'mostrar-mensaje-caja-cerrada'
+        if (!$cajaAbierta) {
+            return Redirect::route('mostrar-mensaje-caja-cerrada');
+        }
+
         $proveedores = Proveedor::all();
-        return view('panel.compra.index', compact('proveedores'));
+        return view('panel.compra.index', compact('proveedores', 'cajas'));
     }
  
     public function listadoCompras()
@@ -169,25 +176,26 @@ class CompraController extends Controller
         return redirect()->route('compra.listado')->with('success', 'Estado de cobro modificado con éxito');
     }
     
-    public function mostrarFormularioCompra()
-    {
-        // Verificar si hay una caja abierta con status 1
-        $cajaAbierta = Caja::where('status', 1)->first();
-    
-        // Si no hay caja abierta, redirigir a una nueva ruta
-        if (!$cajaAbierta) {
-            return redirect()->route('mostrar-mensaje-caja-cerrada');
-        }
-    
-        // Pasar la variable $cajaAbierta a la vista
-        return view('nombre_de_la_vista', compact('cajaAbierta'));
-    }
+
     
     public function mostrarMensajeCajaCerrada()
     {
         return view('panel.compra.mensaje_caja_cerrada');
     }
-      
+    // public function mostrarFormularioCompra()
+    // {
+    // //     // Verificar si hay una caja abierta con status 1
+    //     $cajaAbierta = Caja::where('status', 1)->first();
+    
+    // //     // Si no hay caja abierta, redirigir a la vista 'mostrar-mensaje-caja-cerrada'
+    //     if (!$cajaAbierta) {
+    //         return redirect()->route('mostrar-mensaje-caja-cerrada');
+    //     }
+    
+    // //     // Pasar la variable $cajaAbierta a la vista
+    //     return view('panel.compra.index', compact('cajaAbierta'));
+    // }
+  
     
 
     

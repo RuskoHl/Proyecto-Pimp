@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    
     <div class="row">
         <h1>Realizar compra a un <span class="text-danger">Proveedor</span>.</h1>
         <div class="col-md-12">
@@ -10,70 +11,83 @@
             </div>
         </div>
         <br>
-        <div class="col-md-12 mx-auto mt-2 mb-2">
-            @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-            <div class="card">
-                <div class="card-body">
-                    <form action="{{ route('compra.store') }}" method="post">
-                        @csrf
-                        <div class="form-group">
-                            <label for="proveedor">Seleccionar Proveedor:</label>
-                            <select name="proveedor" id="proveedor" class="form-control">
-                                @foreach ($proveedores as $proveedor)
-                                    <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
 
-                        <!-- Agregar una tabla para mostrar los productos del proveedor seleccionado -->
-                        <div class="form-group">
-                            <label>Productos del Proveedor:</label>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Precio Venta</th>
-                                        <th>Seleccionar</th>
-                                        <th class="d-none cantidad-header">Cantidad</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="productos-body">
-                                    @if(isset($productos))
-                                        @foreach($productos as $producto)
-                                            <tr>
-                                                <td>{{ $producto->id }}</td>
-                                                <td class="text-danger">{{ $producto->nombre }}</td>
-                                                <td>{{ $producto->precio }}</td>
-                                                <td>
-                                                    <input type="checkbox" class="seleccion" data-target="{{ $producto->id }}">
-                                                </td>
-                                                <td class="d-none">
-                                                    <input type="number" name="cantidad[{{ $producto->id }}]" value="1" min="1">
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
+        {{-- Verificar si existe al menos una caja con status=1 --}}
+        @if($cajas->where('status', 1)->count() > 0)
+            <div class="col-md-12 mx-auto mt-2 mb-2">
+                @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
 
-                        <!-- Agregar el campo de entrada para el monto total -->
-                        <div class="form-group">
-                            <label for="monto_total">Monto Total de la Compra:</label>
-                            <input type="number" name="monto_total" id="monto_total" class="form-control" step="0.01" required>
-                        </div>
+                <div class="card">
+                    <div class="card-body">
+                        {{-- Resto del formulario --}}
+                        <form action="{{ route('compra.store') }}" method="post">
+                            @csrf
+                            <div class="form-group">
+                                <label for="proveedor">Seleccionar Proveedor:</label>
+                                <select name="proveedor" id="proveedor" class="form-control">
+                                    @foreach ($proveedores as $proveedor)
+                                        <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <button type="submit" class="btn btn-success">Realizar Compra</button>
-                    </form>
+                            <!-- Agregar una tabla para mostrar los productos del proveedor seleccionado -->
+                            <div class="form-group">
+                                <label>Productos del Proveedor:</label>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Precio Venta</th>
+                                            <th>Seleccionar</th>
+                                            <th class="d-none cantidad-header">Cantidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="productos-body">
+                                        @if(isset($productos))
+                                            @foreach($productos as $producto)
+                                                <tr>
+                                                    <td>{{ $producto->id }}</td>
+                                                    <td class="text-danger">{{ $producto->nombre }}</td>
+                                                    <td>{{ $producto->precio }}</td>
+                                                    <td>
+                                                        <input type="checkbox" class="seleccion" data-target="{{ $producto->id }}">
+                                                    </td>
+                                                    <td class="d-none">
+                                                        <input type="number" name="cantidad[{{ $producto->id }}]" value="1" min="1">
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Agregar el campo de entrada para el monto total -->
+                            <div class="form-group">
+                                <label for="monto_total">Monto Total de la Compra:</label>
+                                <input type="number" name="monto_total" id="monto_total" class="form-control" step="0.01" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-success">Realizar Compra</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @else
+        <div class="col-md-12 mt-2">
+            <div class="alert alert-danger">
+                No hay cajas disponibles con status igual a 1. No puedes realizar la compra en este momento.
+            </div>
+        </div>
+    @endif
+</div>
 </div>
 
 <!-- Agregar un script para manejar la carga dinámica de productos -->
@@ -146,8 +160,8 @@
                         }
                     });
                 });
-            });
-        </script>
+    });
+</script>
 @endsection
 
 @endsection

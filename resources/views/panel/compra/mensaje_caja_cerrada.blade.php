@@ -9,7 +9,7 @@
                         <h4><i class="fas fa-exclamation-triangle"></i> ¡Atención!</h4>
                     </div>
                     <div class="card-body text-center">
-                        <p class="text-bold">No hay una caja abierta con status 1. Abre una caja antes de realizar una compra.</p>
+                        <p class="text-bold">No hay una caja abierta. Abre una caja antes de realizar una compra.</p>
                     </div>
                     <div class="card-footer text-center">
                         <a href="{{ route('caja2.create') }}" class="btn btn-success">Abrir Caja</a>
