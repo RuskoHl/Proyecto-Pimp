@@ -68,7 +68,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <form id="form-cobro-{{ $compra->id }}" action="{{ route('compra.cambiar-estado-cobro', $compra->id) }}" method="post" class="d-inline">
+                                                <form id="form-entrega-{{ $compra->id }}" action="{{ route('compra.cambiar-estado-entrega', $compra->id) }}" method="post" class="d-inline">
                                                     @csrf
                                                     @method('PUT')
                                                     <button type="submit" class="btn btn-info btn-sm">
