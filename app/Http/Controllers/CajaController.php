@@ -45,8 +45,8 @@ class CajaController extends Controller
     public function update(CajaRequest $request, Caja $caja)
     {
         // Obtener las ventas en el rango de fechas de la caja
-        $ventas = Venta::whereBetween('fecha_emision', [$caja->fecha_apertura, $request->get('fecha_cierre')])->get();
-    
+        $ventas = Venta::whereBetween('fecha_emision', [$caja->fecha_apertura, now()])->get();
+        Log::info($ventas);
         // Calcular el monto total de las ventas
         $montoVentas = $ventas->sum('valor_total');
     
@@ -58,9 +58,11 @@ class CajaController extends Controller
     
         // Calcular el nuevo monto final de la caja Magia SUPUESTO ARREGLO
         $nuevoMontoFinal = $request->get('monto_inicial') + $montoVentas - $extraccion;
-        $sumatoriaVentas = $ventas->sum('cantidad_ventas'); // Utilizar la columna correcta
-        $monto_final = $caja->monto_inicial + $sumatoriaVentas - $extraccion;
-    
+        // $sumatoriaVentas = $ventas->sum('cantidad_ventas'); // Utilizar la columna correcta
+        
+        $monto_final = $caja->monto_inicial + $montoVentas - $extraccion;
+        Log::info( $montoVentas);
+        
         // Establecer automáticamente la fecha de cierre si la caja se está cerrando
         if ($request->get('status') == 'Cerrado' && $caja->status == 1) {
             $caja->fecha_cierre = now();
@@ -96,23 +98,25 @@ class CajaController extends Controller
         $caja->cantidad_ventas = $request->get('cantidad_ventas');
 
         // Calcula automáticamente el monto_final sumando las ventas
-        $ventas = Venta::where('fecha_emision', '>=', $caja->fecha_apertura)
-                    ->where('fecha_emision', '<=', $caja->fecha_cierre)
-                    ->get();
-        $caja->monto_final = $request->get('monto_inicial') + $ventas->sum('valor_total');
+        // $ventas = Venta::where('fecha_emision', '>=', $caja->fecha_apertura)
+        //             ->where('fecha_emision', '<=', $caja->fecha_cierre)
+        //             ->get();
+        // $caja->monto_final = $request->get('monto_inicial') + $ventas->sum('valor_total');
 
         // Convierte el valor 'status' a un número (0 o 1) según la selección del usuario
-        $caja->status = $request->get('status') == 'Abierto' ? 1 : 0;
+          // Convierte el valor 'status' a un número (0 o 1) según la selección del usuario
+          $caja->status= $request->get('status') == 'Abierto' ? 1 : 0;
+          $caja->status= $request->get('status');
 
         // Guarda la caja en la base de datos
         $caja->save();
 
-        $montoFinalAutomatico = $caja->sum('sumatoriaVentas');
+        // $montoFinalAutomatico = $caja->sum('sumatoriaVentas');
 
         return redirect()
             ->route('caja.index')
-            ->with('alert', 'Caja "' . $caja->fecha_apertura . '" agregada exitosamente.')
-            ->with('montoFinalAutomatico', $montoFinalAutomatico);
+            ->with('alert', 'Caja "' . $caja->fecha_apertura . '" agregada exitosamente.');
+            // ->with('montoFinalAutomatico', $montoFinalAutomatico);
     }
 
     

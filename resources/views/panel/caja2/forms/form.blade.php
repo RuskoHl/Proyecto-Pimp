@@ -4,7 +4,7 @@
     @endphp
 
     @if (!$cajaAbierta)
-        <form id="cajaForm" action="{{ $caja->id ? route('caja.update', $caja) : route('caja2.store') }}" method="POST" enctype="multipart/form-data">
+        <form id="cajaForm" action="{{ $caja->id ? route('caja.update', $caja) : route('caja.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @if ($caja->id)
                 @method('PUT')

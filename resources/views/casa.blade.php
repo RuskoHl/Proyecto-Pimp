@@ -17,9 +17,7 @@
       <div class="position-absolute text-center text-white w-100" id="overlay-text">
           <h1 style="font-family: 'Old English Text MT', sans-serif; font-size: 7em;">Pimp</h1>
           <p class="text-danger" style="font-family: 'Old English Text MT', sans-serif;">
-              Tengo amigos con doble vida como superhéroes con alias
-              Los porkis los siguen por dejar su
-              Nombre en muros y las pruebas son varias
+            Wheels & Clothes.
           </p>
           {{-- <div class="container mt-5">
               <div class="row justify-content-center">

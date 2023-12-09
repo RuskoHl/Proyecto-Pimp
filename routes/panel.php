@@ -93,7 +93,7 @@ Route::get('/grafico-egresos',[CajaController::class,'graficoIngresosEgresosCaja
 
 Route::resource('/proveedors', ProveedorController::class)->names('proveedor');
 Route::resource('/cajas', CajaController::class)->names('caja');
- Route::resource('/cajas2', Caja2Controller::class)->names('caja2');
+Route::resource('/cajas2', Caja2Controller::class)->names('caja2');
 
 Route::get('graficos-productos',[ProductoController::class,'graficosProductosxCategoria'])->name('graficos-productos');
 Route::get('/panel/cajas2/edit2', [ProductoController::class,'editarCajaConStatus1'])->name('panel.caja2.edit2');
