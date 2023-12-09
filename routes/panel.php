@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function() {
     return view('panel.index');
 });
+Route::get('/panel', [ProductoController::class, 'graficosProductosxCategoria']);
+
 
 Route::get('/panel/compra/mostrar-mensaje-caja-cerrada', [CompraController::class, 'mostrarMensajeCajaCerrada'])
     ->name('mostrar-mensaje-caja-cerrada');

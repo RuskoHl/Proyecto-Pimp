@@ -81,9 +81,13 @@
                                                 </form>
                                             
                                                 @if(!$compra->estatus_cobro)
-                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmarCobro('{{ $compra->id }}')">
-                                                        Marcar como Cobrado
-                                                    </button>
+                                                    <form id="form-cobro-{{ $compra->id }}" action="{{ route('compra.cambiar-estado-cobro', $compra->id) }}" method="post" class="d-inline">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            Marcar como Cobrado
+                                                        </button>
+                                                    </form>
                                                 @endif
                                             </td>
                                         </tr>
@@ -99,23 +103,23 @@
     @push('js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script>
-            function confirmarCobro(compraId) {
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: 'Este proceso es irreversible. ¿Deseas marcar la compra como cobrada?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, cobrar',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Realizar la acción de cambio de estado aquí (usando AJAX o un formulario)
-                        document.getElementById('form-cobro-' + compraId).submit();
-                    }
-                });
-            }
-        </script>
+    <script>
+        function confirmarCobro(compraId) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Este proceso es irreversible. ¿Deseas marcar la compra como cobrada?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, cobrar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Corregir el id del formulario para cambiar el estado de cobro
+                    document.getElementById('form-cobro-' + compraId).submit();
+                }
+            });
+        }
+    </script>
     @endpush
 @endsection

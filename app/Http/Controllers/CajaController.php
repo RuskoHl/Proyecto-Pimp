@@ -40,7 +40,7 @@ class CajaController extends Controller
     // Renderizar la vista con los datos necesarios
     return view('panel.caja.index', compact('cajas', 'montoFinalAutomatico'))->with('totalMontoFinal', $totalMontoFinal);
     }
-
+    
     
     public function update(CajaRequest $request, Caja $caja)
     {
@@ -59,7 +59,9 @@ class CajaController extends Controller
         // Calcular el nuevo monto final de la caja Magia SUPUESTO ARREGLO
         $nuevoMontoFinal = $request->get('monto_inicial') + $montoVentas - $extraccion;
         // $sumatoriaVentas = $ventas->sum('cantidad_ventas'); // Utilizar la columna correcta
-        
+        $cantidadVentas = Venta::where('caja_id', $caja->id)->distinct()->count();
+        Log::info($cantidadVentas);
+
         $monto_final = $caja->monto_inicial + $montoVentas - $extraccion;
         Log::info( $montoVentas);
         
@@ -72,7 +74,7 @@ class CajaController extends Controller
         $caja->update([
             'fecha_apertura' => $request->get('fecha_apertura'),
             'monto_inicial' => $request->get('monto_inicial'),
-            'cantidad_ventas' => $request->get('sumatoriaVentas'), // Actualiza la cantidad de ventas
+            'cantidad_ventas' => $cantidadVentas, // Actualiza la cantidad de ventas
             'status' => $request->get('status') == 'Cerrado' ? 0 : 1,
             'extraccion' => $extraccion,
             'monto_final' => $monto_final,
