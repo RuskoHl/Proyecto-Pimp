@@ -143,5 +143,33 @@ class ProductoController extends Controller
 
             return view('panel.ultimos_agregados', compact('ultimosAgregados'));
         }
-
+        
+        public function mostrarFormularioRestarCantidad($id)
+        {
+            $producto = Producto::findOrFail($id);
+            return view('panel.vendedor.lista_productos.formulario_restar_cantidad', compact('producto'));
+        }
+        
+        public function restarCantidad(Request $request, $id)
+        {
+            $producto = Producto::findOrFail($id);
+        
+            // Obtener la cantidad ingresada por el usuario desde el formulario
+            $cantidadARestar = $request->input('cantidadARestar');
+        
+            // Validar que la cantidad a restar sea válida
+            if ($cantidadARestar > 0 && $producto->cantidad >= $cantidadARestar) {
+                // Restar la cantidad
+                $producto->cantidad -= $cantidadARestar;
+                $producto->save();
+        
+                // Redirigir a donde desees después de restar la cantidad
+                return redirect()->route('producto.index')->with('success', 'Cantidad restada exitosamente.');
+            } else {
+                // Si la cantidad ingresada no es válida, mostrar un mensaje de error
+                return redirect()->route('producto.index')->with('error', 'La cantidad ingresada no es válida.');
+            }
+        }
+        
+                
 }

@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="{{ public_path('vendor/adminlte/dist/css/adminlte.min.css') }}">
 </head>
 <body>
+    <h2 class="text-danger text-center">PIMP</h2>
     <h3 class="text-center">Productos</h3>
     <table class="table table-striéd w-100">
-        <thead class="bg-primary text-center text-white">
+        <thead class="bg-danger text-center text-white">
             <tr>
                 <th scope="col" class="text-uppercase">Id</th>
                 <th scope="col" class="text-uppercase">Nombre</th>
@@ -24,11 +25,11 @@
             @foreach ($productos as $producto)
             <tr>
                 <td>{{ $producto->id }}</td>
-                <td>{{ $producto->nombre }}</td>
+                <td class="text-bold">{{ $producto->nombre }}</td>
                 <td>{{ Str::limit($producto->descripcion, 30)}}</td>
-                <td>{{ $producto->precio }}</td>
+                <td class="text-bold">{{ $producto->precio }}</td>
                 <td>{{ $producto->categoria->nombre }}</td>
-                <td>{{ $producto->cantidad }}</td>
+                <td class="text-danger">{{ $producto->cantidad }}</td>
             </tr>
             @endforeach
         </tbody>

@@ -20,6 +20,11 @@ Route::get('/', function() {
 });
 Route::get('/panel', [ProductoController::class, 'graficosProductosxCategoria']);
 
+Route::get('/productos/restar-cantidad/{id}', [ProductoController::class, 'mostrarFormularioRestarCantidad'])->name('producto.mostrar-formulario-restar-cantidad');
+Route::post('/productos/restar-cantidad/{id}', [ProductoController::class, 'restarCantidad'])->name('producto.restar-cantidad');
+
+
+
 
 Route::get('/panel/compra/mostrar-mensaje-caja-cerrada', [CompraController::class, 'mostrarMensajeCajaCerrada'])
     ->name('mostrar-mensaje-caja-cerrada');
