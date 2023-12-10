@@ -10,6 +10,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+            <a href="{{ route('producto.index') }}" class="btn btn-sm btn-dark text-uppercase mb-2">
+                Volver al Listado
+            </a> 
             <div class="card">
                 <div class="card-header bg-danger text-white">
                     <h4 class="mb-0">Formulario para Restar Cantidad - <span class="text-dark font-weight-bold"> {{ $producto->nombre }} </span></h4>

@@ -427,13 +427,17 @@ return [
                     
                 ],
                 [
-                'text' => 'Ingresar nuevo Proveedor',
+                'text' => 'Registrar Proveedor',
                 'url'  => 'panel/proveedors/create',
+                ],
+                [
+                    'text' => 'Lista Compras',
+                    'url'  => 'panel/compras',
                 ],
                 [
                     'text' => 'Realizar orden de Compra',
                     'url'  => 'panel/compra/formulario',
-                    ],
+                ],
             ],
         ],
        

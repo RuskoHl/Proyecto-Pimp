@@ -22,6 +22,9 @@
             </div>
             <div class="col-md-12 mx-auto mt-2 mb-2">
                 <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="mb-0"><span class="text-white font-weight-bold"> Compras registradas </span></h4>
+                    </div>
                     <div class="card-body">
                         @if($compras->isEmpty())
                             <p>No hay compras realizadas.</p>

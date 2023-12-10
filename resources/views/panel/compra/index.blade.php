@@ -22,6 +22,9 @@
                 @endif
 
                 <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="mb-0"><span class="text-white font-weight-bold"> Realizar orden de compra </span></h4>
+                    </div>
                     <div class="card-body">
                         {{-- Resto del formulario --}}
                         <form action="{{ route('compra.store') }}" method="post">
