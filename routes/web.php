@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Oferta;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +18,14 @@ Route::get('/', function () {
     return view('casa');
 });
 
+Route::get('/ofertas', function () {
+    $ofertas = Oferta::with('productos')->get(); // Asegúrate de cargar los productos relacionados
 
+    return view('ofertas', compact('ofertas'));
+})->name('ofertas.index');
+
+// routes\web.php
+Route::get('/ofertas', [App\Http\Controllers\OfertaController::class, 'index2'])->name('ofertas');
 
 
 Auth::routes();

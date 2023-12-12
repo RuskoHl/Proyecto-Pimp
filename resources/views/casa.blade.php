@@ -5,44 +5,25 @@
 @section('content')
     <!--BodyPagprincipal-->
     
-    {{-- imagen  --}}
-    <div class="position-relative">
-      <!-- Video y capa de entumecimiento -->
-      <video autoplay muted loop class="w-100 mt-1" id="background-video">
-          <source src="{{ asset('1.mp4') }}" type="video/mp4">
-          Tu navegador no soporta el elemento de video.
-      </video>
-      
-      <!-- Capa de entumecimiento -->
-      <div class="position-absolute text-center text-white w-100" id="overlay-text">
-          <h1 style="font-family: 'Old English Text MT', sans-serif; font-size: 7em;">Pimp</h1>
-          <p class="text-danger" style="font-family: 'Old English Text MT', sans-serif;">
-            Wheels & Clothes.
-          </p>
-          {{-- <div class="container mt-5">
-              <div class="row justify-content-center">
-                  <div class="col-md-8">
-                      <form action="/users/search" method="GET" class="form-inline">
-                          <div class="input-group">
-                              <input type="text" name="query" class="form-control" placeholder="Buscar productos">
-                              <div class="input-group-append">
-                                  <button type="submit" class="btn btn-danger">Buscar</button>
-                              </div>
-                          </div>
-                      </form>
-                  </div>
-              </div>
-          <!-- Agrega más contenido si es necesario --> --}}
-      </div>
-  </div>
-    {{-- fin imagen  --}}
+{{-- Video --}}
+<div class="position-relative mt-1">
+    <!-- Video y capa de entumecimiento -->
+    <video autoplay muted loop class="w-100" id="background-video" style="height: 400px; width: 100%; object-fit: cover;">
+        <source src="{{ asset('1.mp4') }}" type="video/mp4">
+        Tu navegador no soporta el elemento de video.
+    </video>
 
-    <!--Liñita-->
-    <div class="container-fluid bg-danger" style="height: 5px;"> <!-- Ajusta la altura como desees -->
-    <div class="row justify-content-center align-items-center" style="height: 100%;">
+    <!-- Capa de entumecimiento -->
+    <div class="position-absolute text-center text-white w-100" id="overlay-text">
+        <h1 style="font-family: 'Old English Text MT', sans-serif; font-size: 7em;">Pimp</h1>
+        <p class="text-danger" style="font-family: 'Old English Text MT', sans-serif;">Wheels & Clothes.</p>
     </div>
-    </div>
-    <!--Fin Liñita-->
+</div>
+<!-- Línea -->
+<div class="container-fluid bg-black" style="height: 5px;"> <!-- Ajusta la altura como desees -->
+    <div class="row justify-content-center align-items-center" style="height: 100%;"></div>
+</div>
+<!-- Fin Línea -->
 
     <!--Comienzo Renglon que debe ser fijo-->
     <div class="container-fluid mt-3 mb-2">
@@ -179,7 +160,7 @@
           var textHeight = $('#overlay-text').height();
 
           // Ajusta la posición vertical del texto
-          var verticalPosition = (windowHeight - textHeight) / 5.3; // Cambié el divisor a 3
+          var verticalPosition = (windowHeight - textHeight) / 4; // Cambié el divisor a 3
           $('#overlay-text').css('top', verticalPosition + 'px');
       }
   </script>

@@ -14,7 +14,7 @@ class Producto extends Model
     protected $table = 'productos';
 
     protected $fillable= [
-        'nombre', 'descripcion', 'precio', 'imagen', 'categoria_id', 'cantidad_minima', 'cantidad' ,'cantidad_vendida'
+        'nombre', 'descripcion', 'precio', 'imagen', 'categoria_id', 'cantidad_minima', 'cantidad' ,'cantidad_vendida', 'oferta', 'precio_ofertado'
     ];
 
     public function categoria() {
@@ -28,6 +28,18 @@ class Producto extends Model
     {
         return $this->belongsToMany(Compra::class)->withPivot('cantidad');
     }
+    public function ofertas()
+    {
+        return $this->belongsToMany(Oferta::class);
+    }
     
-   
+    public function calcularPrecioConDescuento()
+    {
+        if ($this->oferta) {
+            // Calcular el precio con descuento basado en el porcentaje de la oferta
+            return $this->precio - ($this->precio * $this->oferta->monto_descuento / 100);
+        }
+    
+        return $this->precio;
+    }
 }

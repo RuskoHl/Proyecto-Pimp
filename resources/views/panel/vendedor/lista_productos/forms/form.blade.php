@@ -94,6 +94,16 @@
                     @enderror
                 </div>
             </div>
+            <div class="mb-3 row">
+                <label for="oferta" class="col-sm-4 col-form-label"> Oferta </label>
+                <div class="col-sm-8">
+                    <input type="number" step="0.01" id="oferta" name="oferta" value="{{ old('oferta', optional($producto)->oferta) }}">
+                </div>
+            </div>
+
+
+
+
 
         </div>
 

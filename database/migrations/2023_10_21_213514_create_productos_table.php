@@ -24,6 +24,9 @@ return new class extends Migration
             $table->unsignedInteger('cantidad_minima');
             $table->unsignedInteger('cantidad');
             $table->unsignedInteger('cantidad_vendida')->default(0);
+            $table->foreignId('oferta_id')->nullable()->constrained('ofertas')->onDelete('SET NULL')->index('oferta_id');
+            $table->decimal('precio_ofertado', 8, 2)->nullable();
+
             $table->softDeletes();
             $table->timestamps();
         });

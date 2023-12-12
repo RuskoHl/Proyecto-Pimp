@@ -416,6 +416,22 @@ return [
             ],
         ],
         [
+            'text'    => 'Ofertas',
+            'icon'    => 'fas fa-percent',
+            'submenu' => [
+                [
+                    'text' => 'Listado Oferta',
+                    'url'  => 'panel/ofertas',
+                    
+                ],
+                [
+                    'text' => 'Crear Oferta',
+                    'url'  => 'panel/ofertas/create',
+                ],
+
+            ],
+        ],
+        [
             'text' => 'Proveedor',
             
             'icon' => 'fas fa-fw fa-user-secret',

@@ -14,6 +14,7 @@ use App\Http\Controllers\ExtraccionController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OfertaController;
 
 Route::get('/', function() {
     return view('panel.index');
@@ -23,7 +24,13 @@ Route::get('/panel', [ProductoController::class, 'graficosProductosxCategoria'])
 Route::get('/productos/restar-cantidad/{id}', [ProductoController::class, 'mostrarFormularioRestarCantidad'])->name('producto.mostrar-formulario-restar-cantidad');
 Route::post('/productos/restar-cantidad/{id}', [ProductoController::class, 'restarCantidad'])->name('producto.restar-cantidad');
 
-
+Route::get('/ofertas/create', [OfertaController::class, 'create'])->name('ofertas.create');
+Route::post('/ofertas', [OfertaController::class, 'store'])->name('ofertas.store');
+Route::get('/ofertas', [OfertaController::class, 'index'])->name('ofertas.index');
+Route::get('/ofertas/desactivar-vencidas', [OfertaController::class, 'desactivarOfertasVencidas'])
+    ->name('ofertas.desactivar-vencidas');
+Route::get('/ofertas/activate/{id}', [OfertaController::class, 'activate'])->name('ofertas.activate');
+Route::get('/ofertas/deactivate/{id}', [OfertaController::class, 'deactivate'])->name('ofertas.deactivate');
 
 
 Route::get('/panel/compra/mostrar-mensaje-caja-cerrada', [CompraController::class, 'mostrarMensajeCajaCerrada'])

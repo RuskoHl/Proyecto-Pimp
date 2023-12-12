@@ -13,7 +13,7 @@ class ProveedorSeeder extends Seeder
      */
     public function run(): void
     {
-        $proveedor1 = Proveedor::create([
+        Proveedor::create([
             'nombre' => 'GorllaClub',
             'email' => 'gc@gmail.com',
             'telefono' => '3875696010',
@@ -22,7 +22,7 @@ class ProveedorSeeder extends Seeder
             'comentario' => 'Ñañeras',
         ]);
 
-        $proveedor2 = Proveedor::create([
+        Proveedor::create([
             'nombre' => 'blackrock',
             'email' => 'blackrock@gmail.com',
             'telefono' => '3875696011',
@@ -31,18 +31,13 @@ class ProveedorSeeder extends Seeder
             'comentario' => 'LaLunaOscura',
         ]);
 
-        $proveedor3 = Proveedor::create([
+        Proveedor::create([
             'nombre' => 'Grifith',
             'email' => 'grifith@gmail.com',
             'telefono' => '3875696012',
             'direccion' => 'LaManoDeDios',
             'cuit' => '31231111300',
             'comentario' => 'Femtho...',
-        ]);
-
-        // Modificar la creación del ProductoSeeder para usar los IDs de los proveedores creados
-        $this->call(ProductoSeeder::class, [
-            'proveedorIds' => [$proveedor1->id, $proveedor2->id, $proveedor3->id],
         ]);
     }
 }
