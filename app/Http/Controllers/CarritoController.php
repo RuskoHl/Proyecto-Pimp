@@ -35,20 +35,7 @@ class CarritoController extends Controller
     return view('carritos.show', compact('carrito', 'productos'));
 }
 
-    public function agregarAlCarrito(CarritoRequest $request, $id)
-    {
-        $producto = Producto::find($id);
-        Cart::add([
-            'id' => $producto->id,
-            'name' => $producto->nombre,
-            'qty' => $request->cantidad,
-            'price' => $producto->precio,
-            'options' => ['size' => 'large']
-        ]);
-
-        return back()->with('success', 'Producto agregado al carrito con éxito');
-    }
-
+    
     public function actualizarItem($rowId)
     {
         $cantidadNueva = request('cantidad');
@@ -73,21 +60,57 @@ class CarritoController extends Controller
         return back()->with('success', 'Producto eliminado del carrito con éxito');
     }
    
+    public function agregarAlCarrito(CarritoRequest $request, $id)
+    {
+        $producto = Producto::find($id);
     
+        // Verificar si el producto tiene una oferta activa
+        $oferta = $producto->ofertas->where('status', true)->first();
+    
+        if ($oferta) {
+            // Utilizar el precio ofertado si está activo
+            $precioProducto = $oferta->pivot->precio_ofertado;
+        } else {
+            // Utilizar el precio normal
+            $precioProducto = $producto->precio;
+        }
+    
+        // Asegurarse de que la cantidad sea válida
+        $cantidad = max(1, $request->cantidad);
+    
+        // Depurar para verificar si se está aplicando el precio correcto
+        dd([
+            'Precio antes de formatear' => $precioProducto,
+            'Precio formateado' => number_format($precioProducto, 2, '.', '')
+        ]);
+    
+        // Agregar el producto al carrito
+        Cart::add([
+            'id' => $producto->id,
+            'name' => $producto->nombre,
+            'qty' => $cantidad,
+            'price' => number_format($precioProducto, 2, '.', ''), // Formatear el precio a dos decimales
+            'options' => ['size' => 'large']
+        ]);
+    
+        return back()->with('success', 'Producto agregado al carrito con éxito');
+    }
+    
+
     public function storeCarritoEnBaseDeDatos()
     {
         // Obtén el carrito actual
         $carrito = Cart::content();
-
+    
         // Obtén la caja abierta
         $caja = Caja::where('status', true)->latest()->first();
-
+    
         // Genera un identificador único para el carrito
         $identificadorCarrito = Str::uuid();
-
+    
         // Obtiene el usuario autenticado si existe
         $user = Auth::user();
-
+    
         // Verifica que el usuario esté autenticado antes de continuar
         if (!$user) {
             return redirect()->route('login')->with('error', 'Debes iniciar sesión para completar esta acción');
@@ -101,6 +124,14 @@ class CarritoController extends Controller
         // Itera sobre los productos del carrito
         foreach ($carrito as $item) {
             $producto = Producto::find($item->id);
+    
+            // Verificar si el producto tiene una oferta activa
+            if ($producto->oferta && $producto->oferta->status) {
+                // Utilizar el precio ofertado en lugar del precio normal
+                $precioProducto = $producto->precio_ofertado;
+            } else {
+                $precioProducto = $producto->precio;
+            }
     
             // Verificar que la cantidad del producto sea suficiente
             if (!$producto || $item->qty > $producto->cantidad) {
@@ -119,7 +150,7 @@ class CarritoController extends Controller
     
         // Calcula el precio total del carrito
         $precioTotal = Cart::total();
-
+    
         // Almacena el carrito y la asociación con el usuario en la tabla carrito_usuario
         $carritoUsuarioId = DB::table('carrito_usuario')->insertGetId([
             'identificador_carrito' => $identificadorCarrito,
@@ -129,16 +160,13 @@ class CarritoController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
+    
         // Almacena el contenido del carrito en la base de datos usando el identificador único
         Cart::store($identificadorCarrito);
-
-
-        
-
+    
         // Obtiene el contenido del carrito desde la tabla 'shopping_cart'
         $contenidoFromCart = Cart::content()->toJson();
-
+    
         // Crea una nueva venta
         $venta = new Venta([
             'fecha_emision' => now(),
@@ -148,27 +176,27 @@ class CarritoController extends Controller
             'contenido' => $contenidoFromCart ? $contenidoFromCart : Cart::content()->toJson(),
             'estado' => 'pendiente',
         ]);
-
+    
         // Guarda la venta
         $venta->save();
-
+    
         // Asocia la venta al carrito_usuario
         DB::table('carrito_usuario')->where('id', $carritoUsuarioId)->update(['venta_id' => $venta->id]);
-
+    
         // Elimina el carrito almacenado
         Cart::destroy($identificadorCarrito);
-
+    
         // Almacena la información de la venta en la sesión para que esté disponible después de la redirección
         session(['venta' => $venta]);
-
-
+    
         // Crea la preferencia de Mercado Pago
         $mercadoPagoService = new MercadoPagoService();
         $preferencia = $mercadoPagoService->crearPreferencia($precioTotal);
-
+    
         // Redirige al usuario al punto de inicio del sandbox de Mercado Pago
         return redirect($preferencia->sandbox_init_point);
     }
+    
 
 
     public function historialCompras()

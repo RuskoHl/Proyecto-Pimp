@@ -28,11 +28,16 @@ class Producto extends Model
     {
         return $this->belongsToMany(Compra::class)->withPivot('cantidad');
     }
-    public function ofertas()
+    public function oferta()
     {
-        return $this->belongsToMany(Oferta::class);
+        return $this->belongsTo(Oferta::class, 'oferta_id');
     }
-    
+    public function asignarOferta(Oferta $oferta)
+    {
+        $this->oferta_id = $oferta->id;
+        $this->precio_ofertado = $this->precio - ($this->precio * $oferta->monto_descuento / 100);
+        $this->save();
+    }
     public function calcularPrecioConDescuento()
     {
         if ($this->oferta) {

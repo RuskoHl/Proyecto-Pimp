@@ -36,7 +36,18 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Tercer card para el monto de la oferta -->
+                    <div class="card mt-3">
+                        <div class="card-header bg-info text-white">
+                            <h4 class="mb-0"><span class="text-white font-weight-bold"> Monto de la oferta: </span></h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="monto_descuento" class="form-label">Monto a descontar (%):</label>
+                                <input type="number" class="form-control" name="monto_descuento" id="monto_descuento">
+                            </div>
+                        </div>
+                    </div>
                     <!-- Segundo card para el listado de productos en una tabla -->
                     <div class="card mt-3">
                         <div class="card-header bg-dark text-white">
@@ -66,7 +77,7 @@
                         </div>
                     </div>
 
-                    <!-- Tercer card para el monto de la oferta -->
+                    {{-- <!-- Tercer card para el monto de la oferta -->
                     <div class="card mt-3">
                         <div class="card-header bg-danger text-white">
                             <h4 class="mb-0"><span class="text-white font-weight-bold"> Monto de la oferta: </span></h4>
@@ -77,7 +88,7 @@
                                 <input type="number" class="form-control" name="monto_descuento" id="monto_descuento">
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Cuarto card para otros campos del formulario -->
                     <div class="card mt-3">

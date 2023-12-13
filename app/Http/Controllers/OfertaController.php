@@ -7,6 +7,8 @@ use App\Models\Oferta;
 use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 
 
 class OfertaController extends Controller
@@ -32,39 +34,42 @@ class OfertaController extends Controller
     }
 
     public function store(Request $request)
-    {   
-    // Validación de datos
-    $request->validate([
-        'titulo' => 'required|string',
-        'descripcion' => 'required|string',
-        'fecha_inicio' => 'required|date',
-        'fecha_finalizacion' => 'required|date',
-        'monto_descuento' => 'required|numeric',
-        'productos' => 'required|array',
-    ]);
-
-    // Crear la oferta en la base de datos
-    $oferta = Oferta::create([
-        'titulo' => $request->titulo,
-        'descripcion' => $request->descripcion,
-        'fecha_inicio' => $request->fecha_inicio,
-        'fecha_finalizacion' => $request->fecha_finalizacion,
-        'monto_descuento' => $request->monto_descuento,
-        'status' => true, // Agrega esta línea para establecer un valor predeterminado para el campo status
-    ]);
-
-    // Asociar productos a la oferta
-    $oferta->productos()->attach($request->productos);
-
-    Producto::whereIn('id', $request->productos)->get()->each(function ($producto) use ($oferta) {
-        $producto->update([
-            'oferta_id' => $oferta->id,
-            'precio_ofertado' => $producto->precio - ($producto->precio * $oferta->monto_descuento / 100),
+    {
+        // Validación de datos
+        $request->validate([
+            'titulo' => 'required|string',
+            'descripcion' => 'required|string',
+            'fecha_inicio' => 'required|date',
+            'fecha_finalizacion' => 'required|date',
+            'monto_descuento' => 'required|numeric',
+            'productos' => 'required|array',
         ]);
-    });
-
-    return redirect()->route('ofertas.index')->with('success', 'Oferta creada exitosamente.');
+    
+        // Crear la oferta en la base de datos
+        $oferta = Oferta::create([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_finalizacion' => $request->fecha_finalizacion,
+            'monto_descuento' => $request->monto_descuento,
+            'status' => true,
+        ]);
+    
+        // Asociar productos a la oferta
+        $oferta->productos()->attach($request->productos);
+    
+        // Obtener los productos y asignar la oferta
+        $productos = Producto::whereIn('id', $request->productos)->get();
+    
+        foreach ($productos as $producto) {
+            $producto->asignarOferta($oferta);
+        }
+    
+        return redirect()->route('ofertas.index')->with('success', 'Oferta creada exitosamente.');
     }
+    
+    
+    
 
 
 
