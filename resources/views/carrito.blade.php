@@ -8,8 +8,7 @@
             <div class="card-header">
                 <h1 class="card-title" style="font-family: 'Old English Text MT', sans-serif;">Carrito de Compras</h1>
             </div>
-            <div class="card-body ">
-                <!-- Añade este botón donde desees en tu aplicación -->
+            <div class="card-body">
                 @auth
                     <a href="{{ route('historial.compras') }}" class="btn btn-danger mb-3">Ver Historial de Compras</a>
                 @endauth
@@ -33,29 +32,14 @@
                                         <form action="{{ route('carrito.actualizar', $item->rowId) }}" method="POST">
                                             @csrf
                                             <input type="number" name="cantidad" value="{{ $item->qty }}" min="1" class="form-control">
-                                            @if(session('success'))
-                                                <div class="alert alert-success">
-                                                    {{ session('success') }}
-                                                </div>
-                                            @endif
-
-                                            @if(session('error'))
-                                                <div class="alert alert-danger">
-                                                    {{ session('error') }}
-                                                </div>
-                                            @endif
-                                            <button onclick="Swal.fire('Actualizando todo el carrito...')" type="submit" class="btn btn-success mt-1">Actualizar</button>
+                                            <div class="mt-1">
+                                                <button onclick="Swal.fire('Actualizando todo el carrito...')" type="submit" class="btn btn-success">Actualizar</button>
+                                                <button type="submit" class="btn btn-danger ml-2">Eliminar</button>
+                                            </div>
                                         </form>
                                     </td>
                                     <td>${{ $item->price }}</td>
                                     <td>${{ $item->total }}</td>
-                                    <td>
-                                        <form action="{{ route('carrito.remover', $item->rowId) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                        </form>
-                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -64,11 +48,16 @@
                     <h2 class="mt-4">Total del Carrito: <span class="text-danger">${{ Cart::total() }}</span></h2>
 
                     <!-- Botón "Realizar Compra" -->
-                    <!-- Botón "Guardar Carrito" -->
-                    <form action="{{ route('carrito.store') }}" method="POST" id="comprarCarritoForm">
+                    <form action="{{ route('carrito.crearCarritoYRedirigir') }}" method="POST" id="comprarCarritoForm">
                         @csrf
-                        <button type="button" class="btn btn-success" id="comprarCarritoBtn">Comprar Carrito</button>
+                        <button type="button" class="btn btn-success" id="comprarCarritoBtn">Realizar Compra</button>
                     </form>
+                    
+                    <!-- Botón "Guardar Carrito" -->
+                    {{-- <form action="{{ route('carrito.guardar') }}" method="POST" id="guardarCarritoForm">
+                        @csrf
+                        <button type="submit" class="btn btn-primary mt-2">Guardar Carrito</button>
+                    </form> --}}
                 @else
                     <p class="mt-4">El carrito está vacío.</p>
                 @endif
@@ -77,23 +66,20 @@
     </div>
 
     <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Asigna el evento click al botón
             document.getElementById('comprarCarritoBtn').addEventListener('click', function () {
-                // Muestra la alerta SweetAlert
                 Swal.fire({
                     title: "¿Estas seguro que quieres comprar esto?",
                     html: `El precio total del carrito es: <strong>${{ Cart::total() }}</strong>.<br><span style="color: red;">Deberás buscar esto en <strong>48</strong> horas por el local.</span>`,
                     icon: "question",
                     showCancelButton: true,
-                    confirmButtonColor: "#4CAF50", // Este es el color verde
+                    confirmButtonColor: "#4CAF50",
                     cancelButtonColor: "#d33",
                     confirmButtonText: "Quiero comprarlo!!"
                 }).then((result) => {
-                    // Si el usuario confirma, realiza la acción del formulario
                     if (result.isConfirmed) {
                         document.getElementById('comprarCarritoForm').submit();
                     }

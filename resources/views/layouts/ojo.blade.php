@@ -6,8 +6,6 @@
     <title>@yield('title')</title>    <!-- BOOSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
     <style>
       /* Estilos para la imagen de fondo */
       .full-width-image {
@@ -61,7 +59,7 @@
 
 {{-- barra navegacion --}}
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary bg-white">
+<nav class="navbar navbar-expand-lg bg-body-tertiary bg-primary">
       <div class="container-fluid">
         <!--Titulo-->
         <a class="navbar-brand" href="{{ route('casa') }}"><h4 style="font-family: 'Old English Text MT', sans-serif;">Pimp</h4></a>

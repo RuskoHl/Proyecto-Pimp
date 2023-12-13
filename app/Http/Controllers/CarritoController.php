@@ -15,7 +15,10 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\Venta;
 use App\Services\MercadoPagoService;
+use MercadoPago\Preference;
+use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Facades\Redirect;
 
 class CarritoController extends Controller
 {
@@ -65,24 +68,24 @@ class CarritoController extends Controller
         $producto = Producto::find($id);
     
         // Verificar si el producto tiene una oferta activa
-        $oferta = $producto->ofertas->where('status', true)->first();
+        // $oferta = $producto->ofertas->where('status', true)->first();
     
-        if ($oferta) {
-            // Utilizar el precio ofertado si está activo
-            $precioProducto = $oferta->pivot->precio_ofertado;
-        } else {
+        // if ($oferta) {
+        //     // Utilizar el precio ofertado si está activo
+        //     $precioProducto = $oferta->pivot->precio_ofertado;
+        // } else {
             // Utilizar el precio normal
             $precioProducto = $producto->precio;
-        }
+        // }
     
         // Asegurarse de que la cantidad sea válida
         $cantidad = max(1, $request->cantidad);
     
         // Depurar para verificar si se está aplicando el precio correcto
-        dd([
-            'Precio antes de formatear' => $precioProducto,
-            'Precio formateado' => number_format($precioProducto, 2, '.', '')
-        ]);
+        // dd([
+        //     'Precio antes de formatear' => $precioProducto,
+        //     'Precio formateado' => number_format($precioProducto, 2, '.', '')
+        // ]);
     
         // Agregar el producto al carrito
         Cart::add([
@@ -95,36 +98,59 @@ class CarritoController extends Controller
     
         return back()->with('success', 'Producto agregado al carrito con éxito');
     }
-    
 
-    public function storeCarritoEnBaseDeDatos()
+
+    public function manejarWebhookMercadoPago(Request $request)
+    {
+        $data = $request->all();
+    
+        // Realiza la validación de seguridad (puedes comparar la firma, etc.)
+        Log::info('Webhook Data:', $data);
+        // Procesa la notificación según el tipo de evento
+        if ($data['type'] === 'payment') {
+            $paymentId = $data['data']['id'];
+            $paymentStatus = $data['data']['status'];
+    
+            // Realiza acciones según el estado del pago (aprobado, rechazado, etc.)
+            if ($paymentStatus === 'approved') {
+                // Pago aprobado, realiza las acciones necesarias
+                // Por ejemplo, actualiza el estado de la venta, crea la factura, etc.
+            } else {
+                // Maneja otros casos según sea necesario
+            }
+        }
+    
+        return response()->json(['status' => 'OK']);
+    }
+ 
+    public function crearCarritoYRedirigir()
     {
         // Obtén el carrito actual
         $carrito = Cart::content();
-    
+        
         // Obtén la caja abierta
         $caja = Caja::where('status', true)->latest()->first();
-    
+        
         // Genera un identificador único para el carrito
         $identificadorCarrito = Str::uuid();
-    
+        
         // Obtiene el usuario autenticado si existe
         $user = Auth::user();
-    
+        
         // Verifica que el usuario esté autenticado antes de continuar
         if (!$user) {
             return redirect()->route('login')->with('error', 'Debes iniciar sesión para completar esta acción');
         }
-    
+        
         // Validar que exista el user_id y caja_id
         if (!$user->id || !$caja) {
             return redirect()->route('pagina_de_error')->with('error', 'No se puede procesar la venta. Falta información requerida.');
         }
-    
+        
         // Itera sobre los productos del carrito
         foreach ($carrito as $item) {
             $producto = Producto::find($item->id);
-    
+        
             // Verificar si el producto tiene una oferta activa
             if ($producto->oferta && $producto->oferta->status) {
                 // Utilizar el precio ofertado en lugar del precio normal
@@ -132,25 +158,25 @@ class CarritoController extends Controller
             } else {
                 $precioProducto = $producto->precio;
             }
-    
+        
             // Verificar que la cantidad del producto sea suficiente
             if (!$producto || $item->qty > $producto->cantidad) {
                 return redirect()->route('pagina_de_error')->with('error', 'No hay suficientes existencias para uno o más productos en el carrito.');
             }
-    
+        
             // Incrementa la cantidad vendida de cada producto
             $producto->update(['cantidad_vendida' => $producto->cantidad_vendida + $item->qty]);
-    
+        
             // Resta la cantidad vendida de la cantidad disponible
             $nuevaCantidad = $producto->cantidad - $item->qty;
-    
+        
             // Actualiza la cantidad disponible en el modelo de Producto
             $producto->update(['cantidad' => $nuevaCantidad]);
         }
-    
+        
         // Calcula el precio total del carrito
         $precioTotal = Cart::total();
-    
+        
         // Almacena el carrito y la asociación con el usuario en la tabla carrito_usuario
         $carritoUsuarioId = DB::table('carrito_usuario')->insertGetId([
             'identificador_carrito' => $identificadorCarrito,
@@ -160,44 +186,57 @@ class CarritoController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-    
+        
         // Almacena el contenido del carrito en la base de datos usando el identificador único
         Cart::store($identificadorCarrito);
-    
-        // Obtiene el contenido del carrito desde la tabla 'shopping_cart'
-        $contenidoFromCart = Cart::content()->toJson();
-    
-        // Crea una nueva venta
-        $venta = new Venta([
-            'fecha_emision' => now(),
-            'valor_total' => $precioTotal,
-            'caja_id' => $caja->id,
-            'user_id' => $user->id,
-            'contenido' => $contenidoFromCart ? $contenidoFromCart : Cart::content()->toJson(),
-            'estado' => 'pendiente',
-        ]);
-    
-        // Guarda la venta
-        $venta->save();
-    
-        // Asocia la venta al carrito_usuario
-        DB::table('carrito_usuario')->where('id', $carritoUsuarioId)->update(['venta_id' => $venta->id]);
-    
-        // Elimina el carrito almacenado
-        Cart::destroy($identificadorCarrito);
-    
-        // Almacena la información de la venta en la sesión para que esté disponible después de la redirección
-        session(['venta' => $venta]);
-    
-        // Crea la preferencia de Mercado Pago
-        $mercadoPagoService = new MercadoPagoService();
-        $preferencia = $mercadoPagoService->crearPreferencia($precioTotal);
-    
-        // Redirige al usuario al punto de inicio del sandbox de Mercado Pago
-        return redirect($preferencia->sandbox_init_point);
-    }
-    
+        
+        // Almacena la información del carrito en la sesión para recuperarla en la confirmación del pago
+        session(['carritoUsuarioId' => $carritoUsuarioId, 'precioTotal' => $precioTotal]);
+        
+             // Crea la preferencia de Mercado Pago
+             $mercadoPagoService = new MercadoPagoService();
+             $preferenciaId = $mercadoPagoService->crearPreferencia($precioTotal);
+     
+             // Almacena el ID de la preferencia en la sesión
+             session(['preferenciaId' => $preferenciaId]);
+     
+             // Redirige al usuario a la página de Mercado Pago
+             return redirect($preferenciaId->sandbox_init_point);    }
 
+
+             public function confirmacionPago(Request $request)
+             {
+                 // Recupera la preferencia de Mercado Pago usando el ID proporcionado en la URL
+                 $preferenciaId = $request->input('preferenciaId');
+                 $preferencia = \MercadoPago\Preference::get($preferenciaId);
+         
+                 // Aquí puedes utilizar la función obtenerPago para obtener más detalles del pago si es necesario
+                 $mercadoPagoService = new MercadoPagoService();
+                 $informacionPago = $mercadoPagoService->obtenerPago($preferenciaId);
+         
+                 // Obtén la información necesaria de la sesión
+                 $carritoUsuarioId = session('carritoUsuarioId');
+                 $precioTotal = session('precioTotal');
+         
+                 // Verifica si la confirmación de pago es válida (puedes ajustar esto según la lógica de Mercado Pago)
+                 if ($request->has('payment_status') && $request->input('payment_status') === 'approved') {
+                     // Almacena la venta en la base de datos
+                     $venta = new Venta();
+                     $venta->carrito_usuario_id = $carritoUsuarioId;
+                     $venta->precio_total = $precioTotal;
+                     $venta->informacion_pago = json_encode($informacionPago); // Puedes almacenar la información de pago en formato JSON
+         
+                     // Agrega más campos según sea necesario
+                     // ...
+         
+                     $venta->save();
+         
+                     return view('tu.vista.confirmacion'); // Redirige a tu vista personalizada de confirmación
+                 } else {
+                     // ... (manejo del caso en que el pago no fue aprobado)
+                 }
+             }
+   
 
     public function historialCompras()
     {

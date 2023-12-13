@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Oferta;
+use App\Http\Controllers\MercadoPagoWebhookController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,6 +45,7 @@ Route::get('/accesorios', [App\Http\Controllers\AccesoriosController::class, 'mo
 Route::get('/detalles', [App\Http\Controllers\DetallesController::class, 'mostrarDetalles'])->name('detalles');
 Route::get('/producto/{id}', [App\Http\Controllers\DetallesController::class, 'mostrarProducto'])->name('mostrarProducto');
 Route::get('/preventa',[App\Http\Controllers\PreventaController::class,'index'])->name('preventa');
+Route::post('/webhooks/mercado-pago', [MercadoPagoWebhookController::class, 'handleWebhook']);
 
 Route::get('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarCarrito'])->name('carrito');
 Route::get('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarCarrito'])->name('carrito');
@@ -51,6 +54,16 @@ Route::get('/carrito', [App\Http\Controllers\CarritoController::class, 'mostrarC
 Route::post('/carrito/agregar/{id}', [App\Http\Controllers\CarritoController::class, 'agregarAlCarrito'])->name('carrito.agregar');
 Route::post('/carrito/actualizar/{rowId}', [App\Http\Controllers\CarritoController::class, 'actualizarItem'])->name('carrito.actualizar');
 Route::delete('/carrito/remover/{rowId}', [App\Http\Controllers\CarritoController::class, 'removerItem'])->name('carrito.remover');
+Route::post('/carrito/crear-carrito-y-redirigir', [App\Http\Controllers\CarritoController::class, 'crearCarritoYRedirigir'])->name('carrito.crearCarritoYRedirigir');
+Route::get('/carrito/confirmacion', [App\Http\Controllers\CarritoController::class, 'confirmacionPago'])->name('carrito.confirmacion');
+// routes/web.phpRoute::post('/webhooks/mercado-pago', [CarritoController::class, 'manejarWebhookMercadoPago']);
+Route::post('/webhooks/mercado-pago', [App\Http\Controllers\CarritoController::class, 'manejarWebhookMercadoPago']);
+
+
+Route::post('/webhooks/mercado-pago',[App\Http\Controllers\CarritoController::class, 'manejarWebhookMercadoPago']);
+
+
+
 Route::post('/carrito/store', [App\Http\Controllers\CarritoController::class, 'storeCarritoEnBaseDeDatos'])->name('carrito.store');
 Route::get('/pagina-de-error', [App\Http\Controllers\ErrorController::class, 'paginaDeError'])->name('pagina_de_error');
 Route::get('/historial-compras', [App\Http\Controllers\CarritoController::class, 'historialCompras'])->name('historial.compras');
