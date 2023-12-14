@@ -125,6 +125,7 @@ class CarritoController extends Controller
  
     public function crearCarritoYRedirigir()
     {
+        
         // Obtén el carrito actual
         $carrito = Cart::content();
         
@@ -193,49 +194,51 @@ class CarritoController extends Controller
         // Almacena la información del carrito en la sesión para recuperarla en la confirmación del pago
         session(['carritoUsuarioId' => $carritoUsuarioId, 'precioTotal' => $precioTotal]);
         
-             // Crea la preferencia de Mercado Pago
-             $mercadoPagoService = new MercadoPagoService();
-             $preferenciaId = $mercadoPagoService->crearPreferencia($precioTotal);
+        // Crea la preferencia de Mercado Pago
+        $mercadoPagoService = new MercadoPagoService();
+        $preferenciaId = $mercadoPagoService->crearPreferencia($precioTotal);
+        $sandboxInitPoint = $mercadoPagoService->crearPreferencia($precioTotal);
+
+        // Almacena el ID de la preferencia en la sesión
+        session(['preferenciaId' => $preferenciaId]);
      
-             // Almacena el ID de la preferencia en la sesión
-             session(['preferenciaId' => $preferenciaId]);
-     
-             // Redirige al usuario a la página de Mercado Pago
-             return redirect($preferenciaId->sandbox_init_point);    }
+        // Redirige al usuario a la página de Mercado Pago
+        return redirect($sandboxInitPoint);    
+        }
 
 
-             public function confirmacionPago(Request $request)
-             {
-                 // Recupera la preferencia de Mercado Pago usando el ID proporcionado en la URL
-                 $preferenciaId = $request->input('preferenciaId');
-                 $preferencia = \MercadoPago\Preference::get($preferenciaId);
-         
-                 // Aquí puedes utilizar la función obtenerPago para obtener más detalles del pago si es necesario
-                 $mercadoPagoService = new MercadoPagoService();
-                 $informacionPago = $mercadoPagoService->obtenerPago($preferenciaId);
-         
-                 // Obtén la información necesaria de la sesión
-                 $carritoUsuarioId = session('carritoUsuarioId');
-                 $precioTotal = session('precioTotal');
-         
-                 // Verifica si la confirmación de pago es válida (puedes ajustar esto según la lógica de Mercado Pago)
-                 if ($request->has('payment_status') && $request->input('payment_status') === 'approved') {
-                     // Almacena la venta en la base de datos
-                     $venta = new Venta();
-                     $venta->carrito_usuario_id = $carritoUsuarioId;
-                     $venta->precio_total = $precioTotal;
-                     $venta->informacion_pago = json_encode($informacionPago); // Puedes almacenar la información de pago en formato JSON
-         
-                     // Agrega más campos según sea necesario
-                     // ...
-         
-                     $venta->save();
-         
-                     return view('tu.vista.confirmacion'); // Redirige a tu vista personalizada de confirmación
-                 } else {
-                     // ... (manejo del caso en que el pago no fue aprobado)
-                 }
-             }
+        public function confirmacionPago(Request $request)
+        {
+            // Recupera la preferencia de Mercado Pago usando el ID proporcionado en la URL
+            $preferenciaId = $request->input('preferenciaId');
+            $preferencia = \MercadoPago\Preference::get($preferenciaId);
+    
+            // Aquí puedes utilizar la función obtenerPago para obtener más detalles del pago si es necesario
+            $mercadoPagoService = new MercadoPagoService();
+            $informacionPago = $mercadoPagoService->obtenerPago($preferenciaId);
+    
+            // Obtén la información necesaria de la sesión
+            $carritoUsuarioId = session('carritoUsuarioId');
+            $precioTotal = session('precioTotal');
+    
+            // Verifica si la confirmación de pago es válida (puedes ajustar esto según la lógica de Mercado Pago)
+            if ($request->has('payment_status') && $request->input('payment_status') === 'approved') {
+                // Almacena la venta en la base de datos
+                $venta = new Venta();
+                $venta->carrito_usuario_id = $carritoUsuarioId;
+                $venta->precio_total = $precioTotal;
+                $venta->informacion_pago = json_encode($informacionPago); // Puedes almacenar la información de pago en formato JSON
+    
+                // Agrega más campos según sea necesario
+                // ...
+    
+                $venta->save();
+                
+                return redirect('casa');
+            } else {
+                // ... (manejo del caso en que el pago no fue aprobado)
+            }
+        }
    
 
     public function historialCompras()

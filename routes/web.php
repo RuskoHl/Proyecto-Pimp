@@ -57,12 +57,7 @@ Route::delete('/carrito/remover/{rowId}', [App\Http\Controllers\CarritoControlle
 Route::post('/carrito/crear-carrito-y-redirigir', [App\Http\Controllers\CarritoController::class, 'crearCarritoYRedirigir'])->name('carrito.crearCarritoYRedirigir');
 Route::get('/carrito/confirmacion', [App\Http\Controllers\CarritoController::class, 'confirmacionPago'])->name('carrito.confirmacion');
 // routes/web.phpRoute::post('/webhooks/mercado-pago', [CarritoController::class, 'manejarWebhookMercadoPago']);
-Route::post('/webhooks/mercado-pago', [App\Http\Controllers\CarritoController::class, 'manejarWebhookMercadoPago']);
-
-
-Route::post('/webhooks/mercado-pago',[App\Http\Controllers\CarritoController::class, 'manejarWebhookMercadoPago']);
-
-
+// Route::post('/webhooks/mercado-pago', [App\Http\Controllers\CarritoController::class, 'manejarWebhookMercadoPago']);
 
 Route::post('/carrito/store', [App\Http\Controllers\CarritoController::class, 'storeCarritoEnBaseDeDatos'])->name('carrito.store');
 Route::get('/pagina-de-error', [App\Http\Controllers\ErrorController::class, 'paginaDeError'])->name('pagina_de_error');
