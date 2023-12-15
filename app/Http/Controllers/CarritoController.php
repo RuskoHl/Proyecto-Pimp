@@ -99,109 +99,166 @@ class CarritoController extends Controller
         return back()->with('success', 'Producto agregado al carrito con éxito');
     }
 
+//FUNCIONA NO BORRAR XD
+public function manejarWebhookMercadoPago(Request $request)
+{
+    $data = $request->json()->all();
 
-    public function manejarWebhookMercadoPago(Request $request)
-    {
-        $data = $request->all();
-    
-        // Realiza la validación de seguridad (puedes comparar la firma, etc.)
-        Log::info('Webhook Data:', $data);
-        // Procesa la notificación según el tipo de evento
-        if ($data['type'] === 'payment') {
-            $paymentId = $data['data']['id'];
-            $paymentStatus = $data['data']['status'];
-    
-            // Realiza acciones según el estado del pago (aprobado, rechazado, etc.)
-            if ($paymentStatus === 'approved') {
-                // Pago aprobado, realiza las acciones necesarias
-                // Por ejemplo, actualiza el estado de la venta, crea la factura, etc.
+    // Realiza la validación de seguridad (puedes comparar la firma, etc.)
+    Log::info('Webhook Data:', ['data' => $data]);
+
+    // Procesa la notificación según el tipo de evento
+    if (isset($data['action']) && $data['action'] === 'payment.created') {
+        // Verifica si la clave 'data' está presente y es un array
+        if (isset($data['data']) && is_array($data['data'])) {
+            // Verifica si la clave 'id' está presente en 'data'
+            if (isset($data['data']['id'])) {
+                $paymentId = $data['data']['id'];
+
+                // Puedes almacenar o utilizar el $paymentId según tus necesidades
+                Log::info('ID del evento de pago:', ['payment_id' => $paymentId]);
             } else {
-                // Maneja otros casos según sea necesario
+                // La clave 'id' no está presente en 'data'
+                Log::error('Clave "id" no encontrada en el payload.');
             }
+        } else {
+            // La clave 'data' no está presente o no es un array
+            Log::error('Clave "data" no encontrada o no es un array en el payload.');
         }
-    
-        return response()->json(['status' => 'OK']);
     }
- 
+
+    return response()->json(['status' => 'OK']);
+}
+
+
+
+
     public function crearCarritoYRedirigir()
     {
-        // Obtén el carrito actual
-        $carrito = Cart::content();
-        
-        // Obtén la caja abierta
-        $caja = Caja::where('status', true)->latest()->first();
-        
-        // Genera un identificador único para el carrito
-        $identificadorCarrito = Str::uuid();
-        
-        // Obtiene el usuario autenticado si existe
-        $user = Auth::user();
-        
-        // Verifica que el usuario esté autenticado antes de continuar
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Debes iniciar sesión para completar esta acción');
-        }
-        
-        // Validar que exista el user_id y caja_id
-        if (!$user->id || !$caja) {
-            return redirect()->route('pagina_de_error')->with('error', 'No se puede procesar la venta. Falta información requerida.');
-        }
-        
-        // Itera sobre los productos del carrito
-        foreach ($carrito as $item) {
-            $producto = Producto::find($item->id);
-        
-            // Verificar si el producto tiene una oferta activa
-            if ($producto->oferta && $producto->oferta->status) {
-                // Utilizar el precio ofertado en lugar del precio normal
-                $precioProducto = $producto->precio_ofertado;
-            } else {
-                $precioProducto = $producto->precio;
+        try {
+            // Obtén el carrito actual
+            $carrito = Cart::content();
+             Log::info( ' Carrito obtenido' );
+    
+            // Obtén la caja abierta
+            $caja = Caja::where('status', true)->latest()->first();
+            // Log::info( ' Caja obtenida
+    
+            // Genera un identificador único para el carrito
+            $identificadorCarrito = Str::uuid();
+             Log::info( 'Identificador de carrito generado' );
+    
+            // Obtiene el usuario autenticado si existe
+            $user = Auth::user();
+    
+            // Log::info( ' Verificando autenticación del usuario
+            if (!$user) {
+                Log::error('Usuario no autenticado. Redirigiendo a la página de inicio de sesión.');
+                return redirect()->route('login')->with('error', 'Debes iniciar sesión para completar esta acción');
             }
-        
-            // Verificar que la cantidad del producto sea suficiente
-            if (!$producto || $item->qty > $producto->cantidad) {
-                return redirect()->route('pagina_de_error')->with('error', 'No hay suficientes existencias para uno o más productos en el carrito.');
+    
+             Log::info( 'Usuario autenticado');
+    
+            // Validar que exista el user_id y caja_id
+            if (!$user->id || !$caja) {
+                Log::error('Datos de usuario o caja faltantes. No se puede procesar la venta.');
+                return redirect()->route('pagina_de_error')->with('error', 'No se puede procesar la venta. Falta información requerida.');
             }
-        
-            // Incrementa la cantidad vendida de cada producto
-            $producto->update(['cantidad_vendida' => $producto->cantidad_vendida + $item->qty]);
-        
-            // Resta la cantidad vendida de la cantidad disponible
-            $nuevaCantidad = $producto->cantidad - $item->qty;
-        
-            // Actualiza la cantidad disponible en el modelo de Producto
-            $producto->update(['cantidad' => $nuevaCantidad]);
+    
+            Log::info( ' Datos de usuario y caja validados');
+    
+            // Itera sobre los productos del carrito
+            foreach ($carrito as $item) {
+                $producto = Producto::find($item->id);
+    
+                // Log::info( ' Producto encontrado');
+    
+                // Verificar si el producto tiene una oferta activa
+                if ($producto->oferta && $producto->oferta->status) {
+                    // Utilizar el precio ofertado en lugar del precio normal
+                    $precioProducto = $producto->precio_ofertado;
+                } else {
+                    $precioProducto = $producto->precio;
+                }
+    
+                // Log::info( ' Precio del producto verificado');
+    
+                // Verificar que la cantidad del producto sea suficiente
+                if (!$producto || $item->qty > $producto->cantidad) {
+                    Log::error('Existencias insuficientes para uno o más productos en el carrito.');
+                    return redirect()->route('pagina_de_error')->with('error', 'No hay suficientes existencias para uno o más productos en el carrito.');
+                }
+    
+                // Log::info( ' Existencias verificadas');
+    
+                // Incrementa la cantidad vendida de cada producto
+                $producto->update(['cantidad_vendida' => $producto->cantidad_vendida + $item->qty]);
+    
+                // Log::info( ' Cantidad vendida actualizada');
+    
+                // Resta la cantidad vendida de la cantidad disponible
+                $nuevaCantidad = $producto->cantidad - $item->qty;
+    
+                // Log::info( ' Cantidad disponible actualizada');
+    
+                // Actualiza la cantidad disponible en el modelo de Producto
+                $producto->update(['cantidad' => $nuevaCantidad]);
+            }
+    
+            // Log::info( ' Productos actualizados');
+    
+            // Calcula el precio total del carrito');
+            $precioTotal = Cart::total();
+    
+            // Log::info( ' Precio total calculado');
+    
+            // Almacena el carrito y la asociación con el usuario en la tabla carrito_usuario
+            $carritoUsuarioId = DB::table('carrito_usuario')->insertGetId([
+                'identificador_carrito' => $identificadorCarrito,
+                'user_id' => $user->id,
+                'caja_id' => $caja->id,
+                'precio_total' => $precioTotal,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+    
+            Log::info( ' Carrito almacenado en la base de datos');
+    
+            // Almacena el contenido del carrito en la base de datos usando el identificador único
+            Cart::store($identificadorCarrito);
+    
+            Log::info( ' Contenido del carrito almacenado');
+    
+            // Almacena la información del carrito en la sesión para recuperarla en la confirmación del pago
+            session(['carritoUsuarioId' => $carritoUsuarioId, 'precioTotal' => $precioTotal]);
+    
+            Log::info( ' Información del carrito almacenada en la sesión ');
+
+            
+    
+            // Crea la preferencia de Mercado Pago
+            $mercadoPagoService = new MercadoPagoService();
+            try {
+                $preferenciaId = $mercadoPagoService->crearPreferencia($precioTotal);
+                Log::info('Preferencia de Mercado Pago creada exitosamente. Preferencia ID: ' . $preferenciaId);
+                // Almacena el ID de la preferencia en la sesión
+                session(['preferenciaId' => $preferenciaId]);
+                // Todo ha sido exitoso
+                Log::info('Venta procesada exitosamente.');
+            } catch (\Exception $e) {
+                // Log del mensaje de error
+                Log::error('Error en la creación de preferencia de Mercado Pago: ' . $e->getMessage());
+                // Lanza la excepción nuevamente para que se capture en el controlador
+                throw $e;
+            }
+        } catch (\Exception $e) {
+            // Log del mensaje de error
+            Log::error('Error en la creación de preferencia de Mercado Pago: ' . $e->getMessage());
+            // Lanza la excepción nuevamente para que se capture en el controlador
+            throw $e;
         }
-        
-        // Calcula el precio total del carrito
-        $precioTotal = Cart::total();
-        
-        // Almacena el carrito y la asociación con el usuario en la tabla carrito_usuario
-        $carritoUsuarioId = DB::table('carrito_usuario')->insertGetId([
-            'identificador_carrito' => $identificadorCarrito,
-            'user_id' => $user->id,
-            'caja_id' => $caja->id,
-            'precio_total' => $precioTotal,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        
-        // Almacena el contenido del carrito en la base de datos usando el identificador único
-        Cart::store($identificadorCarrito);
-        
-        // Almacena la información del carrito en la sesión para recuperarla en la confirmación del pago
-        session(['carritoUsuarioId' => $carritoUsuarioId, 'precioTotal' => $precioTotal]);
-        
-             // Crea la preferencia de Mercado Pago
-             $mercadoPagoService = new MercadoPagoService();
-             $preferenciaId = $mercadoPagoService->crearPreferencia($precioTotal);
-     
-             // Almacena el ID de la preferencia en la sesión
-             session(['preferenciaId' => $preferenciaId]);
-     
-             // Redirige al usuario a la página de Mercado Pago
-             return redirect($preferenciaId->sandbox_init_point);    }
+    }
+
 
 
              public function confirmacionPago(Request $request)
