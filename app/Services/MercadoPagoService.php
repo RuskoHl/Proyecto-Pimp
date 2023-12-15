@@ -22,7 +22,7 @@ class MercadoPagoService
     public function crearPreferencia($precioTotal)
     {
         info('Iniciando la creación de preferencia.');
-
+    
         // Obtén el carrito del usuario actual directamente desde la base de datos
         $carritoUsuario = Carrito_usuario::where('user_id', Auth::id())->latest()->first();
     
@@ -31,15 +31,19 @@ class MercadoPagoService
             $item = new Item();
             $item->title = "Mi producto";
             $item->quantity = 1;
-            $item->unit_price = $precioTotal;
+            $item->unit_price = $precioTotal; // Corrige aquí de 'amount' a 'unit_price'
     
             $preference = new Preference();
             $preference->items = [$item];
     
-            $preference->notification_url = 'https://e658-2803-9800-9400-432b-b520-270c-d528-d438.ngrok.io/webhooks/mercado-pago';
-    
+            $preference->notification_url = 'https://5ea0-2803-9800-9400-432b-b520-270c-d528-d438.ngrok-free.app/webhooks/mercado-pago';
+                $preference->back_urls = [
+                    'success' => 'http://localhost:8000/casa',
+                    'pending' => 'https://c915-2803-9800-9400-432b-b520-270c-d528-d438.ngrok.io/pending',
+                    'failure' => 'https://c915-2803-9800-9400-432b-b520-270c-d528-d438.ngrok.io/failure',
+                ];
             $preference->save();
-    
+                
             // Almacena el ID de la preferencia en la sesión
             session(['preferenciaId' => $preference->id]);
     
@@ -60,33 +64,29 @@ class MercadoPagoService
 
 
     public function obtenerPago($idPago)
-    {
-        // Utiliza la SDK de Mercado Pago para obtener información sobre el pago
-        try {
-            // Realiza una solicitud para obtener los detalles del pago
-            $payment = \MercadoPago\Payment::find_by_id($idPago);
+{
+    // Utiliza la SDK de Mercado Pago para obtener información sobre el pago
+    // Realiza una solicitud para obtener los detalles del pago
+    $payment = \MercadoPago\Payment::find_by_id($idPago);
 
-            // Aquí puedes acceder a la información del pago
-            $paymentId = $payment->id;
-            $status = $payment->status;
-            $amount = $payment->transaction_amount;
+    // Aquí puedes acceder a la información del pago
+    $paymentId = $payment->id;
+    $status = $payment->status;
+    $amount = $payment->transaction_amount;
 
-            // Implementa la lógica adicional según tus necesidades
-            // Puedes actualizar el estado de tu aplicación, enviar correos electrónicos, etc.
+    // Implementa la lógica adicional según tus necesidades
+    // Puedes actualizar el estado de tu aplicación, enviar correos electrónicos, etc.
 
-            return [
-                'payment_id' => $paymentId,
-                'status' => $status,
-                'amount' => $amount,
-                // Agrega más detalles según sea necesario
-            ];
-        } catch (\Exception $e) {
-            // Maneja cualquier excepción que pueda ocurrir al obtener el pago
-            return [
-                'error' => true,
-                'message' => $e->getMessage(),
-            ];
-        }
-    }
+    $result = [
+        'payment_id' => $paymentId,
+        'status' => $status,
+        'amount' => $amount,
+        // Agrega más detalles según sea necesario
+    ];
+
+    // Depurar la información utilizando dd
+    dd($result);
+}
+
 
 }

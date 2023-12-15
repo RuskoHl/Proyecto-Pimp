@@ -202,8 +202,7 @@ class CarritoController extends Controller
         // Almacena el ID de la preferencia en la sesión
         session(['preferenciaId' => $preferenciaId]);
      
-        // Redirige al usuario a la página de Mercado Pago
-        return redirect($preferenciaId->sandbox_init_point);    
+        
         }
 
 
