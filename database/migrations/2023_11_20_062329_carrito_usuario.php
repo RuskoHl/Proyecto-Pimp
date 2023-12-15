@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('caja_id')->references('id')->on('cajas')->onDelete('cascade');
             $table->unsignedBigInteger('venta_id')->nullable();
             $table->foreign('venta_id')->references('id')->on('ventas');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

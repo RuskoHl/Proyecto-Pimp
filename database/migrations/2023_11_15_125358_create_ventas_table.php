@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->text('contenido')->nullable(); // Corregido a 'contenido'
             $table->foreign('caja_id')->references('id')->on('cajas');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->nullable();
             $table->string('estado')->nullable();
 
             $table->softDeletes();

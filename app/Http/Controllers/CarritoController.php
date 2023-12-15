@@ -117,6 +117,88 @@ public function manejarWebhookMercadoPago(Request $request)
 
                 // Puedes almacenar o utilizar el $paymentId según tus necesidades
                 Log::info('ID del evento de pago:', ['payment_id' => $paymentId]);
+
+                $userId = session('userId');
+
+                if (!$userId || !Auth::check()) {
+                    // Si no está autenticado, puedes responder con un código de error o realizar otra acción.
+                    return response()->json(['error' => 'Unauthorized'], 401);
+                }
+
+                // Obtén detalles adicionales del pago utilizando cURL
+                $accessToken = 'TEST-6206171210774310-120523-6bbb0f6b15e92a6419915a0a2de9d19e-1578873649'; // Reemplaza con tu token de acceso de Mercado Pago
+                $curl = curl_init();
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => "https://api.mercadopago.com/v1/payments/$paymentId",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'GET',
+                    CURLOPT_HTTPHEADER => [
+                        'Content-Type: application/json',
+                        'Authorization: Bearer ' . $accessToken,
+                    ],
+                ]);
+
+                // Ejecuta la solicitud cURL y maneja errores
+                $response = curl_exec($curl);
+
+                if ($response === false) {
+                    Log::error('Error en la solicitud cURL: ' . curl_error($curl));
+                } else {
+                    // Procesa la respuesta como sea necesario
+                    $paymentDetails = json_decode($response, true);
+                    // Puedes utilizar $paymentDetails para acceder a los detalles del pago
+
+                    // Obtén el precio total de alguna manera (puedes ajustar esto según tu lógica)
+                    $precioTotal = 100.00; // Reemplaza con el precio real obtenido de alguna manera
+
+                    // Obtiene la caja más reciente
+                    $caja = Caja::where('status', true)->latest()->first();
+
+                    // Obtén el usuario autenticado si está presente
+                    $userId = isset($data['data']['user_id']) ? $data['data']['user_id'] : null;
+
+                    // Intenta obtener el ID del usuario desde la sesión
+                    if (!$userId && session()->has('userId')) {
+                        $userId = session('userId');
+                    }
+
+                    Log::info('Valor de $userId:', ['userId' => $userId]);
+
+                    // Resto del código...
+
+
+                    // Verifica si el usuario está autenticado
+                    if ($userId) {
+                        // Crea una nueva venta
+                        $venta = new Venta([
+                            'external_reference' => $data['external_reference'] ?? '',
+                            'fecha_emision' => now(),
+                            'valor_total' => $precioTotal,
+                            'caja_id' => $caja->id,
+                            'user_id' => $userId,
+                            'contenido' => Cart::content()->toJson(),
+                            'estado' => 'pendiente',
+                            'detalles_pago' => json_encode($paymentDetails), // Almacena los detalles del pago
+                        ]);
+
+                        // Guarda la venta
+                        $venta->save();
+                        
+                        // Puedes agregar más lógica aquí, como enviar correos electrónicos, notificaciones, etc.
+                        Log::info('Venta creada para el pago ID ' . $paymentId);
+                    } else {
+                        // El usuario no está autenticado
+                        Log::error('Usuario no autenticado.');
+                    }
+                }
+
+                // Cierra la sesión cURL
+                curl_close($curl);
             } else {
                 // La clave 'id' no está presente en 'data'
                 Log::error('Clave "id" no encontrada en el payload.');
@@ -126,15 +208,16 @@ public function manejarWebhookMercadoPago(Request $request)
             Log::error('Clave "data" no encontrada o no es un array en el payload.');
         }
     }
-
-    return response()->json(['status' => 'OK']);
 }
+
+
 
 
 
 
     public function crearCarritoYRedirigir()
     {
+        
         try {
             // Obtén el carrito actual
             $carrito = Cart::content();
@@ -234,7 +317,14 @@ public function manejarWebhookMercadoPago(Request $request)
     
             Log::info( ' Información del carrito almacenada en la sesión ');
 
-            
+            session(['carritoUsuarioId' => $carritoUsuarioId, 'precioTotal' => $precioTotal]);
+
+            // Almacena el ID del usuario en la sesión (si está autenticado)
+            if ($user) {
+                session(['userId' => $user->id]);
+            }
+
+            Log::info('Información del carrito almacenada en la sesión');
     
             // Crea la preferencia de Mercado Pago
             $mercadoPagoService = new MercadoPagoService();
