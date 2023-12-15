@@ -26,22 +26,27 @@
                         </thead>
                         <tbody>
                             @foreach (Cart::content() as $item)
-                                <tr>
-                                    <td>{{ $item->name }}</td>
-                                    <td>
-                                        <form action="{{ route('carrito.actualizar', $item->rowId) }}" method="POST">
-                                            @csrf
-                                            <input type="number" name="cantidad" value="{{ $item->qty }}" min="1" class="form-control">
-                                            <div class="mt-1">
-                                                <button onclick="Swal.fire('Actualizando todo el carrito...')" type="submit" class="btn btn-success">Actualizar</button>
-                                                <button type="submit" class="btn btn-danger ml-2">Eliminar</button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td>${{ $item->price }}</td>
-                                    <td>${{ $item->total }}</td>
-                                </tr>
-                            @endforeach
+                            <tr>
+                                <td>{{ $item->name }}</td>
+                                <td>
+                                    <form action="{{ route('carrito.actualizar', $item->rowId) }}" method="POST">
+                                        @csrf
+                                        <input type="number" name="cantidad" value="{{ $item->qty }}" min="1" class="form-control">
+                                        <div class="mt-1">
+                                            <button onclick="Swal.fire('Actualizando todo el carrito...')" type="submit" class="btn btn-success">Actualizar</button>
+                                        </div>
+                                    </form>
+                        
+                                    <form action="{{ route('carrito.remover', $item->rowId) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger ml-2">Eliminar</button>
+                                    </form>
+                                </td>
+                                <td>${{ $item->price }}</td>
+                                <td>${{ $item->total }}</td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
 
