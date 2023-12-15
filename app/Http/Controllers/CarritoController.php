@@ -124,9 +124,7 @@ public function manejarWebhookMercadoPago(Request $request)
 
                 // Maneja la seguridad, por ejemplo, almacenando el token de acceso de Mercado Pago de forma segura (usando variables de entorno)
                 $accessToken = 'TEST-6206171210774310-120523-6bbb0f6b15e92a6419915a0a2de9d19e-1578873649';
-                
 
-                
                 // Obtén detalles adicionales del pago utilizando cURL
                 $curl = curl_init();
                 curl_setopt_array($curl, [
@@ -137,14 +135,14 @@ public function manejarWebhookMercadoPago(Request $request)
                         'Authorization: Bearer ' . $accessToken,
                     ],
                 ]);
-                
+
                 // Ejecuta la solicitud cURL y maneja errores
                 $response = curl_exec($curl);
-                
+
                 $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 curl_close($curl);
 
-                Log::info('xd curl: ' ,[$response]);
+                Log::info('xd curl: ', [$response]);
 
                 if ($httpCode === 200) {
                     // Procesa la respuesta como sea necesario
@@ -156,8 +154,15 @@ public function manejarWebhookMercadoPago(Request $request)
                     } else {
                         // Obtén el precio total
                         $precioTotal = $paymentDetails['transaction_amount'] ?? 0.00;
+                        Log::info('PRECIO TOTAL: ', [$precioTotal]);
                         $status = $paymentDetails['status'] ?? '';
-                        Log::info('Estatu bolo UWU: ' , [$status]);
+                        $metadata = $paymentDetails['metadata']['comprador'] ?? '';
+                        Log::info('METADATA UWU: ', [$metadata]);
+
+                        $comprador = $data['data']['metadata']['comprador'] ?? '';
+
+                        Log::info('Estatu bolo UWU: ', [$status]);
+                        Log::info('Comprador bolo UWU: ', [$comprador]);
 
                         // Obtiene la caja más reciente
                         $caja = Caja::where('status', true)->latest()->first();
@@ -165,22 +170,27 @@ public function manejarWebhookMercadoPago(Request $request)
                         // Obtiene el carrito del usuario
                         $carritoUsuario = Carrito_Usuario::where('user_id', $userId)->first();
 
-                        // Crea una nueva venta con Eloquent
-                        $venta = new Venta([
-                            'external_reference' => $data['external_reference'] ?? '',
-                            'fecha_emision' => now(),
-                            'valor_total' => $precioTotal,
-                            'caja_id' => $caja->id,
-                            'user_id' => $userId,
-                            'contenido' => $carritoUsuario->toJson(),
-                            'estado' => 'pendiente',
-                            'detalles_pago' => json_encode($paymentDetails),
-                        ]);
+                        // Obtiene la última venta
+                        $venta = Venta::latest()->first();
 
-                        // Guarda la venta en la base de datos
-                        $venta->save();
+                        if ($venta) {
+                            // Actualiza los campos necesarios
+                            $venta->fecha_emision = now();
+                            $venta->valor_total = $precioTotal;
 
-                        Log::info('Venta creada para el pago ID ' . $paymentId);
+
+
+                            $venta->estado = 'pendiente';
+
+
+                            // Guarda los cambios en la base de datos
+                            $venta->save();
+
+                            // Aquí puedes realizar otras acciones después de la actualización
+                            Log::info('Venta actualizada para el pago ID ' . $paymentId);
+                        } else {
+                            Log::error('No se encontró una venta para actualizar.');
+                        }
                     }
                 } else {
                     Log::error('Error en la solicitud cURL. Código HTTP: ' . $httpCode);
@@ -195,6 +205,7 @@ public function manejarWebhookMercadoPago(Request $request)
         }
     }
 }
+
 
 
 

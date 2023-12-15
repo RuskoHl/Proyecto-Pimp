@@ -9,7 +9,7 @@ return new class extends Migration {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
             $table->dateTime('fecha_emision');
-            $table->decimal('valor_total', 8, 2);
+            $table->decimal('valor_total', 8, 2)->nullable();
             $table->unsignedBigInteger('caja_id');
             // $table->unsignedBigInteger('user_id');
             $table->text('contenido')->nullable(); // Corregido a 'contenido'
