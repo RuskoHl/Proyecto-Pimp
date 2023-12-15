@@ -11,12 +11,12 @@ return new class extends Migration {
             $table->dateTime('fecha_emision');
             $table->decimal('valor_total', 8, 2);
             $table->unsignedBigInteger('caja_id');
-            $table->unsignedBigInteger('user_id');
+            // $table->unsignedBigInteger('user_id');
             $table->text('contenido')->nullable(); // Corregido a 'contenido'
             $table->foreign('caja_id')->references('id')->on('cajas');
-            $table->foreign('user_id')->references('id')->on('users')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('estado')->nullable();
-
+            $table->string('detalles_pago')->nullable();
             $table->softDeletes();
             $table->timestamps();
         

@@ -9,6 +9,7 @@ use MercadoPago\SDK;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+
 class MercadoPagoService
 {
     private $accessToken;
@@ -25,27 +26,33 @@ class MercadoPagoService
 
         // Obtén el carrito del usuario actual directamente desde la base de datos
         $carritoUsuario = Carrito_usuario::where('user_id', Auth::id())->latest()->first();
+        info($carritoUsuario);
         info('Definido carrito usuario.' . $carritoUsuario);
         // Verifica si hay un carrito de usuario
         if ($carritoUsuario) {
             $item = new Item();
-            $item->title = "Mi producto";
+            $item->title = "Producto Pimp";
             $item->quantity = 1;
             $item->unit_price = $precioTotal;
-    
+            $item->Comprador = $carritoUsuario->user_id;
+            $item->metadata = ['comprador' => $carritoUsuario->user_id];
+
             $preference = new Preference();
+
             $preference->items = [$item];
-            // info('Items.' . $preference->items);
+
+            info('Items.' , $preference->items);
+
             $preference->notification_url = 'https://f3f2-2803-9800-9400-432b-ec15-5e0a-b6d7-e3cd.ngrok-free.app/webhooks/mercado-pago';
     
             $preference->save();
     
             // Almacena el ID de la preferencia en la sesión
             session(['preferenciaId' => $preference->id]);
-    
+            
             // Obtén el init point
             $sandboxInitPoint = $preference->sandbox_init_point;
-    
+                
             // Redirige al usuario a la página de Mercado Pago
             header("Location:$sandboxInitPoint");
             exit();

@@ -41,10 +41,10 @@ class Venta extends Model
         return $this->belongsTo(Carrito_usuario::class, 'carrito_usuario_id');
     }
 
-    public function User()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+    // public function User()
+    // {
+    //     return $this->belongsTo(User::class, 'user_id');
+    // }
     public static function sumarCantidadVentasPorCaja($cajaId)
     {
         return static::where('caja_id', $cajaId)->sum('cantidad_ventas');
