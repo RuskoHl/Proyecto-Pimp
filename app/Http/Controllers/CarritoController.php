@@ -178,9 +178,7 @@ public function manejarWebhookMercadoPago(Request $request)
                             $venta->fecha_emision = now();
                             $venta->valor_total = $precioTotal;
 
-
-
-                            $venta->estado = 'pendiente';
+                            $venta->estado = 'aprobado';
 
 
                             // Guarda los cambios en la base de datos

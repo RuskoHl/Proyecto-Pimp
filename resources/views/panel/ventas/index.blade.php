@@ -61,10 +61,26 @@
                                             $carrito = json_decode($venta->contenido, true);
                                         @endphp
                                 
-                                        @if ($carrito && count($carrito) > 0)
+                                        @if (is_array($carrito) && count($carrito) > 0)
                                             <ul>
                                                 @foreach ($carrito as $item)
-                                                    <li><h6 class="text-danger">{{ $item['name'] }}</h6> <span class="text-bold">Cantidad:<span class="text-info"> {{ $item['qty'] }}</span>,<br><span class="text-bold">Precio Unitario:</span><span class="text-info"> ${{ $item['price'] }}</span>,<br><span class="text-bold">Total:<span class="text-info"> ${{ $item['qty'] * $item['price'] }}</span>.</li>
+                                                    <li>
+                                                        @if (isset($item['name']))
+                                                            <h6 class="text-danger">{{ $item['name'] }}</h6>
+                                                        @endif
+                                                        
+                                                        @if (isset($item['quantity']))
+                                                            <span class="text-bold">Cantidad:</span> <span class="text-info">{{ $item['quantity'] }}</span>,
+                                                        @endif
+                        
+                                                        @if (isset($item['price']))
+                                                            <br><span class="text-bold">Precio Unitario:</span><span class="text-info"> ${{ $item['price'] }}</span>,
+                                                        @endif
+                        
+                                                        @if (isset($item['qty']) && isset($item['price']))
+                                                            <br><span class="text-bold">Total:</span><span class="text-info"> ${{ $item['qty'] * $item['price'] }}</span>.
+                                                        @endif
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         @else
@@ -74,14 +90,10 @@
                                         <p>No hay información del carrito disponible.</p>
                                     @endif
                                 </td>
-                                {{-- <td>
-                                    <a href="{{ route('ventas.edit', $venta->id) }}" class="btn btn-primary">Editar</a>
-                                </td> --}}
                                 <td>{{ $venta->caja ? $venta->caja->nombre : 'N/A' }}</td>
-
-                               
                             </tr>
-                            @endforeach
+                        @endforeach
+                        
                         </tbody>
                     </table>
                 </div>

@@ -40,8 +40,9 @@ class MercadoPagoService
             
             $preference = new Preference();
             $preference->items = [$item];
-            
-
+            $preference->back_urls = [
+                'success' => 'http://localhost:8000/casa',
+            ];
             info('Items.' , $preference->items);
             Log::info('Metadata enviada al Webhook:', ['metadata' => $item->metadata]);
             info('Preferencia completa:', ['preference' => $preference]);
@@ -55,7 +56,7 @@ class MercadoPagoService
             info('Contenido de la sesión antes de redirigir:', ['session' => session()->all()]);
             $venta = new Venta([
                 'fecha_emision' => now(),
-
+                'estado' => 'pendiente...',
                 'user_id' => Auth::id(),
                 'contenido' => $carritoUsuario->toJson(),
                 'caja_id' => $carritoUsuario->caja_id,
