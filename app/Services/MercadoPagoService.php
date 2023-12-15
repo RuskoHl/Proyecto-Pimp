@@ -21,7 +21,7 @@ class MercadoPagoService
 
     public function crearPreferencia($precioTotal)
     {
-        info('Iniciando la creación de preferencia.');
+        info('Iniciando la creación de preferencia en MPSERVICES.');
 
         // Obtén el carrito del usuario actual directamente desde la base de datos
         $carritoUsuario = Carrito_usuario::where('user_id', Auth::id())->latest()->first();
@@ -36,7 +36,7 @@ class MercadoPagoService
             $preference = new Preference();
             $preference->items = [$item];
             // info('Items.' . $preference->items);
-            $preference->notification_url = 'https://0759-2803-9800-9400-432b-b520-270c-d528-d438.ngrok-free.app/webhooks/mercado-pago';
+            $preference->notification_url = 'https://f3f2-2803-9800-9400-432b-ec15-5e0a-b6d7-e3cd.ngrok-free.app/webhooks/mercado-pago';
     
             $preference->save();
     

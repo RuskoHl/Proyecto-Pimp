@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\Venta;
+
 use App\Services\MercadoPagoService;
 use MercadoPago\Preference;
 use Illuminate\Support\Facades\Log;
@@ -106,6 +107,8 @@ public function manejarWebhookMercadoPago(Request $request)
 
     // Realiza la validación de seguridad (puedes comparar la firma, etc.)
     Log::info('Webhook Data:', ['data' => $data]);
+    Log::info('Data all: ' . json_encode($data));
+    Log::info('Contenido de la sesión:', ['session' => session()->all()]);
 
     // Procesa la notificación según el tipo de evento
     if (isset($data['action']) && $data['action'] === 'payment.created') {
@@ -118,15 +121,10 @@ public function manejarWebhookMercadoPago(Request $request)
                 // Puedes almacenar o utilizar el $paymentId según tus necesidades
                 Log::info('ID del evento de pago:', ['payment_id' => $paymentId]);
 
-                $userId = session('userId');
-
-                if (!$userId || !Auth::check()) {
-                    // Si no está autenticado, puedes responder con un código de error o realizar otra acción.
-                    return response()->json(['error' => 'Unauthorized'], 401);
-                }
+                // Asegúrate de manejar la seguridad de manera adecuada, por ejemplo, almacenando el token de acceso de Mercado Pago de forma segura (usando variables de entorno)
+                $accessToken = 'TEST-6206171210774310-120523-6bbb0f6b15e92a6419915a0a2de9d19e-1578873649'; // Reemplaza con tu token de acceso de Mercado Pago
 
                 // Obtén detalles adicionales del pago utilizando cURL
-                $accessToken = 'TEST-6206171210774310-120523-6bbb0f6b15e92a6419915a0a2de9d19e-1578873649'; // Reemplaza con tu token de acceso de Mercado Pago
                 $curl = curl_init();
                 curl_setopt_array($curl, [
                     CURLOPT_URL => "https://api.mercadopago.com/v1/payments/$paymentId",
@@ -151,49 +149,55 @@ public function manejarWebhookMercadoPago(Request $request)
                 } else {
                     // Procesa la respuesta como sea necesario
                     $paymentDetails = json_decode($response, true);
-                    // Puedes utilizar $paymentDetails para acceder a los detalles del pago
 
-                    // Obtén el precio total de alguna manera (puedes ajustar esto según tu lógica)
-                    $precioTotal = 100.00; // Reemplaza con el precio real obtenido de alguna manera
-
-                    // Obtiene la caja más reciente
-                    $caja = Caja::where('status', true)->latest()->first();
-
-                    // Obtén el usuario autenticado si está presente
-                    $userId = isset($data['data']['user_id']) ? $data['data']['user_id'] : null;
-
-                    // Intenta obtener el ID del usuario desde la sesión
-                    if (!$userId && session()->has('userId')) {
-                        $userId = session('userId');
-                    }
-
-                    Log::info('Valor de $userId:', ['userId' => $userId]);
-
-                    // Resto del código...
-
-
-                    // Verifica si el usuario está autenticado
-                    if ($userId) {
-                        // Crea una nueva venta
-                        $venta = new Venta([
-                            'external_reference' => $data['external_reference'] ?? '',
-                            'fecha_emision' => now(),
-                            'valor_total' => $precioTotal,
-                            'caja_id' => $caja->id,
-                            'user_id' => $userId,
-                            'contenido' => Cart::content()->toJson(),
-                            'estado' => 'pendiente',
-                            'detalles_pago' => json_encode($paymentDetails), // Almacena los detalles del pago
-                        ]);
-
-                        // Guarda la venta
-                        $venta->save();
-                        
-                        // Puedes agregar más lógica aquí, como enviar correos electrónicos, notificaciones, etc.
-                        Log::info('Venta creada para el pago ID ' . $paymentId);
+                    // Validación adicional, asegúrate de que la decodificación fue exitosa
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        Log::error('Error al decodificar la respuesta JSON: ' . json_last_error_msg());
                     } else {
-                        // El usuario no está autenticado
-                        Log::error('Usuario no autenticado.');
+                        // Obtén el precio total de alguna manera (ajusta esto según tu lógica)
+                        $precioTotal = $paymentDetails['transaction_amount'] ?? 0.00;
+
+                        // Obtiene la caja más reciente
+                        $caja = Caja::where('status', true)->latest()->first();
+
+
+
+                        $carritoUsuario = Carrito_Usuario::where('user_id', Auth::id());
+
+
+
+                        // $userId = session('_token');
+                        $userId = Auth::id();
+                        Log::info('Valor de $userId AAAAAAAAAA:', ['userId' => $userId]);
+
+                        
+                        
+
+                        // Resto del código...
+
+                        // Verifica si el usuario está autenticado
+                        if ($userId && Auth::check()) {
+                            // Crea una nueva venta
+                            $venta = new Venta([
+                                'external_reference' => $data['external_reference'] ?? '',
+                                'fecha_emision' => now(),
+                                'valor_total' => $precioTotal,
+                                'caja_id' => $caja->id,
+                                'user_id' => $carritoUsuario->user_id,
+                                'contenido' => Cart::content()->toJson(),
+                                'estado' => 'pendiente',
+                                'detalles_pago' => json_encode($paymentDetails), // Almacena los detalles del pago
+                            ]);
+
+                            // Guarda la venta
+                            $venta->save();
+
+                            // Puedes agregar más lógica aquí, como enviar correos electrónicos, notificaciones, etc.
+                            Log::info('Venta creada para el pago ID ' . $paymentId);
+                        } else {
+                            // El usuario no está autenticado
+                            Log::error('Usuario no autenticado.');
+                        }
                     }
                 }
 

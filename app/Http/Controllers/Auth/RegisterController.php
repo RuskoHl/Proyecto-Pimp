@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
@@ -73,6 +74,9 @@ class RegisterController extends Controller
 
         // Asignar el rol 'cliente' al nuevo usuario
         $user->assignRole('cliente');
+
+        // Almacenar user_id en la sesión
+        Session::put('user_id', $user->id);
 
         return $user;
     }
