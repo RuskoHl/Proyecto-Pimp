@@ -46,7 +46,7 @@ class MercadoPagoService
             info('Items.' , $preference->items);
             Log::info('Metadata enviada al Webhook:', ['metadata' => $item->metadata]);
             info('Preferencia completa:', ['preference' => $preference]);
-            $preference->notification_url = 'https://f3f2-2803-9800-9400-432b-ec15-5e0a-b6d7-e3cd.ngrok-free.app/webhooks/mercado-pago';
+            $preference->notification_url = 'https://a0d8-2803-9800-9400-432b-fc27-fe7d-35fd-76fd.ngrok-free.app/webhooks/mercado-pago';
                 
 
             $preference->save();
@@ -58,12 +58,13 @@ class MercadoPagoService
                 'fecha_emision' => now(),
                 'estado' => 'pendiente...',
                 'user_id' => Auth::id(),
-                'contenido' => $carritoUsuario->toJson(),
+                'contenido' => Cart::content()->toJson(),
                 'caja_id' => $carritoUsuario->caja_id,
             ]);
     
             // Guarda la venta en la base de datos
             $venta->save();
+            Cart::destroy();
             // Obtén el init point
             $sandboxInitPoint = $preference->sandbox_init_point;
                 

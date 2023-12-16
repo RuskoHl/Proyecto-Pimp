@@ -68,17 +68,18 @@ class CarritoController extends Controller
     public function agregarAlCarrito(CarritoRequest $request, $id)
     {
         $producto = Producto::find($id);
-    
+
         // Verificar si el producto tiene una oferta activa
-        // $oferta = $producto->ofertas->where('status', true)->first();
-    
-        // if ($oferta) {
-        //     // Utilizar el precio ofertado si está activo
-        //     $precioProducto = $oferta->pivot->precio_ofertado;
-        // } else {
+        $oferta = $producto->oferta()->where('status', true)->first();
+        
+        if ($oferta) {
+            // Utilizar el precio ofertado si está activo
+            $precioProducto = $producto->precio_ofertado;
+        } else {
             // Utilizar el precio normal
             $precioProducto = $producto->precio;
-        // }
+        }
+        
     
         // Asegurarse de que la cantidad sea válida
         $cantidad = max(1, $request->cantidad);
@@ -105,6 +106,7 @@ class CarritoController extends Controller
 public function manejarWebhookMercadoPago(Request $request)
 {
     $userId = Auth::id();
+    Cart::destroy();
     $data = $request->json()->all();
 
     Log::info('Webhook Data:', ['data' => $data]);
@@ -330,6 +332,11 @@ public function manejarWebhookMercadoPago(Request $request)
                 session(['preferenciaId' => $preferenciaId]);
                 // Todo ha sido exitoso
                 Log::info('Venta procesada exitosamente.');
+                // Elimina todos los elementos del carrito
+                
+
+                // Imprime el contenido del carrito para verificar que esté vacío
+                Log::info('Contenido del carrito después de destruirlo: ' . json_encode(Cart::content()));
             } catch (\Exception $e) {
                 // Log del mensaje de error
                 Log::error('Error en la creación de preferencia de Mercado Pago: ' . $e->getMessage());

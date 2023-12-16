@@ -5,7 +5,7 @@
 @section('content')
     <div class="container mt-4 mb-4">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-black text-white">
                 <h1 class="card-title" style="font-family: 'Old English Text MT', sans-serif;">Carrito de Compras</h1>
             </div>
             <div class="card-body">

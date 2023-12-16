@@ -32,7 +32,12 @@ class ProductoController extends Controller
         return view('panel.vendedor.lista_productos.create', compact('producto', 'categorias'));
 
     }
-
+    public function detallesProducto($id)
+    {
+        $producto = Producto::findOrFail($id);
+        return view('detalles_producto', compact('producto'));
+    }
+    
     public function store(crearRequest $request)
     {
         $producto = new Producto();

@@ -18,7 +18,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre del Producto</th>
-                            <th>imagen</th>
+                            {{-- <th>imagen</th> --}}
                             <th>Cantidad Vendida</th>
                         </tr>
                     </thead>
