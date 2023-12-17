@@ -1,17 +1,35 @@
 @extends('layouts.ojo')
 
+@section('title', 'PIMP|Perfil')
+
 @section('content')
 
-    <div class="container mt-5 mb-5"> <!-- Agregadas clases de margen -->
+    <div class="container mt-3 mb-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col">
                 <div class="card">
-                    <div class="card-header">
-                        <h2>Historial de compras</h2>
+                    <div class="card-header bg-black">
+                        <h2 class="text-white">Mi Perfil</h2>
                     </div>
 
                     <div class="card-body">
-                        @if(isset($ventas) && !$ventas->isEmpty())
+                        <div class="card mb-3">
+                            <div class="card-header bg-danger">
+                                <h2 class="text-white">Mi Usuario</h2>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Información del Usuario</h5>
+                                <p class="card-text"><strong>Nombre:</strong> {{ Auth::user()->name }}</p>
+                                <p class="card-text"><strong>Email:</strong> {{ Auth::user()->email }}</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                        <div class="card-header bg-danger">
+                            <h2 class="text-white">Mis Compras</h2>
+                        </div>
+    
+                        <div class="card-body">
+                                @if(isset($ventas) && !$ventas->isEmpty())
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -53,6 +71,8 @@
                                 </tbody>
                             </table>
                         @else
+                            </div>
+                        </div>
                             <p>No hay historial de compras.</p>
                         @endif
                     </div>

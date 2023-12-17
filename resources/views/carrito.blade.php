@@ -10,7 +10,7 @@
             </div>
             <div class="card-body">
                 @auth
-                    <a href="{{ route('historial.compras') }}" class="btn btn-danger mb-3">Ver Historial de Compras</a>
+                    <a href="{{ route('perfil') }}" class="btn btn-danger mb-3">Ver mi Perfil</a>
                 @endauth
 
                 @if (Cart::count() > 0)

@@ -387,15 +387,15 @@ public function manejarWebhookMercadoPago(Request $request)
              }
    
 
-    public function historialCompras()
+    public function perfil()
     {
         // Obtén el usuario autenticado
         $user = Auth::user();
     
         // Obtén las compras del usuario
-        $ventas = $user->ventas;
+        $ventas = $user->ventas->sortByDesc('id');
     
-        return view('historial_compras', compact('ventas'));
+        return view('perfil', compact('ventas'));
     }
     
 

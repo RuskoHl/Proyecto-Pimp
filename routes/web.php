@@ -66,4 +66,4 @@ Route::post('/webhooks/mercado-pago',[App\Http\Controllers\CarritoController::cl
 
 Route::post('/carrito/store', [App\Http\Controllers\CarritoController::class, 'storeCarritoEnBaseDeDatos'])->name('carrito.store');
 Route::get('/pagina-de-error', [App\Http\Controllers\ErrorController::class, 'paginaDeError'])->name('pagina_de_error');
-Route::get('/historial-compras', [App\Http\Controllers\CarritoController::class, 'historialCompras'])->name('historial.compras');
+Route::get('/perfil', [App\Http\Controllers\CarritoController::class, 'perfil'])->name('perfil');
