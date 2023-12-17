@@ -95,7 +95,7 @@
     <!-- Fin Línea -->
     
     
-    <div class="row" style="background-image: url('{{ asset('ofertasPimp.png') }}'); background-size: cover; color: #fff;">
+    <div class="row" style="background-image: url('{{ asset('lolxd.png') }}'); background-size: cover; color: #fff;">
         {{-- Primera columna --}}
         <div class="col-md-5 text-left mt-1 ">
             @if(isset($oferta))
