@@ -42,6 +42,7 @@
                                 <th scope="col" class="text-uppercase">Username de Cliente</th>
                                 <th scope="col" class="text-uppercase">Precio Total</th>
                                 <th scope="col" class="text-uppercase">Contenido del Carrito</th>
+                                <th scope="col" class="text-uppercase">Estado</th>
                                 {{-- <th scope="col">Acciones</th> --}}
                                 
                             </tr>
@@ -77,8 +78,8 @@
                                 {{-- <td>
                                     <a href="{{ route('ventas.edit', $venta->id) }}" class="btn btn-primary">Editar</a>
                                 </td> --}}
-                                <td>{{ $venta->caja ? $venta->caja->nombre : 'N/A' }}</td>
-
+                                {{-- <td>{{ $venta->caja ? $venta->caja->nombre : 'N/A' }}</td> --}}
+                                <td><h5 class="text-bold">{{ strtoupper($venta->estado) }}</h5></td>
                                
                             </tr>
                             @endforeach

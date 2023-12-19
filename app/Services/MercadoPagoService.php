@@ -46,7 +46,7 @@ class MercadoPagoService
             info('Items.' , $preference->items);
             Log::info('Metadata enviada al Webhook:', ['metadata' => $item->metadata]);
             info('Preferencia completa:', ['preference' => $preference]);
-            $preference->notification_url = 'https://061b-2803-9800-9400-432b-8ca4-3fa3-a495-b17b.ngrok-free.app/webhooks/mercado-pago';
+            $preference->notification_url = 'https://15ac-181-105-221-197.ngrok.io/webhooks/mercado-pago';
                 
 
             $preference->save();

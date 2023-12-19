@@ -15,12 +15,12 @@ use App\Http\Controllers\CompraController;
 use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OfertaController;
+use App\Http\Controllers\PanelController;
 
-Route::get('/', function() {
-    return view('panel.index');
-});
+Route::get('/', [PanelController::class, 'graficosCajas'])->name('panel.index');
+Route::get('/panel', [PanelController::class, 'graficosCajas'])->name('panel.index');
 Route::get('/panel', [ProductoController::class, 'graficosProductosxCategoria']);
-
+Route::get('/panel', [PanelController::class, 'index'])->name('panel.index');
 Route::get('/productos/restar-cantidad/{id}', [ProductoController::class, 'mostrarFormularioRestarCantidad'])->name('producto.mostrar-formulario-restar-cantidad');
 Route::post('/productos/restar-cantidad/{id}', [ProductoController::class, 'restarCantidad'])->name('producto.restar-cantidad');
 

@@ -196,53 +196,24 @@ class CajaController extends Controller
 
     
 
-
-    public function graficosCajas()
-    {
-        // Si se hace una petición AJAX
-        if (request()->ajax()) {
-            $labels = [];
-            $montosFinales = [];
-            $montosIniciales = [];
-    
-            // Obtén todas las cajas ordenadas por fecha de apertura
-            $cajas = Caja::with('ventas')->orderBy('fecha_apertura')->get();
-    
-            foreach ($cajas as $caja) {
-                // Utiliza el ID de la caja como label en lugar de la fecha
-                $idCaja = $caja->id;
-                $labels[] = $idCaja;
-    
-                // Utiliza el monto inicial de la caja directamente
-                $montoInicialCaja = $caja->monto_inicial;
-                $montosIniciales[$idCaja] = $montoInicialCaja;
-    
-                // Utiliza el monto final de la caja directamente
-                $montoFinalCaja = $caja->monto_final;
-                $montosFinales[$idCaja] = $montoFinalCaja;
-            }
-    
-            $response = [
-                'success' => true,
-                'data' => [
-                    'labels' => $labels,
-                    'montosIniciales' => $montosIniciales,
-                    'montosFinales' => $montosFinales,
-                ],
-            ];
-    
-            return json_encode($response);
-        }
-    
-        return view('panel.caja.forms.graficos_cajas');
+public function graficosCajas()
+{
+    // Obtener datos de cajas
+    $labels = [];
+    $montosIniciales = [];
+    $montosFinales = [];
+    // Obtén todas las cajas ordenadas por fecha de apertura
+    $cajas = Caja::with('ventas')->orderBy('fecha_apertura')->get();
+    foreach ($cajas as $caja) {
+        $idCaja = $caja->id;
+        $labels[] = $idCaja;
+        $montosIniciales[] = $caja->monto_inicial;
+        $montosFinales[] = $caja->monto_final;
     }
-    
-    
 
-    
-
-
-
+    // Pasar los datos a la vista
+    return view('panel.caja.forms.graficos_cajas', compact('labels', 'montosIniciales', 'montosFinales'));
+}
     public function destroy(Caja $caja)
     {
         $caja->delete();

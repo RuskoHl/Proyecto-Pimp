@@ -125,7 +125,7 @@ public function manejarWebhookMercadoPago(Request $request)
                 Log::info('ID del evento de pago:', ['payment_id' => $paymentId]);
 
                 // Maneja la seguridad, por ejemplo, almacenando el token de acceso de Mercado Pago de forma segura (usando variables de entorno)
-                $accessToken = 'TEST-6206171210774310-120523-6bbb0f6b15e92a6419915a0a2de9d19e-1578873649';
+                $accessToken = 'TEST-4300295732047885-121421-0cca7afa6e93e86f2d52133ebbc3a3cf-1578889639';
 
                 // Obtén detalles adicionales del pago utilizando cURL
                 $curl = curl_init();

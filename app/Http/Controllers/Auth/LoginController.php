@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Http\Request;
 class LoginController extends Controller
 {
     /*
@@ -38,11 +38,15 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-    protected function authenticated($user)
-    {
-        // Almacenar user_id en la sesión después de iniciar sesión
-        Session::put('user_id', $user->id);
 
-        return redirect($this->redirectTo);
+protected function authenticated(Request $request, $user)
+{
+    if ($user->hasRole('admin')) {
+        return redirect()->intended('/panel');
+    } elseif ($user->hasRole('vendedor')) {
+        return redirect()->intended('/panel');
     }
+
+    return redirect()->intended('/'); // Puedes cambiar la ruta predeterminada si lo deseas}
+}
 }
