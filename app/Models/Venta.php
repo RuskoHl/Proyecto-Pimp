@@ -49,8 +49,10 @@ class Venta extends Model
     {
         return static::where('caja_id', $cajaId)->sum('cantidad_ventas');
     }
+    
     public function cliente()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 }
+

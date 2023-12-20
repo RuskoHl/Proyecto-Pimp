@@ -16,11 +16,14 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12 mb-3">
-            <a href="{{ route('productosMasVendidos')}}" class="btn btn-danger m-1" title="0w0">+ vendidos
+        <div class="col-1 mb-3">
+            <a href="{{ route('productosMasVendidos')}}" class="btn btn-secondary custom-btn m-1 btn-lg" title="0w0">Productos más vendidos
             </a>
         </div>
-        
+        <div class="col-1 mb-3">
+        <a href="{{ route('graficos-ventas')}}" class="btn btn-success custom-btn m-1 btn-lg " title="ChartJs">
+            <i class="fas fa-chart-pie"></i>Ventas x Caja</a>
+        </div>
         @if (session('alert'))
             <div class="col-12">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -53,7 +56,7 @@
                                 <td><h2 class="text-danger">{{ $venta->id }}</h2></td>
                                 <td>{{ $venta->fecha_emision }}</td>
                                 <td>{{ $venta->caja_id }}</td>
-                                <td>{{ $venta->user ? $venta->user->name : 'N/A' }}</td>
+                                <td>{{ $venta->cliente ? $venta->cliente->name : 'N/A' }}</td>
                                 <td><h5>${{ $venta->valor_total }}</h5></td>
                                
                                 <td>
@@ -98,6 +101,28 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<script>
+.custom-btn {
+    font-size: 18px;
+    padding: 10px 20px;
+    letter-spacing: 2px; /* Ajusta el valor según tus preferencias */
+    /* Agrega otros estilos personalizados según sea necesario */
+}
+
+/* Aplica la clase personalizada a los botones deseados */
+.btn-custom {
+    background-color: #4CAF50; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: 1px solid #4CAF50; /* Borde */
+}
+
+/* Aplica la clase personalizada a los botones deseados */
+.btn-secondary-custom {
+    background-color: #6c757d;
+    color: white;
+    border: 1px solid #6c757d;
+}
+</script>
 @stop
 
 {{-- Importacion de Archivos JS --}}
@@ -107,6 +132,15 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+    new DataTable('#tabla-ventas', {
+        responsive: true,
+        order: [[0, 'desc']]
+    });
+});
+</script>
 <script src="{{ asset('js/ventas.js') }}"></script>
 @stop

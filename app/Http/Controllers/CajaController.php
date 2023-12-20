@@ -195,7 +195,17 @@ class CajaController extends Controller
 }
 
     
+public function cantidadVentasPorCaja()
+{
+    // Obtener datos de cajas y sus ventas
+    $cajasConVentas = Caja::withCount('ventas')->orderBy('fecha_apertura')->get();
 
+    // Preparar datos para el gráfico
+    $labels = $cajasConVentas->pluck('id');
+    $cantidadVentas = $cajasConVentas->pluck('ventas_count');
+
+    return view('panel.ventas.forms.graficos_ventas', compact('labels', 'cantidadVentas'));
+}
 public function graficosCajas()
 {
     // Obtener datos de cajas

@@ -19,6 +19,7 @@ use App\Http\Controllers\PanelController;
 
 Route::get('/', [PanelController::class, 'graficosCajas'])->name('panel.index');
 Route::get('/panel', [PanelController::class, 'graficosCajas'])->name('panel.index');
+Route::get('/panel', [CajaController::class, 'graficosCajas'])->name('panel.index');
 Route::get('/panel', [ProductoController::class, 'graficosProductosxCategoria']);
 Route::get('/panel', [PanelController::class, 'index'])->name('panel.index');
 Route::get('/productos/restar-cantidad/{id}', [ProductoController::class, 'mostrarFormularioRestarCantidad'])->name('producto.mostrar-formulario-restar-cantidad');
@@ -111,7 +112,7 @@ Route::resource('/cajas2', Caja2Controller::class)->names('caja2');
 
 Route::get('graficos-productos',[ProductoController::class,'graficosProductosxCategoria'])->name('graficos-productos');
 Route::get('/panel/cajas2/edit2', [ProductoController::class,'editarCajaConStatus1'])->name('panel.caja2.edit2');
-
+Route::get('/graficos-ventas',[CajaController::class,'cantidadVentasPorCaja'])->name('graficos-ventas');
 Route::get('/graficos-cajas',[CajaController::class,'graficosCajas'])->name('graficos-cajas');
 Route::resource('/categorias', CategoriaController::class)->names('categoria');
 Route::resource('/ventas', VentaController::class)->names('ventas');

@@ -463,21 +463,6 @@ return [
             'icon' => 'fas fa-envelope'
         ],
         [
-            'text' => 'Cliente',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-            'submenu' => [
-                [
-                    'text' => 'Lista de clientes',
-                    'url'  => '',
-                ],
-                [
-                'text' => 'Subir Nuevo Prospecto',
-                'url'  => '',
-                ],
-            ],
-        ],
-        [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',

@@ -16,11 +16,7 @@ class PanelController extends Controller
 
 public function graficosCajas()
 {
-    // Obtener datos de cajas
-    $labels = [];
-    $montosIniciales = [];
-    $montosFinales = [];
-
+   
     // Obtén todas las cajas ordenadas por fecha de apertura
     $cajas = Caja::with('ventas')->orderBy('fecha_apertura')->get();
 
